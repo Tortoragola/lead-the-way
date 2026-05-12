@@ -1,0 +1,80 @@
+﻿Field name,Description
+UniqueID,Unique identification number
+CompanyName,CompanyName  BusinessName  FullName  Name Registered andor No name type but multiple source validating
+TradeName,TradeName  TradeStyle Doing business as
+Address1,Name of the street and house number 1
+Address2,Name of the street and house number 2
+PostCode,Postal code  ZIP code
+City,Name of the city
+CityCode,Code of the city
+Locality,Name of the locality
+LocalityCode,Code of the locality
+Province,Name of the province
+ProvinceCode,Code of the province
+Region,Name of the region
+RegionCode,Code of the region
+Country,Name of the country
+CountryCode,Code of the country
+Language,Language used for business category descriptions
+PhoneOrMobile,Telephone or mobile phone number
+Phone,Telephone number
+Fax,Fax number
+Mobile,Mobile phone number
+Email,Email address
+Website,Website address  URL
+NationalID,National identification number
+NationalIdentificationTypeCode,National identification number type as can be different per country
+NationalIdentificationTypeCodeDescription,National identification number description as can be different per country
+NationalIDIsVat,National identification number equals the VAT number
+InternationalCode,International Business classification code 01
+InternationalLabel,International Business classification description 01
+PrimaryLocalActivityCode,The local industry classification code if different from the 1987 US SIC
+LocalActivityTypeCode,This indicator identifies which activity code type is provided
+MarketabilityIndicator,A code which indicates wheher Techsalerator rates this business as marketable or not  N  not marketable Y  marketable
+YearStarted,Setup year of the business
+NumberOfFamilyMembers,The number of family members including the global ultimate and all subsidiaries and branches of the entire family tree worldwide Every family member of tree carries the same count Blank if not linked
+CEOName,The principal with the highest ranking authority of the business at this location
+CEOTitle,The title in English of the principal with the highest authority at this location May be abbreviated
+CEOFirstName,The first name of the principal with the highest ranking authority of the business at this location
+CEOLastName,The last name of the principal with the highest ranking authority of the business at this location
+CEOGender,The gender of the principal with the highest ranking authority of the business at this location
+CEOLanguage,The language of the principal with the highest ranking authority of the business at this location
+EmployeesHere,The number of employees at this location
+EmployeesHereReliabilityCode,The total number of employees in the business organization The employee figure can be a consolidated figure to include emplyee counts for the business and all subsidiary and branch locations OR a non-consolidated figure
+EmployeesHereReliabilityCodeDescription,Description as above
+EmployeesTotal,The total number of employees in the business organization
+EmployeesTotalReliabilityCode,Code value indicating the source reliability of the Employee total figue 0 - actu1 - low end ran2 - estimated all records or not available when Employee total is greater than zero all records or modeled US record3 - modeled non US record blank - Not
+EmployeesTotalReliabilityCodeDescription,Description as above
+ImportExportAgentCode,"Information which indicates that the business either imports materials for re-manufacture or sale exports products to other countries or both
+Values include
+A ImportExportAgent
+B ImportsExports
+CImports
+DImportsAgent
+EExportsAgent
+FAgent - keeps no inventory and does not take title goods
+Gnon or not available
+Hexports
+Blank not available"
+ImportExportAgentCodeDescription,"Information which indicates that the business either imports materials for re-manufacture or sale exports products to other countries or both
+Values include
+A ImportExportAgent
+B ImportsExports
+CImports
+DImportsAgent
+EExportsAgent
+FAgent - keeps no inventory and does not take title goods
+Gnon or not available
+Hexports
+Blank not available"
+LegalStatusCode,Code that identifies the legal statusstructure of the businessPossibles codes areblank or 0  Not Available3  Corportion8  Joint Venture12  Partnership13  Proprietorship120  Foreign Company
+LegalStatusCodeDescription,Code that identifies the legal statusstructure of the businessPossibles codes areblank or 0  Not Available3  Corportion8  Joint Venture12  Partnership13  Proprietorship120  Foreign Company
+StatusCode,Code that provides business data of the record0  Single location - no other entities report to the business1  HeadquarterParent - branches  andor subsidiaries report to the business 2  Branch - secondary location to a headquarter location 4  Divisi
+StatusCodeDescription,Description as above
+SalesVolumeLocal,Sales value for the business in local currency  Sales figure can be a consolidated figure to include Sales for the business and all subsidiary and branch locations or a non-consolidated figure
+CurrencyCode,Code indicating which currency the financial figures data Sales is represented
+SalesVolumeDollars,"Sales value for the business in US dollars  If Sales value is collected in different local currency local values are converted to US dollars 
+Note Data is converted to US dollars based on the date of the financial figuresstateme"
+SalesVolumeEuros,Sales volume in EUROS currency
+SalesVolumeReliabilityCode,0 - actual1 - low end of the range2 - estimated all records or not available when sales is greater than zero all records or modeled non US records blank - Not Available when sales equal 0
+SalesVolumeReliabilityCodeDescription,Description as above

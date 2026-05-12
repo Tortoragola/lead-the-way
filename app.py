@@ -1,109 +1,135 @@
 import streamlit as st
 import pandas as pd
 from google import genai
+from google.genai import types
 import json
 import os
-import re
 
 # ── Page config ─────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Lead The Way – AI B2B Filtre",
+    page_title="Lead The Way – AI B2B SDR",
     page_icon="🎯",
     layout="wide",
 )
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
+# ── Constants ────────────────────────────────────────────────────────────────
+
+# ✏️  Ürününüzü buradan değiştirin
+PRODUCT_DESCRIPTION = (
+    "Lead The Way: Şirketlerin doğal dil komutlarıyla B2B iletişim "
+    "veritabanlarını anlık filtreleyip, yapay zeka destekli kişiselleştirilmiş "
+    "soğuk satış mesajları oluşturmasını sağlayan AI-native satış zekası platformu."
+)
 
 DEFAULT_CSV = os.path.join(
     os.path.dirname(__file__),
     "Bones - People Inside Businesses Data Sample.csv",
 )
 
-NUMERIC_COLS = {"# Employees", "Annual Revenue", "Total Funding", "Latest Funding Amount"}
-
 OPERATORS = {
-    "contains":      lambda s, v: s.astype(str).str.contains(v, case=False, na=False),
-    "not_contains":  lambda s, v: ~s.astype(str).str.contains(v, case=False, na=False),
-    "equals":        lambda s, v: s.astype(str).str.lower() == str(v).lower(),
-    "not_equals":    lambda s, v: s.astype(str).str.lower() != str(v).lower(),
-    "starts_with":   lambda s, v: s.astype(str).str.lower().str.startswith(str(v).lower()),
-    "ends_with":     lambda s, v: s.astype(str).str.lower().str.endswith(str(v).lower()),
-    "greater_than":  lambda s, v: pd.to_numeric(s, errors="coerce") > float(v),
-    "less_than":     lambda s, v: pd.to_numeric(s, errors="coerce") < float(v),
-    "in_list":       lambda s, v: s.astype(str).str.lower().isin([x.lower() for x in (v if isinstance(v, list) else [v])]),
+    "contains":     lambda s, v: s.astype(str).str.contains(str(v), case=False, na=False),
+    "not_contains": lambda s, v: ~s.astype(str).str.contains(str(v), case=False, na=False),
+    "equals":       lambda s, v: s.astype(str).str.lower() == str(v).lower(),
+    "not_equals":   lambda s, v: s.astype(str).str.lower() != str(v).lower(),
+    "starts_with":  lambda s, v: s.astype(str).str.lower().str.startswith(str(v).lower()),
+    "ends_with":    lambda s, v: s.astype(str).str.lower().str.endswith(str(v).lower()),
+    "greater_than": lambda s, v: pd.to_numeric(s, errors="coerce") > float(v),
+    "less_than":    lambda s, v: pd.to_numeric(s, errors="coerce") < float(v),
+    "in_list":      lambda s, v: s.astype(str).str.lower().isin(
+                        [x.strip().lower() for x in (v.split(",") if isinstance(v, str) else v)]
+                    ),
 }
 
+# ── Gemini Function Calling Tool Definition ──────────────────────────────────
+
+FILTER_DATAFRAME_TOOL = types.Tool(
+    function_declarations=[
+        types.FunctionDeclaration(
+            name="filter_dataframe",
+            description=(
+                "B2B iletişim veritabanını verilen kriterlere göre filtreler. "
+                "Kullanıcının doğal dildeki isteğini sütun bazlı filtre kurallarına dönüştür."
+            ),
+            parameters=types.Schema(
+                type=types.Type.OBJECT,
+                properties={
+                    "filters": types.Schema(
+                        type=types.Type.ARRAY,
+                        description="Uygulanacak filtre kuralları listesi",
+                        items=types.Schema(
+                            type=types.Type.OBJECT,
+                            properties={
+                                "column": types.Schema(
+                                    type=types.Type.STRING,
+                                    description=(
+                                        "Filtrelenecek sütun adı. Geçerli değerler: "
+                                        "First Name, Last Name, Title, Company Name, Email, "
+                                        "Seniority, Departments, Sub Departments, Industry, "
+                                        "City, State, Country, Company City, Company Country, "
+                                        "# Employees, Annual Revenue, Technologies, Keywords"
+                                    ),
+                                ),
+                                "operator": types.Schema(
+                                    type=types.Type.STRING,
+                                    description="Filtre operatörü",
+                                    enum=[
+                                        "contains", "not_contains", "equals", "not_equals",
+                                        "starts_with", "ends_with", "greater_than", "less_than",
+                                        "in_list",
+                                    ],
+                                ),
+                                "value": types.Schema(
+                                    type=types.Type.STRING,
+                                    description=(
+                                        "Filtre değeri. in_list için virgülle ayrılmış değerler. "
+                                        "Türkçe terimler otomatik olarak İngilizce karşılıklarıyla eşleştirilir "
+                                        "(örn. 'pazarlama' → 'marketing', 'müdür' → 'manager')."
+                                    ),
+                                ),
+                            },
+                            required=["column", "operator", "value"],
+                        ),
+                    ),
+                    "logic": types.Schema(
+                        type=types.Type.STRING,
+                        description="Filtreler arası mantık operatörü",
+                        enum=["AND", "OR"],
+                    ),
+                },
+                required=["filters"],
+            ),
+        )
+    ]
+)
+
+# ── Data helpers ─────────────────────────────────────────────────────────────
 
 @st.cache_data
 def load_default_csv() -> pd.DataFrame:
     return pd.read_csv(DEFAULT_CSV, low_memory=False)
 
 
-def sample_values(df: pd.DataFrame, col: str, n: int = 3) -> str:
+def sample_values(df: pd.DataFrame, col: str, n: int = 5) -> str:
     vals = df[col].dropna().astype(str)
     vals = vals[vals.str.strip() != ""]
     sample = vals.head(n).tolist()
-    return " | ".join(sample) if sample else "N/A"
+    ex = " | ".join(sample)
+    return ex[:150] + "…" if len(ex) > 150 else ex
 
 
-def build_gemini_prompt(query: str, df: pd.DataFrame) -> str:
-    col_lines = []
-    for col in df.columns:
-        ex = sample_values(df, col)
-        # Trim long examples (e.g. Keywords column)
-        if len(ex) > 120:
-            ex = ex[:120] + "…"
-        col_lines.append(f'  "{col}": örnek → {ex}')
-    columns_block = "\n".join(col_lines)
-
-    return f"""Sen bir B2B iletişim veritabanı filtreleme asistanısın.
-Kullanıcının doğal dildeki arama sorgusunu, aşağıdaki CSV sütunlarını kullanarak JSON filtre kurallarına çevir.
-
-## CSV Sütunları ve Örnek Değerleri
-{columns_block}
-
-## Kullanıcı Sorgusu
-"{query}"
-
-## Talimatlar
-- Yalnızca geçerli sütun adlarını kullan (yukarıdaki listeden).
-- Her kural bir "column", "operator" ve "value" içermelidir.
-- Desteklenen operatörler: contains, not_contains, equals, not_equals, starts_with, ends_with, greater_than, less_than, in_list
-- "in_list" için "value" bir liste olmalıdır.
-- Birden fazla kural için "logic" alanı "AND" ya da "OR" olabilir (varsayılan AND).
-- Türkçe ve İngilizce terimler eşdeğer kabul edilmelidir (örn. "pazarlama" → "marketing").
-- Sadece JSON döndür, başka açıklama ekleme.
-
-## Beklenen JSON formatı
-{{
-  "filters": [
-    {{"column": "<sütun_adı>", "operator": "<operatör>", "value": "<değer>"}}
-  ],
-  "logic": "AND"
-}}
-"""
+def build_system_prompt(df: pd.DataFrame) -> str:
+    col_lines = [f'  "{col}": örnek → {sample_values(df, col)}' for col in df.columns]
+    return (
+        "Sen bir B2B iletişim veritabanı filtreleme asistanısın.\n"
+        "Kullanıcının doğal dildeki sorgusunu analiz ederek filter_dataframe fonksiyonunu çağır.\n"
+        "Türkçe terimleri İngilizce karşılıklarına çevir (pazarlama→marketing, müdür→manager, vb.).\n\n"
+        "Mevcut CSV sütunları ve örnek değerleri:\n"
+        + "\n".join(col_lines)
+    )
 
 
-def extract_json(text: str) -> dict:
-    """Extract JSON object from Gemini's response text."""
-    # Try direct parse first
-    try:
-        return json.loads(text.strip())
-    except json.JSONDecodeError:
-        pass
-    # Find JSON block inside markdown fences or bare braces
-    match = re.search(r"```(?:json)?\s*(\{.*?\})\s*```", text, re.DOTALL)
-    if not match:
-        match = re.search(r"(\{.*\})", text, re.DOTALL)
-    if match:
-        return json.loads(match.group(1))
-    raise ValueError("Gemini yanıtından JSON ayrıştırılamadı.")
-
-
-def apply_filters(df: pd.DataFrame, filter_spec: dict) -> pd.DataFrame:
-    filters = filter_spec.get("filters", [])
-    logic = filter_spec.get("logic", "AND").upper()
-
+def filter_dataframe(df: pd.DataFrame, filters: list, logic: str = "AND") -> pd.DataFrame:
+    """Execute filter_dataframe function call result on the dataframe."""
     if not filters:
         return df
 
@@ -119,27 +145,82 @@ def apply_filters(df: pd.DataFrame, filter_spec: dict) -> pd.DataFrame:
         if op not in OPERATORS:
             st.warning(f"⚠️ Bilinmeyen operatör: **{op}** — bu kural atlandı.")
             continue
-
         try:
-            mask = OPERATORS[op](df[col], val)
-            masks.append(mask)
+            masks.append(OPERATORS[op](df[col], val))
         except Exception as e:
-            st.warning(f"⚠️ Filtre uygulanamadı ({col} {op} {val}): {e}")
+            st.warning(f"⚠️ Filtre hatası ({col} {op} {val}): {e}")
 
     if not masks:
         return df
 
     combined = masks[0]
     for m in masks[1:]:
-        combined = combined & m if logic == "AND" else combined | m
+        combined = combined & m if logic.upper() == "AND" else combined | m
 
     return df[combined]
 
 
-# ── UI Layout ────────────────────────────────────────────────────────────────
+def generate_outreach(client: genai.Client, person: dict) -> dict:
+    """
+    Gemini'den iki şey üret:
+      1. Sentetik Satın Alma Niyeti (tek cümle)
+      2. Kişiye özel soğuk satış maili taslağı
+    Döndürür: {"intent": str, "email": str}
+    """
+    first    = person.get("First Name", "")
+    last     = person.get("Last Name", "")
+    title    = person.get("Title", "")
+    company  = person.get("Company Name", "")
+    industry = person.get("Industry", "")
+    city     = person.get("City", "")
+    country  = person.get("Country", "")
+    email    = person.get("Email", "")
+    employees = person.get("# Employees", "")
 
-st.title("🎯 Lead The Way — AI B2B Lead Filtresi")
-st.caption("Doğal dilde yazın, Gemini AI ilgili kişileri otomatik filtrelesin.")
+    prompt = f"""Sen deneyimli bir B2B satış uzmanısın.
+
+Ürünümüz: {PRODUCT_DESCRIPTION}
+
+Hedef kişi bilgileri:
+- Ad Soyad : {first} {last}
+- Unvan    : {title}
+- Şirket   : {company}
+- Sektör   : {industry}
+- Konum    : {city}, {country}
+- Çalışan  : {employees}
+- E-posta  : {email}
+
+İki görevin var:
+
+1. SATIN ALMA NİYETİ (intent):
+Bu şirketin neden ürünümüze ihtiyaç duyabileceğine dair gerçekçi, inandırıcı, spesifik ve tek cümlelik bir "Sentetik Satın Alma Niyeti" yaz. Sektöre ve şirkete özgü olsun, genel kalıplardan kaçın.
+
+2. SOĞUK SATIŞ MAİLİ (email_draft):
+Bu niyet verisini de kullanarak {first}'e özel, ikna edici, profesyonel ve kısa (3-4 paragraf) bir İngilizce soğuk satış maili yaz. Konu satırını (Subject:) en üste ekle. Şirket adını ve unvanını doğal şekilde kullan. Maili "Best regards,\\nLead The Way Team" ile bitir.
+
+Yanıtını YALNIZCA aşağıdaki JSON formatında ver, başka hiçbir şey ekleme:
+{{
+  "intent": "...",
+  "email_draft": "Subject: ...\\n\\n..."
+}}"""
+
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            response_mime_type="application/json",
+        ),
+    )
+
+    raw = response.text.strip()
+    if raw.startswith("```"):
+        raw = raw.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+
+    data = json.loads(raw)
+    return {"intent": data.get("intent", ""), "email": data.get("email_draft", "")}
+
+st.title("🎯 Lead The Way — AI B2B SDR")
+st.caption("Doğal dilde yazın, Gemini Function Calling ile ilgili kişileri otomatik filtrelesin.")
 
 # Sidebar
 with st.sidebar:
@@ -160,7 +241,7 @@ with st.sidebar:
         "**Örnek sorgular:**\n"
         "- Türkiye'deki pazarlama müdürlerini bul\n"
         "- İstanbul'da fintech sektöründeki C-level yöneticiler\n"
-        "- 1000'den fazla çalışanı olan Teknoloji şirketlerindeki data scientist'lar\n"
+        "- 1000'den fazla çalışanı olan teknoloji şirketlerindeki data scientist'lar\n"
         "- Bankacılık sektöründeki kıdemli mühendisler\n"
         "- Microsoft teknolojisi kullanan şirketler"
     )
@@ -198,7 +279,6 @@ st.markdown("---")
 query = st.text_input(
     "🔍 Arama Sorgunuz",
     placeholder="Örn: Türkiye'deki pazarlama müdürlerini bul",
-    label_visibility="visible",
 )
 
 display_cols = st.multiselect(
@@ -210,37 +290,61 @@ display_cols = st.multiselect(
 )
 
 if st.button("🚀 Filtrele", type="primary", disabled=not query):
-    with st.spinner("Gemini AI filtreyi oluşturuyor…"):
+    with st.spinner("Gemini Function Calling çalışıyor…"):
         try:
-            prompt = build_gemini_prompt(query, df_full)
+            system_prompt = build_system_prompt(df_full)
             response = gemini_client.models.generate_content(
                 model="gemini-2.0-flash",
-                contents=prompt,
+                contents=f"{system_prompt}\n\nKullanıcı sorgusu: {query}",
+                config=types.GenerateContentConfig(
+                    tools=[FILTER_DATAFRAME_TOOL],
+                    tool_config=types.ToolConfig(
+                        function_calling_config=types.FunctionCallingConfig(
+                            mode="ANY",
+                            allowed_function_names=["filter_dataframe"],
+                        )
+                    ),
+                ),
             )
-            raw_text = response.text
         except Exception as e:
             st.error(f"Gemini API hatası: {e}")
             st.stop()
 
-    # Show raw AI response in expander for transparency
-    with st.expander("🤖 Gemini'nin Ürettiği Filtre Kuralları (JSON)", expanded=False):
-        st.code(raw_text, language="json")
+    # Extract the function call from the response
+    fc = None
+    for part in response.candidates[0].content.parts:
+        if part.function_call and part.function_call.name == "filter_dataframe":
+            fc = part.function_call
+            break
 
-    try:
-        filter_spec = extract_json(raw_text)
-    except ValueError as e:
-        st.error(f"JSON ayrıştırma hatası: {e}\n\nHam yanıt:\n{raw_text}")
+    if fc is None:
+        st.error("Gemini, filter_dataframe fonksiyonunu çağırmadı. Sorgunuzu değiştirmeyi deneyin.")
         st.stop()
 
-    # Show parsed filters as a readable table
-    if filter_spec.get("filters"):
-        st.subheader("📋 Uygulanan Filtreler")
-        filter_df = pd.DataFrame(filter_spec["filters"])
-        st.dataframe(filter_df, use_container_width=True, hide_index=True)
-        st.caption(f"Mantık: **{filter_spec.get('logic', 'AND')}**")
+    # Parse function call arguments
+    args = dict(fc.args)
+    filters = [dict(f) for f in args.get("filters", [])]
+    logic = args.get("logic", "AND")
 
-    # Apply filters
-    df_filtered = apply_filters(df_full, filter_spec)
+    # Show the function call arguments for transparency
+    with st.expander("🤖 Gemini'nin Ürettiği filter_dataframe Çağrısı", expanded=False):
+        st.code(json.dumps({"filters": filters, "logic": logic}, ensure_ascii=False, indent=2), language="json")
+
+    # Show parsed filters as a table
+    if filters:
+        st.subheader("📋 Uygulanan Filtreler")
+        st.dataframe(pd.DataFrame(filters), use_container_width=True, hide_index=True)
+        st.caption(f"Mantık: **{logic}**")
+
+    # Execute filter_dataframe and persist result
+    df_filtered = filter_dataframe(df_full, filters, logic)
+    st.session_state["df_filtered"] = df_filtered
+    st.session_state["show_cols"] = display_cols
+
+# ── Results + Cold Outreach ───────────────────────────────────────────────────
+if "df_filtered" in st.session_state:
+    df_filtered = st.session_state["df_filtered"]
+    show_cols_saved = st.session_state.get("show_cols", display_cols)
 
     st.markdown("---")
     st.subheader(f"✅ Sonuçlar — {len(df_filtered)} kişi bulundu")
@@ -248,11 +352,9 @@ if st.button("🚀 Filtrele", type="primary", disabled=not query):
     if df_filtered.empty:
         st.warning("Arama kriterlerine uyan kayıt bulunamadı. Sorgunuzu genişletmeyi deneyin.")
     else:
-        # Display table
-        show_cols = [c for c in display_cols if c in df_filtered.columns] or list(df_filtered.columns)
-        st.dataframe(df_filtered[show_cols], use_container_width=True, hide_index=True)
+        show_cols = [c for c in show_cols_saved if c in df_filtered.columns] or list(df_filtered.columns)
+        st.dataframe(df_filtered[show_cols].reset_index(drop=True), use_container_width=True)
 
-        # Download button
         csv_out = df_filtered.to_csv(index=False).encode("utf-8-sig")
         st.download_button(
             label="⬇️ Sonuçları CSV olarak indir",
@@ -260,6 +362,64 @@ if st.button("🚀 Filtrele", type="primary", disabled=not query):
             file_name="filtered_leads.csv",
             mime="text/csv",
         )
+
+        # ── Cold Outreach Generator ───────────────────────────────────────────
+        st.markdown("---")
+        st.subheader("✉️ Kişiye Özel Soğuk Mail Taslağı")
+
+        # Build display labels for the selectbox
+        def make_label(row):
+            name = f"{row.get('First Name', '')} {row.get('Last Name', '')}".strip()
+            company = row.get("Company Name", "")
+            title = row.get("Title", "")
+            parts = [p for p in [name, title, company] if p]
+            return " · ".join(parts) if parts else f"Satır {row.name}"
+
+        labels = [make_label(df_filtered.iloc[i]) for i in range(len(df_filtered))]
+        selected_label = st.selectbox(
+            "Kişi seçin",
+            options=labels,
+            help="Mail taslağı oluşturulacak kişiyi seçin.",
+        )
+        selected_idx = labels.index(selected_label)
+        selected_person = df_filtered.iloc[selected_idx].to_dict()
+
+        if st.button("🪄 Intent + Mail Taslağı Oluştur", type="primary"):
+            with st.spinner(f"Gemini, {selected_label} için içerik oluşturuyor…"):
+                try:
+                    result = generate_outreach(gemini_client, selected_person)
+                    st.session_state["outreach_result"] = result
+                    st.session_state["outreach_person"] = selected_label
+                except Exception as e:
+                    st.error(f"Mail taslağı oluşturulamadı: {e}")
+
+        if "outreach_result" in st.session_state:
+            result = st.session_state["outreach_result"]
+            person_label = st.session_state.get("outreach_person", "")
+
+            with st.expander(f"📬 {person_label} için Üretilen İçerik", expanded=True):
+                st.markdown("#### 🎯 Sentetik Satın Alma Niyeti")
+                st.info(result["intent"])
+
+                st.markdown("#### 📧 Soğuk Satış Maili Taslağı")
+                # Split subject line for highlighted display
+                email_text = result["email"]
+                if email_text.startswith("Subject:"):
+                    lines = email_text.split("\n", 1)
+                    subject_line = lines[0]
+                    body = lines[1].strip() if len(lines) > 1 else ""
+                    st.markdown(f"**{subject_line}**")
+                    st.markdown("---")
+                    st.markdown(body)
+                else:
+                    st.markdown(email_text)
+
+                st.download_button(
+                    label="⬇️ Maili .txt olarak indir",
+                    data=result["email"].encode("utf-8"),
+                    file_name=f"outreach_{selected_idx}.txt",
+                    mime="text/plain",
+                )
 
 # ── Footer: raw data preview ──────────────────────────────────────────────────
 with st.expander("📂 Ham Veri Önizlemesi (ilk 5 satır)", expanded=False):

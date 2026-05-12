@@ -1,0 +1,990 @@
+﻿Country,InternationalCode,Label,RecordCount,Phone,Fax,Mobile,Contact,Email,Website,NationalID,GeoLevel,AdminContact,CorporateLinkage,Address
+Turkey,111,Wheat,55,33,22,4,34,5,14,54,55,53,8,55
+Turkey,112,Rice,22,20,15,2,21,1,4,22,22,22,3,22
+Turkey,115,Corn,24,22,17,2,23,1,7,23,24,23,6,24
+Turkey,116,Soybeans,16,8,5,1,9,1,3,16,16,15,2,16
+Turkey,119,"Cash grains, nec",903,732,230,36,761,20,78,902,903,803,68,903
+Turkey,131,Cotton,11,10,7,0,10,1,2,10,10,10,1,10
+Turkey,132,Tobacco,1,1,0,0,1,0,1,1,1,1,1,1
+Turkey,133,Sugarcane and sugar beets,6,6,3,0,6,1,2,6,6,5,3,6
+Turkey,134,Irish potatoes,25,23,9,0,23,1,3,25,25,17,1,25
+Turkey,139,"Field crops, except cash grain",39,29,18,4,33,1,10,39,39,36,6,39
+Turkey,161,Vegetables and melons,182,121,75,19,139,13,40,182,182,177,44,182
+Turkey,171,Berry crops,9,7,4,0,7,1,1,9,9,9,1,9
+Turkey,172,Grapes,66,26,15,1,27,7,16,66,66,59,9,66
+Turkey,173,Tree nuts,19,17,12,2,18,1,8,19,19,17,5,19
+Turkey,174,Citrus fruits,74,57,40,8,65,7,16,73,73,63,11,73
+Turkey,175,Deciduous tree fruits,48,40,27,8,46,5,16,45,48,47,13,48
+Turkey,179,"Fruits and tree nuts, nec",405,313,171,20,330,17,62,404,405,383,35,405
+Turkey,181,Ornamental nursery products,1212,915,498,59,961,50,218,1212,1211,1176,60,1211
+Turkey,182,Food crops grown under cover,36,25,19,4,29,3,5,36,36,36,4,36
+Turkey,191,"General farms, primarily crop",4964,2755,557,554,3289,103,323,4840,4964,3425,228,4921
+Turkey,211,Beef cattle feedlot,119,85,48,23,106,2,14,119,119,101,15,119
+Turkey,212,"Beef cattle, except feedlots",11,8,9,2,10,0,2,11,11,11,2,11
+Turkey,214,Sheep and goats,138,56,14,11,67,3,8,138,138,127,2,136
+Turkey,219,"General livestock, nec",875,424,143,40,461,12,56,875,875,841,28,869
+Turkey,241,Dairy farms,1927,637,153,95,722,22,97,1927,1927,1777,129,1921
+Turkey,251,"Broiler, fryer, and roaster chickens",91,58,28,7,64,7,18,91,91,58,22,91
+Turkey,252,Chicken eggs,201,155,128,16,170,17,59,197,200,196,50,200
+Turkey,253,Turkeys and turkey eggs,9,6,4,0,6,0,2,9,9,9,2,9
+Turkey,254,Poultry hatcheries,150,103,63,10,112,22,41,149,150,131,54,149
+Turkey,259,"Poultry and eggs, nec",106,59,39,6,65,3,20,105,106,100,21,106
+Turkey,272,Horses and other equines,6,5,3,0,5,3,4,5,6,5,1,6
+Turkey,273,Animal aquaculture,50,36,30,3,39,7,17,50,50,48,13,49
+Turkey,279,"Animal specialties, nec",23,21,12,2,23,1,7,22,23,19,5,23
+Turkey,291,"General farms, primarily animals",157,131,115,19,147,8,31,37,156,155,7,156
+Turkey,711,Soil preparation services,22,16,7,2,18,1,4,14,22,13,2,22
+Turkey,721,Crop planting and protection,147,92,35,21,113,7,16,146,146,108,7,146
+Turkey,722,Crop harvesting,11,7,4,2,8,0,2,11,11,9,3,11
+Turkey,723,Crop preparation services for market,294,258,112,2,260,6,27,293,292,276,28,292
+Turkey,724,Cotton ginning,65,57,42,5,62,4,10,64,65,62,7,65
+Turkey,741,Veterinary services for livestock,1304,322,54,184,495,41,174,1301,1304,1254,23,1300
+Turkey,742,"Veterinary services, specialties",346,144,27,194,328,15,62,345,346,296,5,346
+Turkey,751,"Livestock services, except veterinary",313,209,95,50,256,20,56,305,312,289,43,312
+Turkey,752,Animal specialty services,30,22,14,8,30,3,7,29,30,29,5,30
+Turkey,762,Farm management services,7,5,4,2,7,0,1,6,7,5,2,7
+Turkey,781,Landscape counseling and planning,590,388,144,34,417,27,96,585,588,519,21,588
+Turkey,782,Lawn and garden services,39,36,20,1,37,3,17,39,39,39,4,39
+Turkey,783,Ornamental shrub and tree services,19,11,8,8,19,3,6,19,19,19,4,19
+Turkey,811,Timber tracts,10,6,2,0,6,1,2,10,10,10,0,10
+Turkey,831,Forest products,804,661,286,9,666,15,96,803,804,757,10,804
+Turkey,851,Forestry services,38,15,8,3,18,2,5,18,38,17,4,38
+Turkey,912,Finfish,119,79,21,9,88,1,7,118,119,91,4,118
+Turkey,913,Shellfish,1,1,0,0,1,1,1,1,1,1,0,1
+Turkey,919,Miscellaneous marine products,13,7,3,2,9,0,2,13,13,12,0,13
+Turkey,921,Fish hatcheries and preserves,365,288,148,20,306,16,53,361,363,331,42,363
+Turkey,971,"Hunting, trapping, game propagation",54,14,6,2,16,1,7,54,54,52,1,54
+Turkey,1011,Iron ores,139,106,38,10,115,7,20,138,139,135,16,139
+Turkey,1021,Copper ores,568,289,99,13,296,15,73,566,568,536,38,566
+Turkey,1031,Lead and zinc ores,40,32,16,4,36,2,12,40,40,40,16,40
+Turkey,1041,Gold ores,34,31,20,1,32,6,12,34,33,33,18,33
+Turkey,1044,Silver ores,12,10,6,0,10,0,2,12,12,12,9,12
+Turkey,1061,"Ferroalloy ores, except vanadium",69,59,40,2,60,8,20,69,69,69,26,69
+Turkey,1081,Metal mining services,400,315,88,29,342,11,33,400,399,348,80,399
+Turkey,1094,Uranium-radium-vanadium ores,5,4,0,0,4,0,1,5,5,4,0,5
+Turkey,1099,"Metal ores, nec",23631,5971,851,1010,6906,246,1058,23600,23630,21592,989,23541
+Turkey,1221,Bituminous coal and lignite-surface mining,1722,733,156,98,826,12,92,1719,1722,1493,56,1719
+Turkey,1222,Bituminous coal-underground mining,292,225,90,6,229,3,24,291,292,266,18,292
+Turkey,1231,Anthracite mining,110,76,35,7,83,5,15,110,110,81,14,109
+Turkey,1241,Coal mining services,361,308,118,26,332,9,34,359,360,328,91,358
+Turkey,1311,Crude petroleum and natural gas,3780,2218,746,167,2346,87,351,3740,3779,3433,108,3770
+Turkey,1321,Natural gas liquids,11,8,5,0,8,2,2,10,10,9,8,10
+Turkey,1381,Drilling oil and gas wells,62,53,28,3,55,1,13,62,62,61,17,62
+Turkey,1382,Oil and gas exploration services,38,31,17,2,33,4,9,37,38,35,20,38
+Turkey,1389,"Oil and gas field services, nec",23,18,8,2,20,2,5,22,23,20,7,23
+Turkey,1411,Dimension stone,2850,2287,1103,93,2362,126,418,2849,2850,2738,253,2850
+Turkey,1422,Crushed and broken limestone,61,48,22,4,52,2,15,61,61,60,7,61
+Turkey,1423,Crushed and broken granite,15,12,11,1,13,1,7,15,15,14,5,15
+Turkey,1429,"Crushed and broken stone, nec",1696,1369,606,54,1416,56,183,1695,1696,1608,155,1696
+Turkey,1442,Construction sand and gravel,148,101,59,13,114,2,20,148,148,129,20,148
+Turkey,1446,Industrial sand,13,11,12,0,11,1,5,13,13,13,4,13
+Turkey,1455,Kaolin and ball clay,10,9,4,0,9,0,2,10,10,10,0,10
+Turkey,1459,"Clay and related minerals, nec",68,61,38,2,62,7,20,67,67,65,23,67
+Turkey,1474,"Potash, soda, and borate minerals",190,132,34,3,135,8,18,189,190,119,13,190
+Turkey,1479,Chemical and fertilizer mining,39,36,19,1,37,5,11,38,38,37,15,38
+Turkey,1481,Nonmetallic mineral services,19,16,12,1,17,0,2,19,19,18,6,19
+Turkey,1499,"Miscellaneous nonmetallic minerals, except fuels",195,148,86,23,171,20,48,194,195,187,54,195
+Turkey,1521,Single-family housing construction,29277,22993,8917,1010,23791,748,3134,29211,29275,24937,794,29210
+Turkey,1522,"Residential construction, nec",322806,98020,20562,13281,109672,5018,21801,322489,322801,300547,5130,322204
+Turkey,1531,Operative builders,1635,1299,245,43,1331,16,60,1595,1635,908,6,1635
+Turkey,1541,Industrial buildings and warehouses,20115,16831,7174,324,17017,496,2158,20060,20109,19166,418,20106
+Turkey,1542,"Nonresidential construction, nec",21541,17949,8627,380,18188,690,2772,21439,21483,20545,748,21460
+Turkey,1611,Highway and street construction,1551,901,491,54,949,88,239,1533,1548,852,173,1545
+Turkey,1622,"Bridge, tunnel, and elevated highway construction",301,248,178,16,262,31,90,293,300,280,64,298
+Turkey,1623,"Water, sewer, and utility lines",766,669,389,46,709,65,197,758,765,709,128,764
+Turkey,1629,"Heavy construction, nec",18530,15415,7155,232,15528,549,2278,18495,18525,17803,600,18521
+Turkey,1711,"Plumbing, heating, air-conditioning",4775,2948,1542,243,3151,284,915,4765,4771,4406,139,4768
+Turkey,1721,Painting and paper hanging,252,202,115,30,227,20,87,250,252,247,11,252
+Turkey,1731,Electrical work,3317,2556,1689,155,2672,323,953,3304,3313,3107,162,3313
+Turkey,1741,Masonry and other stonework,122,99,42,8,107,10,26,122,122,74,7,122
+Turkey,1742,"Plastering, drywall, and insulation",1868,891,381,92,967,81,287,1866,1868,1748,55,1866
+Turkey,1743,"Terrazzo, tile, marble and mossaic work",1234,989,454,13,997,35,124,1234,1234,1178,54,1234
+Turkey,1751,Carpentry work,409,283,80,28,305,19,48,409,409,356,9,408
+Turkey,1752,"Floor laying and floor work, nec",206,181,119,9,187,20,68,206,205,198,8,205
+Turkey,1761,"Roofing, siding, and sheetmetal work",274,245,169,21,259,45,116,274,274,266,21,274
+Turkey,1771,Concrete work,387,263,117,21,277,23,88,384,387,330,20,386
+Turkey,1781,Water well drilling,46,44,32,2,46,4,13,46,46,46,6,46
+Turkey,1791,Structural steel erection,212,184,124,10,193,32,86,212,212,211,18,212
+Turkey,1793,Glass and glazing work,15,12,10,3,14,2,3,15,15,15,0,15
+Turkey,1794,Excavation work,1426,1008,396,88,1086,67,197,1425,1426,1322,36,1426
+Turkey,1795,Wrecking and demolition work,566,456,118,31,480,10,73,564,566,394,24,559
+Turkey,1796,Installing building equipment,231,194,97,10,203,25,72,231,231,196,20,230
+Turkey,1799,"Special trade contractors, nec",1403,1038,692,79,1103,130,359,1394,1397,1288,123,1393
+Turkey,2011,Meat packing plants,560,448,214,10,457,26,75,558,559,539,56,557
+Turkey,2013,Sausages and other prepared meats,564,453,224,15,467,30,90,562,564,544,66,563
+Turkey,2015,Poultry slaughtering and processing,891,710,285,21,726,47,117,887,891,825,165,891
+Turkey,2021,Creamery butter,600,484,223,26,505,29,97,600,599,531,65,597
+Turkey,2022,Cheese; natural and processed,659,534,295,31,559,51,146,659,659,632,88,659
+Turkey,2023,"Dry, condensed and evaporated dairy products",258,216,134,21,235,33,79,255,258,248,63,258
+Turkey,2024,Ice cream and frozen deserts,186,140,69,18,157,21,59,182,186,160,40,186
+Turkey,2026,Fluid milk,324,270,193,26,296,37,107,322,324,307,86,323
+Turkey,2032,Canned specialties,255,191,99,10,199,23,58,253,255,203,48,255
+Turkey,2033,Canned fruits and specialties,786,632,348,78,705,73,206,780,785,605,216,783
+Turkey,2034,"Dried and dehydrated fruits, vegetables and soup mixes",571,489,273,27,510,54,137,569,571,550,79,571
+Turkey,2035,"Pickles, sauces, and salad dressings",180,147,100,11,157,28,59,177,180,173,54,180
+Turkey,2037,Frozen fruits and vegetables,129,104,66,13,115,21,45,127,129,121,46,129
+Turkey,2038,"Frozen specialties, nec",101,76,25,7,81,4,19,101,101,76,16,101
+Turkey,2041,Flour and other grain mill products,1086,903,469,49,943,76,255,1078,1085,985,203,1085
+Turkey,2043,Cereal breakfast foods,231,218,200,5,223,22,83,40,231,230,10,231
+Turkey,2044,Rice milling,50,44,36,2,46,3,20,49,50,49,7,50
+Turkey,2045,Prepared flour mixes and doughs,4118,1114,85,156,1252,42,246,4116,4118,3870,84,4113
+Turkey,2046,Wet corn milling,90,82,64,2,84,9,32,88,89,86,28,89
+Turkey,2047,Dog and cat food,37,31,20,2,32,6,16,27,37,35,10,37
+Turkey,2048,"Prepared feeds, nec",1004,652,410,48,697,80,235,1001,1001,917,252,999
+Turkey,2051,"Bread, cake, and related products",3951,2718,754,225,2893,142,579,3947,3951,3525,266,3944
+Turkey,2052,Cookies and crackers,159,125,68,13,138,26,48,157,159,140,34,158
+Turkey,2053,"Frozen bakery products, except bread",81,66,43,7,72,8,33,80,81,78,17,81
+Turkey,2061,Raw cane sugar,47,42,25,1,43,4,12,45,47,41,12,47
+Turkey,2062,Cane sugar refining,31,21,12,0,21,7,12,31,31,25,23,31
+Turkey,2063,Beet sugar,25,21,14,0,21,6,9,25,25,25,13,25
+Turkey,2064,Candy and other confectionery products,902,562,288,53,608,95,258,897,901,800,120,897
+Turkey,2066,Chocolate and cocoa products,421,211,126,18,227,40,102,420,419,409,64,419
+Turkey,2067,Chewing gum,23,19,17,1,20,6,13,23,23,22,11,23
+Turkey,2068,Salted and roasted nuts and seeds,260,228,147,19,246,32,107,258,259,250,69,259
+Turkey,2074,Cottonseed oil mills,111,91,33,9,100,5,17,109,111,71,11,111
+Turkey,2075,Soybean oil mills,25,21,19,1,22,4,10,25,25,25,11,25
+Turkey,2076,"Vegetable oil mills, nec",162,147,115,8,155,18,54,159,162,158,40,162
+Turkey,2077,Animal and marine fats and oils,31,30,22,1,31,5,8,31,31,31,10,31
+Turkey,2079,Edible fats and oils,710,582,333,30,611,42,141,705,710,682,98,710
+Turkey,2082,Malt beverages,1303,1028,388,12,1032,37,125,1302,1303,1212,45,1303
+Turkey,2083,Malt,2,1,1,0,1,1,1,2,2,2,0,2
+Turkey,2084,"Wines, brandy, and brandy spirits",244,137,46,21,158,16,47,244,243,204,56,242
+Turkey,2085,Distilled and blended liquors,1234,993,375,10,995,34,109,1234,1234,1144,25,1234
+Turkey,2086,Bottled and canned soft drinks,1743,1434,598,33,1458,66,207,1737,1741,1606,122,1739
+Turkey,2087,"Flavoring extracts and syrups, nec",66,49,36,8,56,12,26,65,65,63,13,65
+Turkey,2091,Canned and cured fish and seafoods,77,63,36,5,68,6,20,76,77,60,21,77
+Turkey,2092,Fresh or frozen packaged fish,133,110,55,5,114,5,19,133,133,122,8,133
+Turkey,2095,Roasted coffee,142,117,65,13,130,18,46,142,142,141,19,142
+Turkey,2096,Potato chips and similar snacks,65,49,24,8,57,6,20,65,65,62,16,65
+Turkey,2097,Manufactured ice,15,14,6,0,14,3,6,15,15,15,2,15
+Turkey,2098,Macaroni and spaghetti,39,36,28,0,36,11,19,39,39,37,12,39
+Turkey,2099,"Food preparations, nec",32619,8819,1608,1216,9902,518,2238,32550,32611,30714,745,32574
+Turkey,2111,Cigarettes,39,31,11,3,34,7,10,39,39,38,13,39
+Turkey,2121,Cigars,7,5,2,1,6,1,1,7,7,7,1,7
+Turkey,2131,Chewing and smoking tobacco,38,36,18,0,36,3,11,37,38,37,11,38
+Turkey,2141,Tobacco stemming and redrying,12,11,6,1,11,4,6,11,12,11,4,12
+Turkey,2211,"Broadwoven fabric mills, cotton",4668,3254,1917,149,3372,367,1099,4660,4662,4479,325,4660
+Turkey,2221,"Broadwoven fabric mills, manmade",608,523,360,10,531,57,163,602,604,581,61,604
+Turkey,2231,"Broadwoven fabric mills, wool",969,852,523,14,863,66,210,967,965,860,54,965
+Turkey,2241,Narrow fabric mills,1015,805,406,22,822,42,161,1015,1013,979,29,1011
+Turkey,2251,"Women's hosiery, except socks",59,50,37,4,54,2,23,58,59,51,6,59
+Turkey,2252,"Hosiery, nec",515,334,214,17,348,29,127,515,514,499,28,514
+Turkey,2253,Knit outerwear mills,1267,731,380,41,762,57,233,1265,1265,1203,66,1263
+Turkey,2254,Knit underwear mills,64,57,34,3,59,7,21,64,63,64,5,63
+Turkey,2257,Weft knit fabric mills,136,129,118,3,131,29,76,136,136,135,25,136
+Turkey,2258,Lace and warp knit fabric mills,848,729,384,18,737,37,152,848,848,831,20,847
+Turkey,2259,"Knitting mills, nec",1380,1163,601,20,1174,54,217,1378,1379,1316,69,1379
+Turkey,2261,"Finishing plants, cotton",136,122,92,8,129,19,59,136,136,136,17,136
+Turkey,2262,"Finishing plants, manmade",18,17,13,0,17,2,8,18,18,17,1,17
+Turkey,2269,"Finishing plants, nec",291,272,209,3,274,55,126,291,291,275,48,290
+Turkey,2273,Carpets and rugs,3542,2192,783,151,2314,135,525,3540,3535,3052,199,3531
+Turkey,2281,Yarn spinning mills,1616,1411,1020,27,1428,166,500,1614,1611,1560,228,1604
+Turkey,2282,Throwing and winding mills,58,49,39,5,53,4,17,58,58,58,7,58
+Turkey,2284,Thread mills,62,56,47,2,58,9,26,60,62,61,11,62
+Turkey,2295,"Coated fabrics, not rubberized",123,101,65,0,101,16,46,122,123,116,17,123
+Turkey,2296,Tire cord and fabrics,10,10,8,0,10,2,6,10,10,10,2,10
+Turkey,2297,Nonwoven fabrics,62,52,35,4,55,11,21,62,61,60,9,61
+Turkey,2298,Cordage and twine,119,109,79,3,111,25,59,118,117,118,22,118
+Turkey,2299,"Textile goods, nec",26455,13257,5234,797,13840,568,2621,26425,26448,24888,524,26424
+Turkey,2311,Men's and boy's suits and coats,810,608,232,15,619,29,104,809,803,555,77,802
+Turkey,2321,Men's and boy's furnishings,8419,6929,3071,61,6948,131,756,8418,8416,8171,134,8416
+Turkey,2322,Men's and boy's underwear and nightwear,205,180,136,7,187,27,79,204,205,187,37,205
+Turkey,2323,Men's and boy's neckwear,62,51,22,3,54,4,10,62,62,54,1,62
+Turkey,2325,Men's and boy's trousers and slacks,98,84,68,0,84,13,48,98,98,96,26,98
+Turkey,2326,Men's and boy's work clothing,292,254,174,10,262,38,117,289,291,281,30,291
+Turkey,2329,"Men's and boy's clothing, nec",10966,8952,4348,244,9115,391,1622,10963,10940,10624,597,10923
+Turkey,2331,Women's and misses' blouses and shirts,8437,6954,3112,60,6972,133,767,8436,8433,8203,114,8433
+Turkey,2335,"Women's, junior's, and misses' dresses",95,71,41,3,74,3,29,95,95,82,21,95
+Turkey,2337,Women's and misses' suits and coats,55,49,41,0,49,8,23,55,54,54,13,54
+Turkey,2339,"Women's and misses' outerwear, nec",11287,9287,4642,249,9452,423,1788,11285,11272,10971,612,11265
+Turkey,2341,Women's and children's underwear,236,212,175,5,217,37,107,234,235,221,42,231
+Turkey,2342,"Bras, girdles, and allied garments",28,24,17,0,24,3,13,28,28,28,15,28
+Turkey,2353,"Hats, caps, and millinery",115,100,49,1,101,4,16,113,115,91,3,114
+Turkey,2361,"Girl's and children's dresses, blouses",35,23,13,2,24,3,15,35,35,28,26,35
+Turkey,2369,"Girl's and children's outerwear, nec",216,179,133,16,191,31,97,216,216,200,42,214
+Turkey,2371,Fur goods,90,70,55,11,81,10,21,56,90,81,7,90
+Turkey,2381,Fabric dress and work gloves,14,11,9,1,12,2,4,14,14,14,2,14
+Turkey,2384,Robes and dressing gowns,24,22,19,0,22,4,18,24,24,24,4,24
+Turkey,2385,Waterproof outerwear,11,9,8,0,9,1,3,11,10,11,0,10
+Turkey,2386,Leather and sheep-lined clothing,2126,1799,872,18,1813,60,235,2063,2116,1989,174,2115
+Turkey,2387,Apparel belts,6,6,4,0,6,1,4,6,6,6,2,6
+Turkey,2389,"Apparel and accessories, nec",60,53,35,4,57,10,26,60,59,60,3,58
+Turkey,2391,Curtains and draperies,783,702,441,9,706,62,216,782,783,771,61,783
+Turkey,2392,"Household furnishings, nec",429,336,202,19,350,44,135,429,429,380,46,429
+Turkey,2393,Textile bags,209,192,157,11,202,18,73,104,209,208,14,209
+Turkey,2394,Canvas and related products,74,64,50,5,69,16,45,74,74,73,4,74
+Turkey,2395,Pleating and stitching,34,30,23,2,32,2,14,34,34,34,3,34
+Turkey,2396,Automotive and apparel trimmings,75,72,49,1,73,15,41,74,75,74,7,75
+Turkey,2397,Schiffli machine embroideries,1,0,0,0,0,0,0,0,0,1,0,0
+Turkey,2399,"Fabricated textile products, nec",58854,19501,3570,2302,21436,956,4375,58693,58851,53301,1360,58759
+Turkey,2411,Logging,164,132,87,17,147,17,50,111,163,159,8,163
+Turkey,2421,"Sawmills and planing mills, general",446,263,75,66,325,15,44,445,446,261,9,443
+Turkey,2426,Hardwood dimension and flooring mills,136,116,88,8,123,23,46,134,136,129,22,134
+Turkey,2429,"Special product sawmills, nec",5,3,3,0,3,0,2,5,4,4,2,4
+Turkey,2431,Millwork,357,319,239,19,336,53,145,357,357,341,35,357
+Turkey,2434,Wood kitchen cabinets,110,102,80,6,107,22,50,110,108,110,7,107
+Turkey,2435,Hardwood veneer and plywood,68,62,43,2,63,12,24,67,67,65,12,67
+Turkey,2436,Softwood veneer and plywood,34,30,21,0,30,5,11,34,34,32,5,34
+Turkey,2439,"Structural wood members, nec",87,70,33,1,71,7,21,87,87,80,7,87
+Turkey,2441,Nailed wood boxes and shook,36,35,25,1,35,5,13,36,36,32,1,36
+Turkey,2448,Wood pallets and skids,118,87,57,24,106,12,38,117,118,115,5,118
+Turkey,2449,"Wood containers, nec",27,26,18,2,27,4,15,27,27,22,1,27
+Turkey,2451,Mobile homes,116,68,19,2,70,5,19,115,116,92,4,116
+Turkey,2452,Prefabricated wood buildings,29,25,22,2,27,4,14,29,29,28,8,29
+Turkey,2491,Wood preserving,35,28,20,4,31,2,15,34,34,35,3,34
+Turkey,2493,Reconstituted wood products,140,117,85,14,130,14,46,139,140,133,41,140
+Turkey,2499,"Wood products, nec",936,728,418,34,755,82,220,925,933,882,89,933
+Turkey,2511,Wood household furniture,22046,9020,2555,927,9779,599,2636,22038,22045,20518,459,22009
+Turkey,2512,Upholstered household furniture,3816,3148,1356,52,3163,137,620,3816,3816,3543,74,3815
+Turkey,2514,Metal household furniture,440,391,287,17,404,41,129,252,439,393,19,438
+Turkey,2515,Mattresses and bedsprings,144,118,68,7,124,23,67,143,144,136,27,144
+Turkey,2517,Wood television and radio cabinets,6,6,6,0,6,1,3,6,6,6,0,6
+Turkey,2519,"Household furniture, nec",368,314,234,21,332,57,177,368,360,357,66,360
+Turkey,2521,Wood office furniture,3828,3171,1413,56,3191,161,672,3800,3826,3577,84,3826
+Turkey,2522,"Office furniture, except wood",145,135,112,1,136,26,77,145,145,140,16,144
+Turkey,2531,Public building and related furniture,448,345,159,60,400,57,184,448,448,443,37,448
+Turkey,2541,Wood partitions and fixtures,51,46,30,2,48,11,25,51,51,51,12,51
+Turkey,2542,"Partitions and fixtures, except wood",80,79,70,1,79,19,52,80,80,80,11,80
+Turkey,2591,Drapery hardware and window blinds and shades,1207,854,418,32,877,53,216,1207,1207,1166,24,1207
+Turkey,2599,"Furniture and fixtures, nec",261,241,198,11,248,51,139,252,261,257,35,260
+Turkey,2611,Pulp mills,29,24,14,3,26,2,6,29,29,27,7,29
+Turkey,2621,Paper mills,3978,1883,783,123,1981,145,479,3969,3976,3783,120,3975
+Turkey,2631,Paperboard mills,692,595,388,18,607,70,225,692,692,684,75,691
+Turkey,2652,Setup paperboard boxes,141,122,72,4,126,12,43,141,141,131,12,141
+Turkey,2653,Corrugated and solid fiber boxes,490,405,229,14,416,41,123,490,489,421,22,489
+Turkey,2655,"Fiber cans, drums, and similar products",103,87,49,2,89,12,27,102,103,92,9,102
+Turkey,2656,Sanitary food containers,80,66,40,7,73,7,24,80,80,79,8,80
+Turkey,2657,Folding paperboard boxes,46,40,22,5,44,10,17,46,46,46,3,46
+Turkey,2671,Paper; coated and laminated packaging,503,446,338,30,470,71,182,377,503,500,59,503
+Turkey,2672,"Paper; coated and laminated, nec",346,277,225,8,282,39,122,219,344,342,19,344
+Turkey,2673,"Bags: plastic, laminated, and coated",291,267,201,11,275,41,119,289,290,289,20,290
+Turkey,2674,Bags: uncoated paper and multiwall,97,80,57,4,83,21,39,97,96,96,10,96
+Turkey,2675,Die-cut paper and board,84,64,39,4,68,12,27,84,83,75,40,83
+Turkey,2676,Sanitary paper products,175,152,106,9,160,24,65,174,173,172,24,172
+Turkey,2677,Envelopes,5,5,5,0,5,1,4,5,5,5,0,5
+Turkey,2678,Stationery products,3946,3349,1804,56,3377,190,752,3939,3946,3852,90,3946
+Turkey,2679,"Converted paper products, nec",379,326,223,25,347,51,148,378,378,377,43,378
+Turkey,2711,Newspapers,1710,664,156,83,740,40,186,1706,1707,1525,72,1698
+Turkey,2721,Periodicals,174,140,79,9,149,13,44,171,174,152,21,174
+Turkey,2731,Book publishing,9488,5129,1915,279,5367,313,1300,9466,9488,9041,200,9471
+Turkey,2732,Book printing,462,406,264,11,415,38,129,337,462,430,20,461
+Turkey,2741,Miscellaneous publishing,1001,410,108,45,448,32,129,997,1001,953,32,998
+Turkey,2752,"Commercial printing, lithographic",354,222,118,13,233,33,82,351,354,300,8,354
+Turkey,2754,"Commercial printing, gravure",58,55,47,1,55,11,36,58,58,58,5,58
+Turkey,2759,"Commercial printing, nec",3349,2190,1023,145,2302,207,714,3312,3347,2938,108,3344
+Turkey,2771,Greeting cards,3,3,2,0,3,0,0,3,3,3,1,3
+Turkey,2782,Blankbooks and looseleaf binders,40,36,11,2,38,1,4,40,40,30,7,40
+Turkey,2789,Bookbinding and related work,240,170,65,11,180,12,30,239,240,195,6,240
+Turkey,2791,Typesetting,33,17,4,0,17,0,3,32,33,31,1,33
+Turkey,2796,Platemaking services,20,17,8,0,17,2,7,20,20,19,1,20
+Turkey,2812,Alkalies and chlorine,85,63,25,6,68,7,18,85,85,65,7,85
+Turkey,2813,Industrial gases,391,364,324,11,374,61,169,93,391,384,48,391
+Turkey,2816,Inorganic pigments,69,57,37,1,58,9,23,69,69,68,13,69
+Turkey,2819,"Industrial inorganic chemicals, nec",11649,4892,1974,324,5186,314,1065,11296,11648,11101,315,11633
+Turkey,2821,Plastics materials and resins,3048,2582,1459,50,2622,193,551,3038,3048,2956,144,3048
+Turkey,2822,Synthetic rubber,2714,2296,1127,36,2322,111,345,2713,2714,2601,53,2714
+Turkey,2823,Cellulosic manmade fibers,11,10,6,0,10,2,7,11,11,11,2,11
+Turkey,2824,"Organic fibers, noncellulosic",27,27,23,0,27,8,14,26,27,26,5,27
+Turkey,2833,Medicinals and botanicals,84,70,35,5,74,8,24,80,84,73,18,84
+Turkey,2834,Pharmaceutical preparations,1517,873,415,46,915,89,251,1499,1511,1426,166,1511
+Turkey,2835,Diagnostic substances,13,11,9,1,12,2,8,11,13,11,6,13
+Turkey,2836,"Biological products, except diagnostic",16,14,11,1,15,5,8,16,16,16,1,16
+Turkey,2841,Soap and other detergents,411,334,223,27,359,55,138,411,411,389,63,411
+Turkey,2842,Polishes and sanitation goods,199,177,115,6,183,31,84,198,198,197,23,198
+Turkey,2843,Surface active agents,20,20,16,0,20,2,5,20,20,20,4,20
+Turkey,2844,"Perfumes, cosmetics and other toilet preparations",3453,1732,702,121,1832,146,493,3444,3452,3339,198,3452
+Turkey,2851,Paints and allied products,3801,1846,748,133,1959,139,512,3791,3800,3544,167,3794
+Turkey,2861,Gum and wood chemicals,110,77,24,5,81,6,9,109,109,73,5,109
+Turkey,2865,Cyclic crudes and intermediates,73,58,46,1,59,12,26,72,70,71,13,70
+Turkey,2869,"Industrial organic chemicals, nec",2828,2338,1431,38,2364,169,523,2524,2827,2713,125,2827
+Turkey,2873,Nitrogenous fertilizers,174,135,93,19,153,24,44,171,173,166,41,173
+Turkey,2874,Phosphatic fertilizers,67,46,30,8,54,12,15,67,67,67,24,67
+Turkey,2875,"Fertilizers, mixing only",66,56,38,4,60,6,14,66,65,63,15,65
+Turkey,2879,"Agricultural chemicals, nec",522,389,137,24,410,18,68,517,521,382,48,519
+Turkey,2891,Adhesives and sealants,260,221,171,14,235,46,103,255,258,245,46,258
+Turkey,2892,Explosives,30,27,14,2,28,2,13,30,29,30,11,29
+Turkey,2893,Printing ink,53,52,44,1,53,6,27,53,53,53,10,53
+Turkey,2895,Carbon black,2,1,1,0,1,0,0,2,2,2,1,2
+Turkey,2899,"Chemical preparations, nec",557,465,353,15,480,87,219,546,553,519,127,547
+Turkey,2911,Petroleum refining,642,539,264,13,548,43,94,601,642,552,72,641
+Turkey,2951,Asphalt paving mixtures and blocks,60,52,29,5,55,6,20,60,60,52,16,60
+Turkey,2952,Asphalt felts and coatings,62,56,46,3,59,12,25,61,62,61,20,62
+Turkey,2992,Lubricating oils and greases,106,92,67,2,93,22,43,105,106,97,44,106
+Turkey,2999,"Petroleum and coal products, nec",523,449,135,19,463,20,56,484,522,427,97,522
+Turkey,3011,Tires and inner tubes,7570,2510,913,209,2666,123,567,7564,7570,7331,73,7569
+Turkey,3021,Rubber and plastics footwear,266,220,153,14,234,18,82,227,265,248,21,265
+Turkey,3052,Rubber and plastics hose and beltings,127,112,90,7,119,26,67,127,126,123,34,126
+Turkey,3053,Gaskets; packing and sealing devices,397,338,192,14,351,38,104,396,397,286,40,397
+Turkey,3061,Mechanical rubber goods,34,30,23,2,32,6,21,34,34,34,10,34
+Turkey,3069,"Fabricated rubber products, nec",3031,2591,1475,39,2616,212,578,3027,3030,2919,113,3030
+Turkey,3081,Unsupported plastics film and sheet,218,196,146,5,200,32,87,218,217,207,28,216
+Turkey,3082,Unsupported plastics profile shapes,337,285,167,14,299,46,97,337,336,280,20,336
+Turkey,3083,Laminated plastics plate and sheet,230,196,112,12,206,28,75,230,230,227,25,229
+Turkey,3084,Plastics pipe,267,233,172,10,241,45,106,265,267,260,57,266
+Turkey,3085,Plastics bottles,205,170,119,5,175,33,71,203,204,174,33,203
+Turkey,3086,Plastics foam products,711,592,374,25,613,63,202,710,710,692,71,710
+Turkey,3087,Custom compound purchased resins,8,6,3,0,6,1,1,8,6,7,2,6
+Turkey,3088,Plastics plumbing fixtures,317,262,114,12,273,27,64,317,317,221,24,317
+Turkey,3089,"Plastics products, nec",3351,2791,1899,144,2922,455,1136,3314,3337,3195,321,3331
+Turkey,3111,Leather tanning and finishing,485,428,286,21,443,34,129,423,477,387,37,473
+Turkey,3131,Footwear cut stock,272,228,144,12,238,17,68,232,271,253,3,270
+Turkey,3142,House slippers,78,63,50,3,65,4,22,78,77,74,20,77
+Turkey,3143,"Men's footwear, except athletic",189,152,107,4,155,17,66,150,187,171,62,187
+Turkey,3144,"Women's footwear, except athletic",180,144,100,5,148,11,64,141,180,163,60,180
+Turkey,3149,"Footwear, except rubber, nec",3383,1015,197,152,1146,39,293,3342,3382,3183,48,3379
+Turkey,3151,Leather gloves and mittens,66,62,52,2,64,5,20,4,66,66,0,66
+Turkey,3161,Luggage,92,70,25,6,75,8,17,91,92,76,14,92
+Turkey,3171,Women's handbags and purses,17,13,9,1,14,3,9,17,17,17,8,17
+Turkey,3172,"Personal leather goods, nec",130,112,86,8,118,12,41,68,129,130,18,128
+Turkey,3199,"Leather goods, nec",286,235,171,9,243,41,118,223,284,258,84,282
+Turkey,3211,Flat glass,2947,1345,528,128,1458,105,363,2941,2946,2773,84,2942
+Turkey,3221,Glass containers,23,16,11,4,20,2,9,22,22,23,3,22
+Turkey,3229,"Pressed and blown glass, nec",452,388,229,12,398,29,99,449,450,441,26,450
+Turkey,3231,Products of purchased glass,221,191,136,16,206,34,82,218,219,215,20,219
+Turkey,3241,"Cement, hydraulic",512,412,221,10,420,39,96,501,512,452,139,508
+Turkey,3251,Brick and structural clay tile,171,145,91,10,154,27,53,171,170,162,27,170
+Turkey,3253,Ceramic wall and floor tile,431,378,173,12,387,34,89,431,431,350,71,431
+Turkey,3255,Clay refractories,96,83,43,8,89,8,34,96,96,76,21,96
+Turkey,3259,"Structural clay products, nec",50,44,28,2,46,7,20,50,49,50,12,49
+Turkey,3261,Vitreous plumbing fixtures,71,63,52,3,65,12,29,71,71,69,14,70
+Turkey,3262,Vitreous china table and kitchenware,66,54,37,1,55,14,28,66,66,56,20,66
+Turkey,3263,Semivitreous table and kitchenware,42,37,29,1,37,11,24,42,42,42,6,42
+Turkey,3264,Porcelain electrical supplies,9,9,3,0,9,1,4,9,9,9,2,9
+Turkey,3269,"Pottery products, nec",24,22,14,0,22,1,8,24,24,24,5,24
+Turkey,3271,Concrete block and brick,231,184,119,12,194,25,69,227,231,194,74,231
+Turkey,3272,"Concrete products, nec",291,248,185,18,264,47,110,288,288,276,74,288
+Turkey,3273,Ready-mixed concrete,1203,966,446,72,1032,62,161,1202,1203,1012,193,1200
+Turkey,3274,Lime,55,45,35,1,46,8,18,55,55,47,15,55
+Turkey,3275,Gypsum products,70,62,51,3,65,12,27,69,70,66,19,70
+Turkey,3281,Cut stone and stone products,1367,748,406,75,814,76,242,1350,1366,1219,170,1363
+Turkey,3291,Abrasive products,87,78,53,6,84,17,39,87,87,87,10,87
+Turkey,3292,Asbestos products,32,25,14,3,28,3,10,31,31,30,7,30
+Turkey,3295,"Minerals, ground or treated",54,49,42,4,52,2,21,49,54,54,21,54
+Turkey,3296,Mineral wool,337,263,136,5,265,14,59,337,337,323,7,337
+Turkey,3297,Nonclay refractories,31,27,18,4,31,3,10,31,31,30,7,31
+Turkey,3299,"Nonmetallic mineral products,",59,47,30,7,52,8,19,59,58,57,11,58
+Turkey,3312,Blast furnaces and steel mills,2527,2050,1090,61,2101,167,479,2520,2522,2428,130,2518
+Turkey,3313,Electrometallurgical products,111,88,32,5,93,11,19,111,111,95,10,111
+Turkey,3315,Steel wire and related products,289,259,199,10,268,57,129,287,288,284,51,287
+Turkey,3316,Cold finishing of steel shapes,99,76,50,7,81,13,26,99,98,94,17,98
+Turkey,3317,Steel pipe and tubes,308,272,192,7,279,55,126,307,305,297,51,305
+Turkey,3321,Gray and ductile iron foundries,147,126,91,7,133,31,59,145,147,143,27,147
+Turkey,3322,Malleable iron foundries,18,17,9,1,17,1,4,18,18,18,2,18
+Turkey,3324,Steel investment foundries,4,3,3,0,3,1,2,4,4,4,0,4
+Turkey,3325,"Steel foundries, nec",1661,1384,703,13,1391,83,239,1660,1660,1607,45,1660
+Turkey,3331,Primary copper,35,32,19,2,34,5,14,35,35,33,5,35
+Turkey,3334,Primary aluminum,184,156,84,9,163,25,47,182,184,176,22,184
+Turkey,3339,"Primary nonferrous metals, nec",253,209,97,11,211,14,62,253,253,248,16,253
+Turkey,3341,Secondary nonferrous metals,89,62,22,8,69,5,18,89,88,78,7,88
+Turkey,3351,Copper rolling and drawing,75,65,47,3,68,10,24,75,75,67,13,75
+Turkey,3353,"Aluminum sheet, plate, and foil",270,242,186,9,249,42,108,267,268,263,42,267
+Turkey,3354,Aluminum extruded products,153,141,98,6,146,26,66,152,153,152,24,153
+Turkey,3355,"Aluminum rolling and drawing, nec",120,104,75,5,109,22,51,119,120,108,19,120
+Turkey,3356,"Nonferrous rolling and drawing, nec",39,36,31,1,37,4,17,39,38,39,6,39
+Turkey,3357,Nonferrous wiredrawing and insulating,240,171,131,7,175,42,101,239,240,231,54,240
+Turkey,3363,Aluminum die-castings,143,123,86,5,128,21,55,141,143,139,12,143
+Turkey,3364,Nonferrous die-castings except aluminum,173,138,61,14,150,19,43,173,173,173,8,173
+Turkey,3365,Aluminum foundries,49,40,26,3,43,6,20,48,49,47,8,49
+Turkey,3366,Copper foundries,43,38,25,0,38,12,18,42,42,42,13,42
+Turkey,3369,"Nonferrous foundries, nec",103,69,36,3,72,6,21,103,103,95,4,103
+Turkey,3398,Metal heat treating,124,92,46,6,98,13,39,124,124,115,8,124
+Turkey,3399,Primary metal products,479,440,349,15,453,68,177,291,479,477,29,479
+Turkey,3411,Metal cans,98,86,71,5,90,13,44,95,96,93,23,96
+Turkey,3412,"Metal barrels, drums, and pails",28,23,19,4,27,2,9,28,28,28,6,28
+Turkey,3421,Cutlery,50,45,32,1,46,12,26,50,50,50,6,49
+Turkey,3423,"Hand and edge tools, nec",151,126,62,6,132,14,40,150,150,134,10,150
+Turkey,3425,Saw blades and handsaws,19,16,12,3,18,2,5,19,18,19,0,18
+Turkey,3429,"Hardware, nec",4823,3202,1353,84,3254,173,681,4822,4820,4624,61,4820
+Turkey,3431,Metal sanitary ware,92,90,69,2,90,10,36,91,90,92,7,90
+Turkey,3432,Plumbing fixture fittings and trim,2484,1989,927,33,2010,85,401,2480,2484,2347,44,2484
+Turkey,3433,"Heating equipment, except electric",2600,2237,1157,33,2257,141,535,2599,2600,2467,113,2600
+Turkey,3441,Fabricated structural metal,217,183,121,13,193,27,79,215,217,202,26,217
+Turkey,3442,"Metal doors, sash, and trim",780,684,473,34,712,99,261,777,779,733,45,779
+Turkey,3443,Fabricated plate work (boiler shop),1576,756,373,64,812,126,295,1572,1575,1476,67,1573
+Turkey,3444,Sheet metalwork,1356,1201,748,71,1263,168,434,1354,1356,1288,142,1355
+Turkey,3446,Architectural metalwork,190,174,133,8,181,40,83,190,190,190,18,190
+Turkey,3448,Prefabricated metal buildings and components,233,205,139,11,213,43,95,231,233,232,27,233
+Turkey,3449,Miscellaneous metalwork,3426,2813,1465,42,2832,166,540,3425,3426,3303,80,3426
+Turkey,3451,Screw machine products,51,22,14,2,24,4,12,51,51,46,3,51
+Turkey,3452,"Bolts, nuts, rivets, and washers",183,146,110,8,151,30,81,183,183,180,19,182
+Turkey,3462,Iron and steel forgings,305,270,203,13,283,59,133,303,304,286,47,304
+Turkey,3463,Nonferrous forgings,19,15,10,0,15,2,4,17,18,17,2,18
+Turkey,3465,Automotive stampings,346,163,109,15,174,34,83,343,346,326,36,346
+Turkey,3466,Crowns and closures,12,8,8,2,10,3,7,12,12,12,3,12
+Turkey,3469,"Metal stampings, nec",341,314,248,15,324,65,176,340,341,338,30,341
+Turkey,3471,Plating and polishing,43,38,28,1,39,10,18,42,41,43,4,41
+Turkey,3479,Metal coating and allied services,188,170,126,8,176,22,72,187,188,185,30,188
+Turkey,3482,Small arms ammunition,40,36,15,3,39,5,16,39,40,36,4,40
+Turkey,3483,"Ammunition, except for small arms, nec",19,16,10,1,17,1,5,19,19,19,1,19
+Turkey,3484,Small arms,69,54,26,6,58,9,25,68,69,68,6,69
+Turkey,3489,"Ordnance and accessories, nec",17,15,10,0,15,3,8,17,17,17,4,17
+Turkey,3491,Industrial valves,450,428,389,12,437,75,212,150,449,447,22,449
+Turkey,3492,Fluid power valves and hose fittings,61,48,32,5,52,8,22,61,61,61,7,61
+Turkey,3493,"Steel springs, except wire",50,45,44,4,48,14,29,50,50,50,2,50
+Turkey,3494,"Valves and pipe fittings, nec",104,95,76,4,99,25,54,103,104,103,18,104
+Turkey,3495,Wire springs,25,24,23,0,24,10,17,25,25,25,3,25
+Turkey,3496,Miscellaneous fabricated wire products,152,136,103,9,141,30,74,152,151,150,24,151
+Turkey,3497,Metal foil and leaf,7,6,5,1,7,1,2,7,7,7,2,7
+Turkey,3498,Fabricated pipe and fittings,128,92,61,3,95,21,50,127,128,125,15,128
+Turkey,3499,"Fabricated metal products, nec",5058,2130,947,135,2253,155,552,5045,5056,4855,124,5053
+Turkey,3511,Turbines and turbine generator sets,129,107,50,12,115,18,38,128,129,126,23,129
+Turkey,3519,"Internal combustion engines, nec",36,29,17,3,32,5,12,36,36,35,10,36
+Turkey,3523,Farm machinery and equipment,764,654,426,44,688,107,285,688,762,723,59,761
+Turkey,3524,Lawn and garden equipment,23,22,18,0,22,2,5,16,23,23,1,23
+Turkey,3531,Construction machinery,501,429,285,23,448,84,196,497,496,483,64,495
+Turkey,3532,Mining machinery,132,115,78,6,120,22,58,132,131,130,19,130
+Turkey,3533,Oil and gas field machinery,89,84,76,3,85,15,43,12,89,87,2,89
+Turkey,3534,Elevators and moving stairways,926,473,241,60,524,75,200,923,922,881,35,921
+Turkey,3535,Conveyors and conveying equipment,156,143,108,4,147,28,74,156,156,155,18,155
+Turkey,3536,"Hoists, cranes, and monorails",38,36,31,2,36,7,20,38,38,38,3,38
+Turkey,3537,Industrial trucks and tractors,421,394,346,9,402,64,183,121,421,418,21,421
+Turkey,3541,"Machine tools, metal cutting type",388,335,236,22,356,72,151,384,387,383,33,387
+Turkey,3542,"Machine tools, metal forming type",699,441,196,28,465,51,128,687,699,552,31,699
+Turkey,3543,Industrial patterns,408,376,323,9,383,52,151,107,408,393,7,408
+Turkey,3544,"Special dies, tools, jigs, and fixtures",867,381,159,44,423,37,122,864,867,835,22,867
+Turkey,3545,Machine tool accessories,140,122,98,6,128,28,64,140,139,140,14,139
+Turkey,3546,Power-driven handtools,18,17,15,0,17,4,9,17,17,17,1,17
+Turkey,3547,Rolling mill machinery,107,99,88,2,100,21,53,32,107,107,3,107
+Turkey,3548,Welding apparatus,61,53,45,2,55,10,31,60,61,60,11,61
+Turkey,3549,"Metalworking machinery, nec",108,93,71,7,100,20,46,107,106,107,5,106
+Turkey,3552,Textile machinery,364,336,256,10,344,60,162,288,364,356,21,363
+Turkey,3553,Woodworking machinery,38,35,27,1,36,10,23,38,38,38,2,38
+Turkey,3554,Paper industries machinery,20,19,14,1,20,3,11,19,20,19,3,20
+Turkey,3555,Printing trades machinery,51,46,34,2,48,9,27,49,50,50,4,50
+Turkey,3556,Food products machinery,355,300,222,21,320,69,154,355,355,341,35,355
+Turkey,3559,"Special industry machinery, nec",1252,1058,606,61,1103,131,346,1172,1252,1242,67,1251
+Turkey,3561,Pumps and pumping equipment,238,190,132,3,192,33,105,235,235,228,32,234
+Turkey,3562,Ball and roller bearings,56,51,33,2,52,10,24,54,56,52,14,56
+Turkey,3563,Air and gas compressors,91,84,65,2,86,22,49,90,91,87,23,91
+Turkey,3564,Blowers and fans,205,173,92,10,182,35,76,203,204,173,22,204
+Turkey,3565,Packaging machinery,217,194,143,15,205,41,102,215,217,212,10,217
+Turkey,3566,"Speed changers, drives, and gears",35,31,20,3,34,9,16,35,35,35,5,35
+Turkey,3567,Industrial furnaces and ovens,158,129,87,13,140,32,73,155,158,155,11,157
+Turkey,3568,"Power transmission equipment, nec",49,45,32,1,46,9,26,49,49,49,6,49
+Turkey,3569,"General industrial machinery, nec",5606,4812,2815,66,4847,430,1366,5602,5596,5373,150,5593
+Turkey,3571,Electronic computers,17225,7707,2500,700,8236,592,2364,17171,17223,16102,247,17201
+Turkey,3572,Computer storage devices,4,3,2,0,3,1,1,4,4,4,0,4
+Turkey,3575,Computer terminals,5,4,3,0,4,0,0,4,4,4,3,4
+Turkey,3577,"Computer peripheral equipment, nec",10105,5732,2148,355,5993,398,1628,10088,10105,9471,182,10089
+Turkey,3578,Calculating and accounting equipment,8,8,5,0,8,0,3,8,8,8,1,8
+Turkey,3579,"Office machines, nec",9,8,4,0,8,2,5,9,9,8,1,9
+Turkey,3581,Automatic vending machines,19,16,9,1,17,4,10,19,19,19,0,19
+Turkey,3582,Commercial laundry equipment,93,89,83,2,90,19,50,18,93,93,3,93
+Turkey,3585,Refrigeration and heating equipment,416,383,279,14,393,67,200,412,414,409,68,413
+Turkey,3586,Measuring and dispensing pumps,11,9,8,2,11,3,6,11,11,11,2,11
+Turkey,3589,"Service industry machinery, nec",204,179,131,6,184,44,105,203,203,200,31,202
+Turkey,3592,"Carburetors, pistons, piston rings and valves",43,43,33,0,43,7,28,42,43,43,8,43
+Turkey,3593,Fluid power cylinders and actuators,73,62,37,6,68,11,33,73,73,73,6,73
+Turkey,3594,Fluid power pumps and motors,59,42,18,7,49,12,23,59,58,58,6,58
+Turkey,3596,"Scales and balances, except laboratory",58,49,30,1,50,9,20,56,57,53,5,55
+Turkey,3599,"Industrial machinery, nec",8567,3169,1237,362,3500,463,1197,8405,8563,8087,252,8557
+Turkey,3612,"Transformers, except electric",170,142,90,7,146,22,74,166,170,160,34,169
+Turkey,3613,Switchgear and switchboard apparatus,390,348,278,16,361,84,201,390,387,388,50,386
+Turkey,3621,Motors and generators,3869,1766,619,174,1920,127,557,3859,3868,3665,105,3865
+Turkey,3624,Carbon and graphite products,41,32,17,1,33,4,13,41,41,38,10,41
+Turkey,3625,Relays and industrial controls,80,66,49,6,72,16,37,76,80,79,14,80
+Turkey,3629,"Electrical industrial apparatus, nec",121,109,76,4,113,22,57,117,121,117,13,121
+Turkey,3631,Household cooking equipment,64,55,40,3,58,15,32,64,64,62,12,64
+Turkey,3632,Household refrigerators and freezers,67,51,34,3,54,11,34,61,65,59,22,64
+Turkey,3633,Household laundry equipment,19,17,13,0,17,1,11,19,18,17,9,18
+Turkey,3634,Electric housewares and fans,666,292,134,41,325,49,135,665,666,613,41,666
+Turkey,3635,Household vacuum cleaners,22,20,16,2,22,1,8,22,22,21,8,22
+Turkey,3639,"Household appliances, nec",4798,3804,1742,97,3833,243,844,4796,4798,4535,124,4796
+Turkey,3641,Electric lamps,76,69,37,2,70,10,29,76,76,72,5,76
+Turkey,3643,Current-carrying wiring services,109,97,66,7,103,21,40,108,109,107,16,109
+Turkey,3644,Noncurrent-carrying wiring devices,55,50,41,1,51,11,29,54,55,52,11,55
+Turkey,3645,Residential lighting fixtures,77,72,51,4,74,20,44,77,77,74,5,77
+Turkey,3646,Commercial lighting fixtures,45,44,37,1,44,9,31,45,45,44,2,45
+Turkey,3647,Vehicular lighting equipment,19,18,14,1,18,3,14,18,19,19,4,19
+Turkey,3648,"Lighting equipment, nec",586,350,190,41,369,72,211,584,584,581,30,584
+Turkey,3651,Household audio and video equipment,63,53,32,2,53,9,21,62,59,60,9,58
+Turkey,3652,Prerecorded records and tapes,10,10,8,0,10,2,5,10,10,10,0,10
+Turkey,3661,Telephone and telegraph apparatus,37,31,14,3,32,7,19,36,37,35,7,37
+Turkey,3663,Radio and t.v. communications equipment,78,71,46,1,72,13,31,78,76,76,21,76
+Turkey,3669,"Communications equipment, nec",4499,1593,301,210,1766,137,490,4492,4497,3946,138,4490
+Turkey,3671,Electron tubes,7,6,5,1,6,1,4,7,7,7,1,7
+Turkey,3672,Printed circuit boards,28,28,22,0,28,4,17,28,28,27,5,28
+Turkey,3674,Semiconductors and related devices,63,56,35,4,58,11,26,63,63,63,19,63
+Turkey,3675,Electronic capacitors,8,8,4,0,8,1,4,8,8,8,1,8
+Turkey,3676,Electronic resistors,10,10,6,0,10,2,7,10,10,10,1,10
+Turkey,3677,Electronic coils and transformers,62,58,48,1,58,24,41,62,60,59,22,61
+Turkey,3678,Electronic connectors,9,9,7,1,9,1,3,9,9,9,3,9
+Turkey,3679,"Electronic components, nec",371,333,245,18,344,77,173,347,369,359,72,367
+Turkey,3691,Storage batteries,25,20,13,2,22,5,11,25,24,22,6,24
+Turkey,3692,"Primary batteries, dry and wet",7,5,3,1,6,1,2,7,6,7,0,5
+Turkey,3694,Engine electrical equipment,130,108,61,5,111,19,40,130,129,117,15,129
+Turkey,3695,Magnetic and optical recording media,45,42,32,6,44,8,20,26,43,44,4,42
+Turkey,3699,"Electrical equipment and supplies, nec",5747,5044,2696,149,5105,377,1315,5646,5745,5508,312,5744
+Turkey,3711,Motor vehicles and car bodies,190,162,121,12,171,35,88,173,189,181,54,189
+Turkey,3713,Truck and bus bodies,50,45,38,4,48,9,24,50,50,50,12,50
+Turkey,3714,Motor vehicle parts and accessories,8642,4595,2168,279,4815,543,1626,8616,8635,8161,402,8625
+Turkey,3715,Truck trailers,168,145,97,9,152,34,75,168,167,168,14,167
+Turkey,3716,Motor homes,1,1,1,0,1,0,0,1,1,1,0,1
+Turkey,3721,Aircraft,40,31,12,2,33,4,7,40,39,39,4,39
+Turkey,3724,Aircraft engines and engine parts,28,26,18,2,28,6,16,28,28,25,11,28
+Turkey,3728,"Aircraft parts and equipment, nec",82,68,35,5,72,7,16,80,82,77,22,82
+Turkey,3731,Shipbuilding and repairing,2691,1241,495,75,1305,109,364,2677,2690,2560,144,2686
+Turkey,3732,Boatbuilding and repairing,158,136,98,8,142,22,57,156,155,157,42,153
+Turkey,3743,Railroad equipment,41,36,28,2,38,6,20,37,41,36,15,41
+Turkey,3751,"Motorcycles, bicycles and parts",81,70,37,4,74,4,32,81,80,78,14,80
+Turkey,3761,Guided missiles and space vehicles,3,3,1,0,3,0,0,3,3,3,0,3
+Turkey,3764,Space propulsion units and parts,2,1,1,1,2,0,0,2,2,2,1,2
+Turkey,3769,"Space vehicle equipment, nec",5,4,2,1,5,1,2,5,5,5,2,5
+Turkey,3792,Travel trailers and campers,29,23,15,3,26,11,17,29,29,29,2,29
+Turkey,3795,Tanks and tank components,58,55,46,2,57,12,25,58,58,57,13,58
+Turkey,3799,"Transportation equipment, nec",59,52,33,5,55,6,19,58,59,59,8,59
+Turkey,3812,Search and navigation equipment,921,158,43,33,189,24,74,920,921,908,17,921
+Turkey,3821,Laboratory apparatus and furniture,116,98,55,6,101,12,39,114,115,99,8,114
+Turkey,3822,Environmental controls,60,58,44,0,58,14,35,59,60,60,7,59
+Turkey,3823,Process control instruments,68,61,42,3,63,18,39,68,68,67,15,68
+Turkey,3824,Fluid meters and counting devices,46,45,38,1,46,10,24,46,46,44,10,46
+Turkey,3825,Instruments to measure electricity,65,59,36,3,62,12,31,64,65,63,15,65
+Turkey,3826,Analytical instruments,329,289,137,2,289,12,52,328,329,318,24,329
+Turkey,3827,Optical instruments and lenses,658,440,173,19,454,24,99,641,657,622,50,655
+Turkey,3829,"Measuring and controlling devices, nec",232,201,117,10,208,33,78,228,231,220,22,231
+Turkey,3841,Surgical and medical instruments,1905,1626,940,45,1656,132,419,1893,1904,1846,92,1901
+Turkey,3842,Surgical appliances and supplies,234,203,144,18,219,43,114,230,233,232,29,233
+Turkey,3843,Dental equipment and supplies,1176,1008,532,15,1014,60,213,1174,1174,1142,34,1174
+Turkey,3844,X-ray apparatus and tubes,7,6,3,1,7,2,4,7,7,7,0,7
+Turkey,3845,Electromedical equipment,38,31,18,5,36,8,13,38,38,36,7,38
+Turkey,3851,Ophthalmic goods,42,32,18,1,33,7,13,42,41,37,18,40
+Turkey,3861,Photographic equipment and supplies,361,312,130,11,315,20,89,359,360,346,7,359
+Turkey,3873,"Watches, clocks, watchcases, and parts",232,194,93,1,194,9,36,232,232,224,4,230
+Turkey,3911,"Jewelry, precious metal",3258,2866,1075,69,2901,106,636,3232,3258,3029,255,3258
+Turkey,3914,Silverware and plated ware,30,26,22,3,29,5,9,30,30,28,2,29
+Turkey,3915,Jewelers' materials and lapidary work,11998,4138,409,575,4544,207,1300,11997,11997,11257,214,11987
+Turkey,3931,Musical instruments,18,13,9,4,17,4,8,18,18,18,2,18
+Turkey,3942,Dolls and stuffed toys,162,136,34,10,146,7,23,161,161,128,26,161
+Turkey,3944,"Games, toys, and children's vehicles",755,237,74,35,268,35,95,754,755,711,34,755
+Turkey,3949,"Sporting and athletic goods, nec",168,148,105,12,159,30,73,152,167,162,11,164
+Turkey,3951,Pens and mechanical pencils,84,63,18,1,64,4,23,84,83,80,3,82
+Turkey,3952,Lead pencils and art goods,13,10,9,1,11,1,6,13,13,13,4,13
+Turkey,3953,Marking devices,9,8,7,1,9,1,5,9,9,9,2,9
+Turkey,3955,Carbon paper and inked ribbons,16,14,13,1,15,2,10,16,16,16,2,16
+Turkey,3961,Costume jewelry,29,22,11,2,23,3,8,29,29,27,5,29
+Turkey,3965,"Fasteners, buttons, needles, and pins",177,165,110,5,169,28,80,176,175,176,17,173
+Turkey,3991,Brooms and brushes,56,52,38,1,53,12,27,55,55,53,6,55
+Turkey,3993,Signs and advertising specialties,384,343,246,29,368,58,165,384,384,380,25,384
+Turkey,3996,"Hard surface floor coverings, nec",24,22,19,1,23,7,10,24,24,24,4,24
+Turkey,3999,"Manufacturing industries, nec",113763,59316,14129,4805,63244,2907,11713,112431,113746,90675,3388,113598
+Turkey,4011,"Railroads, line-haul operating",377,243,63,40,282,14,53,374,376,300,65,374
+Turkey,4013,Switching and terminal services,14,11,8,1,12,4,6,13,14,10,4,14
+Turkey,4111,Local and suburban transit,2586,2139,1173,43,2164,106,405,2586,2586,2515,187,2586
+Turkey,4119,"Local passenger transportation, nec",6702,2735,833,340,3030,197,721,6697,6700,6284,399,6690
+Turkey,4121,Taxicabs,35,21,2,3,24,0,4,35,35,29,0,35
+Turkey,4131,Intercity and rural bus transportation,20,15,10,4,18,3,5,20,20,14,10,20
+Turkey,4141,Local bus charter service,3,2,2,0,2,1,1,3,2,3,0,2
+Turkey,4142,"Bus charter service, except local",631,431,105,61,487,13,60,631,631,425,71,630
+Turkey,4151,School buses,11,11,7,0,11,0,8,11,11,11,3,11
+Turkey,4173,Bus terminal and service facilities,166,107,25,7,113,6,25,165,165,132,32,165
+Turkey,4212,"Local trucking, without storage",883,387,104,55,434,18,73,880,882,631,40,882
+Turkey,4213,"Trucking, except local",1297,942,224,89,1012,39,152,1291,1297,832,163,1292
+Turkey,4214,Local trucking with storage,788,475,122,84,556,11,39,786,788,496,121,779
+Turkey,4215,"Courier services, except by air",307,169,63,13,181,18,53,302,307,233,100,306
+Turkey,4221,Farm product warehousing and storage,25,20,7,1,21,5,8,25,25,21,7,25
+Turkey,4222,Refrigerated warehousing and storage,87,74,48,2,76,11,25,80,87,80,14,87
+Turkey,4225,General warehousing and storage,1379,863,370,69,925,117,307,1370,1379,1190,229,1376
+Turkey,4226,"Special warehousing and storage, nec",72,62,46,2,64,7,30,70,72,70,30,72
+Turkey,4231,Trucking terminal facilities,1,0,0,1,1,0,0,1,1,1,0,1
+Turkey,4311,U.s. postal service,19,18,8,0,18,5,8,18,19,11,5,19
+Turkey,4412,Deep sea foreign transportation of freight,537,447,314,35,474,63,169,433,536,508,97,531
+Turkey,4424,Deep sea domestic transportation of freight,748,509,164,34,532,62,151,733,748,654,32,747
+Turkey,4432,Freight transportation on the great lakes,2,1,0,0,1,0,0,2,2,2,1,2
+Turkey,4449,Water transportation of freight,5602,4493,2109,73,4535,208,834,5597,5600,5329,352,5600
+Turkey,4481,"Deep sea passenger transportation, except ferry",75,44,9,4,48,3,9,73,75,58,2,75
+Turkey,4482,Ferries,24,20,15,2,21,3,6,24,24,24,14,24
+Turkey,4489,Water passenger transportation,3268,2724,1268,83,2774,105,448,3268,3268,3086,264,3268
+Turkey,4491,Marine cargo handling,419,296,62,29,306,163,197,415,419,288,319,418
+Turkey,4492,Towing and tugboat service,41,32,15,2,34,8,14,41,41,37,11,41
+Turkey,4493,Marinas,57,37,24,4,41,11,20,56,56,57,14,56
+Turkey,4499,"Water transportation services,",612,517,377,17,531,77,229,603,600,542,168,593
+Turkey,4512,"Air transportation, scheduled",3161,2522,1233,74,2573,114,662,3154,3159,2986,596,3157
+Turkey,4513,Air courier services,71,49,40,4,53,9,26,71,70,60,39,69
+Turkey,4522,"Air transportation, nonscheduled",450,326,112,29,336,166,217,446,450,340,313,449
+Turkey,4581,"Airports, flying fields, and services",104,76,52,9,83,13,35,90,102,97,53,102
+Turkey,4612,Crude petroleum pipelines,24,14,8,3,17,4,5,23,24,22,12,24
+Turkey,4613,Refined petroleum pipelines,6,4,4,0,4,1,3,5,6,6,2,6
+Turkey,4619,"Pipelines, nec",40,28,5,8,36,0,3,40,40,22,6,40
+Turkey,4724,Travel agencies,5347,4468,2168,218,4629,381,1278,5335,5338,4921,835,5330
+Turkey,4725,Tour operators,129892,37723,5402,5634,42590,2471,10213,129535,129889,121262,3053,129658
+Turkey,4729,Passenger transportation arrangement,195,158,83,8,166,15,66,192,194,163,50,194
+Turkey,4731,Freight transportation arrangement,72283,22544,4240,3495,25680,1420,5217,72123,72269,65736,2768,72036
+Turkey,4741,Rental of railroad cars,2260,554,65,152,684,42,250,2259,2260,2134,45,2260
+Turkey,4783,Packing and crating,18,17,12,0,17,2,5,17,18,17,4,18
+Turkey,4785,Inspection and fixed facilities,20,16,5,3,18,1,8,20,19,20,4,19
+Turkey,4789,"Transportation services, nec",51057,22261,7619,2471,24412,1568,5715,50943,51043,47134,2706,50955
+Turkey,4812,Radiotelephone communication,103,70,34,2,71,8,20,102,102,94,8,102
+Turkey,4813,"Telephone communication, except radio",105,87,36,10,97,6,29,105,105,103,15,105
+Turkey,4822,Telegraph and other communications,80,59,20,3,61,5,14,80,79,68,4,78
+Turkey,4832,Radio broadcasting stations,382,341,128,22,361,10,60,381,381,332,35,380
+Turkey,4833,Television broadcasting stations,376,334,150,25,357,14,71,375,375,342,60,375
+Turkey,4841,Cable and other pay television services,83,63,20,4,66,3,10,83,83,81,7,83
+Turkey,4899,"Communication services, nec",1115,846,344,60,892,68,210,952,1115,966,107,1114
+Turkey,4911,Electric services,2286,1755,847,94,1836,191,571,2273,2285,2169,987,2284
+Turkey,4922,Natural gas transmission,32,23,17,2,25,4,9,32,32,30,20,32
+Turkey,4923,Gas transmission and distribution,28,20,15,3,23,3,8,28,28,28,19,28
+Turkey,4924,Natural gas distribution,115,95,68,2,97,14,53,114,115,112,79,115
+Turkey,4925,Gas production and/or distribution,28,26,14,1,26,3,11,25,28,22,12,28
+Turkey,4931,Electric and other services combined,86,67,24,4,71,6,11,85,86,78,20,86
+Turkey,4932,Gas and other services combined,8,5,3,3,8,2,3,8,8,7,1,8
+Turkey,4939,"Combination utilities, nec",16648,3185,376,483,3634,283,1129,16639,16648,16194,532,16618
+Turkey,4941,Water supply,84,69,38,6,71,21,38,61,84,63,22,83
+Turkey,4952,Sewerage systems,47,40,25,0,40,10,19,39,47,40,8,46
+Turkey,4953,Refuse systems,3359,970,268,164,1127,76,240,3357,3359,3264,94,3356
+Turkey,4959,"Sanitary services, nec",47,36,17,2,37,4,10,46,47,28,4,47
+Turkey,4961,Steam and air-conditioning supply,48,40,11,1,41,4,12,48,48,46,3,48
+Turkey,4971,Irrigation systems,32,28,22,3,29,8,17,26,32,25,6,32
+Turkey,5012,Automobiles and other motor vehicles,63712,13842,1883,2904,16354,938,4734,63626,63700,60428,963,63638
+Turkey,5013,Motor vehicle supplies and new parts,9767,5885,2975,466,6275,535,1817,9714,9740,8536,547,9714
+Turkey,5014,Tires and tubes,4168,2553,1228,125,2616,176,675,4164,4167,3987,99,4167
+Turkey,5015,"Motor vehicle parts, used",557,425,220,56,472,77,198,525,554,552,43,554
+Turkey,5021,Furniture,8853,4827,1938,308,5057,340,1328,8729,8846,8277,230,8838
+Turkey,5023,Homefurnishings,16627,12832,6297,477,13155,592,2415,16604,16605,15340,773,16597
+Turkey,5031,"Lumber, plywood, and millwork",3265,1605,745,176,1758,141,511,3229,3254,2918,111,3252
+Turkey,5032,"Brick, stone, and related material",3008,2432,1277,141,2553,152,496,2987,3003,2814,212,3000
+Turkey,5033,"Roofing, siding, and insulation",799,683,468,25,698,96,276,799,797,785,36,796
+Turkey,5039,"Construction materials, nec",4481,3824,2470,284,4062,354,1258,4409,4467,4194,327,4458
+Turkey,5043,Photographic equipment and supplies,598,471,227,21,481,49,171,597,595,567,15,592
+Turkey,5044,Office equipment,1026,710,314,43,746,67,238,1005,1022,892,71,1021
+Turkey,5045,"Computers, peripherals, and software",10756,7004,3504,937,7817,720,2507,10640,10722,9707,521,10709
+Turkey,5046,"Commercial equipment, nec",216,191,142,20,206,33,104,213,216,215,15,216
+Turkey,5047,Medical and hospital equipment,5611,4107,2495,272,4314,474,1310,5581,5565,5331,395,5552
+Turkey,5048,Ophthalmic goods,95,70,57,8,74,8,34,95,90,82,39,90
+Turkey,5049,"Professional equipment, nec",1473,956,370,49,992,65,282,1462,1471,1273,105,1469
+Turkey,5051,Metals service centers and offices,10797,8196,4263,301,8437,640,1907,10689,10769,10079,413,10749
+Turkey,5052,Coal and other minerals and ores,1356,1003,448,59,1050,57,198,1348,1353,1227,92,1350
+Turkey,5063,Electrical apparatus and equipment,10197,8393,5107,371,8602,903,2930,10155,10180,9920,422,10171
+Turkey,5064,"Electrical appliances, television and radio",6798,5333,2594,153,5401,457,1418,6790,6779,6290,339,6774
+Turkey,5065,"Electronic parts and equipment, nec",18891,7510,2279,919,8238,736,2831,18714,18878,17594,654,18846
+Turkey,5072,Hardware,9972,6893,3274,278,7083,505,1808,9478,9958,9310,201,9951
+Turkey,5074,Plumbing and hydronic heating supplies,4377,3271,1685,121,3366,264,952,4372,4372,4153,133,4369
+Turkey,5075,Warm air heating and air conditioning,4050,2890,1474,104,2967,199,766,4042,4041,3803,121,4038
+Turkey,5078,Refrigeration equipment and supplies,80,74,63,2,76,14,31,78,80,80,8,80
+Turkey,5082,Construction and mining machinery,544,449,291,31,473,62,193,541,535,532,63,532
+Turkey,5083,Farm and garden machinery,968,789,513,75,857,95,293,963,962,900,91,962
+Turkey,5084,Industrial machinery and equipment,14183,9329,5185,414,9669,1054,3082,14097,14119,13326,578,14094
+Turkey,5085,Industrial supplies,4529,3074,1899,113,3168,272,797,4506,4512,4398,202,4502
+Turkey,5087,Service establishment equipment,2320,1028,479,70,1088,67,257,2318,2315,2240,72,2312
+Turkey,5088,Transportation equipment and supplies,365,283,181,13,294,55,119,357,359,343,51,358
+Turkey,5091,Sporting and recreation goods,924,522,279,31,544,82,256,916,914,857,85,911
+Turkey,5092,Toys and hobby goods and supplies,631,369,179,31,396,30,110,630,627,575,78,625
+Turkey,5093,Scrap and waste materials,657,501,236,43,540,36,100,656,657,585,36,657
+Turkey,5094,Jewelry and precious stones,3902,3334,1264,81,3375,128,744,3887,3897,3600,298,3893
+Turkey,5099,"Durable goods, nec",144926,73315,16852,5690,77909,3979,15443,143791,144871,119390,4641,144703
+Turkey,5111,Printing and writing paper,1356,1093,562,32,1120,57,213,1352,1352,1265,49,1345
+Turkey,5112,Stationery and office supplies,6548,4678,2334,160,4794,299,1205,6535,6536,6070,178,6530
+Turkey,5113,Industrial and personal service paper,1469,1085,555,45,1123,68,247,1466,1467,1417,63,1467
+Turkey,5122,"Drugs, proprietaries, and sundries",10958,5673,2230,406,6015,437,1587,10886,10936,9887,791,10927
+Turkey,5131,Piece goods and notions,4778,3980,2305,156,4092,275,986,4770,4742,4282,293,4713
+Turkey,5136,Men's and boy's clothing,15394,11360,5269,319,11595,394,1840,14919,15380,14434,757,15370
+Turkey,5137,Women's and children's clothing,12805,10561,5273,239,10728,374,1739,12216,12799,12307,758,12794
+Turkey,5139,Footwear,2883,1778,756,88,1849,101,425,2878,2873,2623,258,2873
+Turkey,5141,"Groceries, general line",155261,42531,6554,6018,47904,1961,8731,155147,155257,143487,2931,154972
+Turkey,5142,Packaged frozen goods,743,526,199,71,592,22,92,741,741,546,77,734
+Turkey,5143,"Dairy products, except dried or canned",1187,968,399,78,1040,38,150,1185,1186,1043,135,1185
+Turkey,5144,Poultry and poultry products,208,171,94,10,181,8,25,208,208,181,20,208
+Turkey,5145,Confectionery,547,348,163,38,380,34,108,547,545,509,53,545
+Turkey,5146,Fish and seafoods,2112,927,335,98,1021,40,149,2109,2109,1843,85,2100
+Turkey,5147,Meats and meat products,13334,1802,407,439,2217,167,739,13332,13329,13114,146,13323
+Turkey,5148,Fresh fruits and vegetables,3481,2434,1002,378,2790,74,307,3383,3475,2769,280,3467
+Turkey,5149,"Groceries and related products, nec",12796,9287,4213,869,10060,530,2031,12638,12749,12043,1245,12745
+Turkey,5153,Grain and field beans,1545,1036,440,120,1147,47,152,1532,1542,1029,134,1540
+Turkey,5154,Livestock,596,471,229,35,504,20,76,500,592,530,15,591
+Turkey,5159,"Farm-product raw materials, nec",853,703,399,47,746,48,151,755,849,814,57,848
+Turkey,5162,Plastics materials and basic shapes,5351,3895,1873,127,4000,225,745,5320,5346,4686,126,5340
+Turkey,5169,"Chemicals and allied products, nec",15991,9487,4933,524,9961,650,2164,15918,15956,15177,776,15939
+Turkey,5171,Petroleum bulk stations and terminals,28526,8940,1451,1386,10196,403,1641,28514,28526,25236,983,28421
+Turkey,5172,"Petroleum products, nec",6186,4337,1799,299,4587,245,797,6172,6178,5216,704,6169
+Turkey,5181,Beer and ale,240,172,115,12,184,12,55,240,239,229,56,239
+Turkey,5182,Wine and distilled beverages,1832,1453,681,45,1488,47,206,1831,1831,1676,99,1829
+Turkey,5191,Farm supplies,3192,2505,1534,282,2765,148,550,3057,3182,2944,343,3180
+Turkey,5192,"Books, periodicals, and newspapers",3826,3003,1540,44,3031,143,647,3816,3823,3693,78,3822
+Turkey,5193,Flowers and florists supplies,538,433,236,23,448,25,133,538,534,522,7,533
+Turkey,5194,Tobacco and tobacco products,2016,1593,529,150,1731,52,232,2015,2014,1740,357,2014
+Turkey,5198,"Paints, varnishes, and supplies",2192,1514,714,104,1604,97,437,2188,2187,1914,118,2182
+Turkey,5199,"Nondurable goods, nec",40943,18531,5362,1764,20004,1035,4063,40664,40914,35962,1256,40861
+Turkey,5211,Lumber and other building materials,11814,4259,1258,523,4697,262,1064,11229,11812,10631,248,11789
+Turkey,5231,"Paint, glass, and wallpaper stores",1142,453,151,53,496,25,126,1136,1142,1027,22,1142
+Turkey,5251,Hardware stores,1211,1031,423,63,1082,100,373,1208,1211,959,100,1209
+Turkey,5261,Retail nurseries and garden stores,893,581,237,118,688,16,77,885,893,750,32,893
+Turkey,5271,Mobile home dealers,30,24,10,2,25,2,7,30,30,18,7,30
+Turkey,5311,Department stores,8,4,4,3,7,0,1,8,8,7,0,8
+Turkey,5331,Variety stores,219,149,24,4,153,6,41,219,219,203,36,218
+Turkey,5399,Miscellaneous general merchandise,449,172,39,17,185,10,44,449,448,368,26,445
+Turkey,5411,Grocery stores,11222,5973,1567,869,6490,867,2699,10989,11220,8547,3836,11197
+Turkey,5421,Meat and fish markets,913,566,235,49,609,31,145,712,913,736,37,912
+Turkey,5431,Fruit and vegetable markets,886,668,265,48,709,23,102,684,886,801,96,886
+Turkey,5441,"Candy, nut, and confectionery stores",1927,721,218,51,765,53,231,1725,1926,1805,44,1925
+Turkey,5451,Dairy products stores,798,488,98,47,534,9,52,798,798,641,91,795
+Turkey,5461,Retail bakeries,1363,748,271,85,821,44,186,1160,1363,1310,72,1363
+Turkey,5499,Miscellaneous food stores,3468,1579,567,159,1717,116,908,3054,3468,3197,848,3464
+Turkey,5511,New and used car dealers,1571,1354,1013,96,1420,202,735,1278,1567,1516,357,1570
+Turkey,5521,Used car dealers,81,73,54,6,77,7,35,81,81,80,12,81
+Turkey,5531,Auto and home supply stores,1844,1609,962,116,1683,272,839,1816,1844,1652,124,1842
+Turkey,5541,Gasoline service stations,5755,4296,2446,751,4980,467,1427,5750,5754,5174,1012,5748
+Turkey,5551,Boat dealers,24,22,16,2,24,7,17,23,24,24,3,24
+Turkey,5561,Recreational vehicle dealers,142,103,33,23,124,16,48,142,142,142,4,142
+Turkey,5571,Motorcycle dealers,1013,762,294,58,808,46,191,1013,1013,850,59,1007
+Turkey,5599,"Automotive dealers, nec",418,306,159,37,335,37,137,417,418,366,78,418
+Turkey,5611,Men's and boys' clothing stores,18049,5722,1198,656,6259,363,1570,17730,18046,16215,1005,18036
+Turkey,5621,Women's clothing stores,1682,1267,602,104,1349,121,462,1519,1682,1433,563,1681
+Turkey,5632,Women's accessory and specialty stores,444,358,196,19,370,19,146,281,444,408,143,444
+Turkey,5641,Children's and infants' wear stores,291,248,162,12,256,20,80,129,291,285,52,291
+Turkey,5651,Family clothing stores,574,476,203,27,496,11,80,412,574,439,67,572
+Turkey,5661,Shoe stores,644,513,197,30,536,87,216,644,644,526,181,643
+Turkey,5699,Miscellaneous apparel and accessory stores,1160,665,392,28,687,54,214,767,1159,1092,212,1160
+Turkey,5712,Furniture stores,1553,1212,532,100,1283,141,458,1437,1553,1098,163,1546
+Turkey,5713,Floor covering stores,611,557,198,24,571,30,140,598,610,490,87,610
+Turkey,5714,Drapery and upholstery stores,696,407,71,17,421,22,63,696,696,304,93,696
+Turkey,5719,Miscellaneous homefurnishings,2028,1802,709,88,1864,136,444,1895,2028,1753,375,2028
+Turkey,5722,Household appliance stores,2854,2306,1162,180,2425,422,1295,2829,2853,2412,549,2851
+Turkey,5731,"Radio, television, and electronic stores",1024,910,634,67,949,146,426,537,1022,933,176,1023
+Turkey,5734,Computer and software stores,1393,1235,692,83,1285,87,619,1336,1393,1156,412,1391
+Turkey,5735,Record and prerecorded tape stores,27,19,11,0,19,0,10,27,27,24,14,27
+Turkey,5736,Musical instrument stores,341,295,102,13,303,49,106,332,341,199,57,341
+Turkey,5812,Eating places,22797,11569,3573,1437,12831,1107,3293,22766,22795,21410,1350,22773
+Turkey,5813,Drinking places,4872,3986,1655,47,4013,211,635,4871,4872,4691,95,4872
+Turkey,5912,Drug stores and proprietary stores,316,232,65,19,245,3,31,315,316,201,18,316
+Turkey,5921,Liquor stores,63,52,18,4,55,2,7,62,63,42,4,63
+Turkey,5932,Used merchandise stores,65,40,20,11,50,4,15,65,65,54,4,65
+Turkey,5941,Sporting goods and bicycle shops,282,215,99,11,223,29,102,266,282,223,66,281
+Turkey,5942,Book stores,165,131,79,12,139,13,72,165,165,146,57,165
+Turkey,5943,Stationery stores,790,638,306,33,661,46,190,711,790,587,80,790
+Turkey,5944,Jewelry stores,1483,1249,270,85,1309,46,253,1464,1483,1107,224,1480
+Turkey,5945,"Hobby, toy, and game shops",929,764,222,37,791,47,154,928,929,718,220,929
+Turkey,5946,Camera and photographic supply stores,551,431,115,25,453,30,101,550,551,348,51,548
+Turkey,5947,"Gift, novelty, and souvenir shop",794,661,344,15,673,36,137,794,793,764,55,793
+Turkey,5948,Luggage and leather goods stores,439,374,82,6,380,47,74,438,439,313,162,437
+Turkey,5949,"Sewing, needlework, and piece goods",273,211,70,14,222,6,40,273,273,164,36,270
+Turkey,5961,Catalog and mail-order houses,386,223,86,70,288,20,92,385,386,355,12,386
+Turkey,5962,Merchandising machine operators,62,43,19,8,50,3,16,62,62,61,2,62
+Turkey,5963,Direct selling establishments,155,101,40,13,112,7,35,149,155,146,13,155
+Turkey,5983,Fuel oil dealers,122,76,38,33,107,14,34,122,122,109,16,122
+Turkey,5984,Liquefied petroleum gas dealers,585,491,132,34,516,32,82,583,585,482,101,585
+Turkey,5989,"Fuel dealers, nec",65,51,27,9,59,2,6,64,65,61,13,65
+Turkey,5992,Florists,133,100,20,15,112,7,21,132,133,77,9,133
+Turkey,5993,Tobacco stores and stands,2788,1369,232,86,1443,30,617,2788,2788,2451,932,2788
+Turkey,5994,News dealers and newsstands,65,52,13,1,53,1,14,65,65,37,5,62
+Turkey,5995,Optical goods stores,472,366,107,31,391,21,97,454,472,293,72,470
+Turkey,5999,"Miscellaneous retail stores, nec",172187,47581,9087,9774,56354,4523,16066,167403,172159,158509,5912,172006
+Turkey,6011,Federal reserve banks,3,3,3,0,3,1,3,3,3,3,2,3
+Turkey,6019,"Central reserve depository, nec",1,1,1,0,1,0,0,1,1,1,0,1
+Turkey,6021,National commercial banks,197,168,65,8,174,28,77,194,197,105,101,197
+Turkey,6022,State commercial banks,801,685,356,7,687,92,213,801,801,746,139,801
+Turkey,6029,"Commercial banks, nec",6470,5078,2895,95,5121,1517,3910,6366,6468,4293,5506,6466
+Turkey,6036,"Savings institutions, except federal",1,1,1,0,1,1,1,1,1,1,1,1
+Turkey,6081,Foreign bank and branches and agencies,3,3,2,0,3,1,2,0,3,2,2,3
+Turkey,6082,Foreign trade and international banks,2,2,2,0,2,0,1,1,2,2,1,2
+Turkey,6091,Nondeposit trust facilities,1,1,1,0,1,1,1,1,1,1,1,1
+Turkey,6099,Functions related to deposit banking,976,707,296,39,736,109,328,971,975,869,335,974
+Turkey,6111,Federal and federally sponsored credit agencies,3,3,3,0,3,1,3,3,3,3,2,3
+Turkey,6141,Personal credit institutions,34,33,15,1,33,4,18,26,34,25,11,34
+Turkey,6153,"Short-term business credit institutions, except agricultural",298,191,128,2,193,61,161,295,298,288,222,298
+Turkey,6159,Miscellaneous business credit institutions,182,116,80,3,119,19,50,176,181,167,94,180
+Turkey,6162,Mortgage bankers and loan correspondents,4,4,3,0,4,0,0,4,4,3,4,4
+Turkey,6163,Loan brokers,814,694,464,18,702,191,583,814,814,343,738,814
+Turkey,6211,Security brokers and dealers,3026,2120,705,164,2210,279,790,3006,3025,2134,239,3023
+Turkey,6221,"Commodity contracts brokers, dealers",31,23,11,0,23,2,9,28,30,23,9,29
+Turkey,6231,Security and commodity exchanges,209,183,113,2,184,56,113,181,207,160,113,206
+Turkey,6282,Investment advice,83,73,38,4,76,9,31,75,80,53,20,78
+Turkey,6289,Security and commodity service,7,7,5,0,7,2,4,7,7,7,1,7
+Turkey,6311,Life insurance,3357,2878,1572,62,2902,257,832,3356,3356,3031,203,3355
+Turkey,6321,Accident and health insurance,3295,2841,1566,55,2861,251,812,3294,3295,2988,205,3295
+Turkey,6324,Hospital and medical service plans,20,19,7,0,19,2,15,5,20,5,3,20
+Turkey,6331,"Fire, marine, and casualty insurance",2957,2531,1430,40,2544,210,705,2957,2957,2680,129,2957
+Turkey,6351,Surety insurance,8,7,7,0,7,2,5,8,8,7,5,8
+Turkey,6361,Title insurance,1,1,1,0,1,1,1,1,1,1,0,1
+Turkey,6371,"Pension, health, and welfare funds",12,11,8,0,11,1,5,9,12,9,2,12
+Turkey,6399,"Insurance carriers, nec",187,144,34,15,154,18,49,186,187,140,17,185
+Turkey,6411,"Insurance agents, brokers, and service",15254,9838,3481,872,10364,1344,4265,15175,15249,13259,968,15233
+Turkey,6512,Nonresidential building operators,190,173,113,7,179,49,91,189,190,181,71,190
+Turkey,6513,Apartment building operators,18,15,11,1,15,4,6,16,18,13,4,18
+Turkey,6514,"Dwelling operators, except apartments",1,1,0,0,1,0,0,1,1,0,0,1
+Turkey,6515,Mobile home site operators,1,1,0,0,1,0,1,0,1,0,0,1
+Turkey,6519,"Real property lessors, nec",142,100,35,4,102,7,25,141,142,128,11,142
+Turkey,6531,Real estate agents and managers,39476,9819,1710,2065,11534,707,3926,39462,39474,38052,664,39449
+Turkey,6541,Title abstract offices,1,1,0,0,1,0,0,1,1,1,0,1
+Turkey,6552,"Subdividers and developers, nec",94,55,16,0,55,0,9,93,94,77,0,93
+Turkey,6712,Bank holding companies,3,3,2,0,3,0,2,3,3,3,2,3
+Turkey,6719,"Holding companies, nec",1478,943,596,19,958,205,495,1455,1466,1376,697,1462
+Turkey,6722,"Management investment, open-end",45,43,10,1,44,5,30,22,45,23,17,45
+Turkey,6726,"Investment offices, nec",93,89,51,0,89,16,65,28,93,26,16,92
+Turkey,6732,"Trusts: educational, religious, etc.",9,7,4,2,9,2,4,6,9,8,0,9
+Turkey,6733,"Trusts, nec",7,5,3,0,5,1,3,4,7,7,5,7
+Turkey,6794,Patent owners and lessors,154,110,45,7,114,15,46,147,154,146,10,154
+Turkey,6798,Real estate investment trusts,53,50,37,2,51,14,24,52,52,52,28,52
+Turkey,6799,"Investors, nec",50,46,32,1,47,8,20,41,50,39,20,50
+Turkey,7011,Hotels and motels,16083,9641,3767,579,10135,1204,2732,16024,16080,14986,1441,16060
+Turkey,7021,Rooming and boarding houses,190,157,56,17,173,11,45,186,190,142,45,188
+Turkey,7032,Sporting and recreational camps,340,299,41,29,323,5,18,337,340,285,39,339
+Turkey,7033,Trailer parks and campsites,13,7,2,2,8,0,2,13,13,11,1,12
+Turkey,7041,Membership-basis organization hotels,32,25,11,3,28,4,13,32,32,32,1,32
+Turkey,7211,"Power laundries, family and commercial",63,48,15,2,49,5,9,63,63,57,1,63
+Turkey,7212,Garment pressing and cleaners' agents,38,32,17,3,34,4,10,37,38,35,7,38
+Turkey,7215,Coin-operated laundries and cleaning,11,8,7,3,11,1,5,10,11,11,2,11
+Turkey,7216,"Drycleaning plants, except rugs",28,19,8,0,19,2,7,27,28,27,0,28
+Turkey,7217,Carpet and upholstery cleaning,39,25,13,3,28,2,8,38,39,33,4,39
+Turkey,7218,Industrial launderers,10,9,7,0,9,1,3,10,9,10,1,9
+Turkey,7219,"Laundry and garment services, nec",843,578,241,26,600,26,122,843,843,808,10,843
+Turkey,7221,"Photographic studios, portrait",52,42,17,9,49,4,16,52,52,43,3,52
+Turkey,7231,Beauty shops,4326,1155,119,302,1405,65,598,4321,4326,4183,45,4324
+Turkey,7241,Barber shops,6,4,2,2,5,0,1,6,6,5,0,6
+Turkey,7251,Shoe repair and shoeshine parlors,3,2,1,1,3,0,0,3,3,3,0,3
+Turkey,7261,Funeral service and crematories,21,15,4,1,16,0,2,20,21,16,2,21
+Turkey,7291,Tax return preparation services,32,27,6,1,27,1,3,32,32,24,0,32
+Turkey,7299,Miscellaneous personal service,2862,948,197,109,1040,87,341,2829,2862,2565,64,2845
+Turkey,7311,Advertising agencies,11991,5665,1510,549,6113,393,1761,11852,11988,11047,307,11976
+Turkey,7312,Outdoor advertising services,93,84,62,7,90,10,37,93,93,89,21,93
+Turkey,7313,"Radio, television, publisher representatives",565,361,158,30,387,31,125,552,565,524,56,565
+Turkey,7319,"Advertising, nec",184,140,95,20,157,21,68,181,183,167,23,183
+Turkey,7322,Adjustment and collection services,54,43,18,3,45,3,14,54,54,42,3,54
+Turkey,7323,Credit reporting services,29,23,8,3,25,4,8,29,29,23,4,29
+Turkey,7331,Direct mail advertising services,36,28,12,0,28,3,9,35,36,32,3,36
+Turkey,7334,Photocopying and duplicating services,125,96,60,11,106,10,37,125,125,111,8,125
+Turkey,7335,Commercial photography,1007,429,67,44,467,34,157,1001,1006,895,37,1002
+Turkey,7336,Commercial art and graphic design,219,152,91,9,160,11,56,213,219,199,12,219
+Turkey,7338,Secretarial and court reporting,20,11,3,1,12,1,2,19,20,19,2,20
+Turkey,7342,Disinfecting and pest control services,138,107,59,10,116,9,40,138,138,114,11,136
+Turkey,7349,"Building maintenance services, nec",26545,7529,1036,1382,8802,278,1290,26528,26543,23610,479,26446
+Turkey,7352,Medical equipment rental,18,13,6,2,15,2,4,18,18,15,1,18
+Turkey,7353,Heavy construction equipment rental,10127,1952,307,393,2314,102,390,10124,10127,9546,77,10108
+Turkey,7359,"Equipment rental and leasing, nec",227,183,117,25,205,41,83,226,226,224,39,226
+Turkey,7361,Employment agencies,90,81,37,4,85,9,31,88,90,82,21,90
+Turkey,7363,Help supply services,121,94,47,11,105,7,33,119,121,106,9,121
+Turkey,7371,Custom computer programming services,15445,4731,1457,1753,6357,805,2701,15304,15444,14819,665,15440
+Turkey,7372,Prepackaged software,220,167,111,39,203,25,80,189,220,183,28,220
+Turkey,7373,Computer integrated systems design,1937,1051,542,142,1164,186,536,1883,1937,1891,116,1936
+Turkey,7374,Data processing and preparation,12954,4670,791,635,5196,452,1891,12816,12954,11950,281,12934
+Turkey,7375,Information retrieval services,16747,4231,553,1074,5159,528,2181,16709,16747,16354,223,16740
+Turkey,7376,Computer facilities management,33,25,17,5,30,3,7,32,33,32,3,33
+Turkey,7377,Computer rental and leasing,8,7,5,0,7,3,4,8,8,8,3,8
+Turkey,7378,Computer maintenance and repair,169,149,121,15,161,28,90,168,169,165,26,169
+Turkey,7379,"Computer related services, nec",2608,1655,722,491,2098,230,771,2513,2605,2275,313,2605
+Turkey,7381,Detective and armored car services,246,213,108,22,230,21,64,246,246,210,35,243
+Turkey,7382,Security systems services,6991,2718,572,348,3013,293,994,6961,6991,6562,164,6983
+Turkey,7383,News syndicates,157,114,34,7,118,9,35,154,157,152,9,157
+Turkey,7384,Photofinish laboratories,119,96,32,8,102,12,30,119,119,100,2,117
+Turkey,7389,"Business services, nec",17149,8949,4053,911,9709,927,3167,16125,17139,16138,1148,17126
+Turkey,7513,"Truck rental and leasing, no drivers",44,37,16,6,41,6,11,44,44,38,4,44
+Turkey,7514,Passenger car rental,2860,1206,458,175,1359,142,472,2857,2859,2700,233,2859
+Turkey,7515,Passenger car leasing,20,12,7,2,14,4,6,20,20,20,5,20
+Turkey,7519,Utility trailer rental,7,7,5,1,7,1,3,7,7,7,0,7
+Turkey,7521,Automobile parking,781,259,68,40,297,20,66,781,781,739,32,781
+Turkey,7532,Top and body repair and paint shops,58,54,24,3,54,6,18,58,58,42,5,58
+Turkey,7533,Auto exhaust system repair shops,8,8,2,0,8,1,2,8,8,8,1,8
+Turkey,7534,Tire retreading and repair shops,197,159,86,17,174,26,69,197,196,192,6,196
+Turkey,7536,Automotive glass replacement shops,4,2,2,0,2,0,1,4,4,4,2,4
+Turkey,7537,Automotive transmission repair shops,4,4,3,0,4,2,3,4,4,4,0,4
+Turkey,7538,General automotive repair shops,433,241,143,24,258,27,116,433,432,410,27,432
+Turkey,7539,"Automotive repair shops, nec",1782,1319,629,132,1425,163,588,1780,1782,1619,117,1775
+Turkey,7542,Carwashes,100,52,22,8,60,7,14,100,100,86,0,100
+Turkey,7549,"Automotive services, nec",1180,899,461,85,957,111,392,1174,1179,1090,138,1178
+Turkey,7622,Radio and television repair,50,42,25,7,48,10,20,50,50,49,2,50
+Turkey,7623,Refrigeration service and repair,237,206,107,15,218,21,75,237,237,226,5,236
+Turkey,7629,Electrical repair shops,1190,794,313,63,842,83,282,1182,1190,1073,64,1190
+Turkey,7631,"Watch, clock, and jewelry repair",12,11,6,1,11,1,5,12,12,11,3,12
+Turkey,7641,Reupholstery and furniture repair,24,23,14,1,24,1,12,23,24,22,3,24
+Turkey,7692,Welding repair,97,82,32,2,84,7,18,96,97,78,3,97
+Turkey,7694,Armature rewinding shops,33,30,15,3,32,5,15,33,33,33,3,33
+Turkey,7699,"Repair services, nec",2268,1713,952,161,1849,250,751,2253,2267,2205,190,2267
+Turkey,7812,Motion picture and video production,509,373,148,32,403,34,118,506,508,481,38,508
+Turkey,7819,Services allied to motion pictures,5839,4668,2358,75,4713,192,914,5837,5839,5693,77,5839
+Turkey,7822,Motion picture and tape distribution,16,11,10,1,12,4,7,16,16,15,3,15
+Turkey,7829,Motion picture distribution services,770,367,101,20,382,30,101,770,770,747,8,770
+Turkey,7832,"Motion picture theaters, except drive-in",33,25,15,3,28,7,15,31,33,30,21,33
+Turkey,7833,Drive-in motion picture theaters,20,13,1,1,14,1,2,20,20,17,3,20
+Turkey,7911,"Dance studios, schools, and halls",91,65,18,6,70,1,13,86,91,87,4,90
+Turkey,7922,Theatrical producers and services,150,112,51,13,123,13,48,149,150,148,17,149
+Turkey,7929,Entertainers and entertainment groups,161,114,53,14,126,28,47,159,161,156,14,161
+Turkey,7933,Bowling centers,77,58,24,4,60,5,10,77,77,58,5,77
+Turkey,7941,"Sports clubs, managers, and promoters",554,126,56,41,164,19,92,546,554,541,34,554
+Turkey,7948,"Racing, including track operation",13,10,6,1,10,3,4,13,13,13,2,13
+Turkey,7991,Physical fitness facilities,125,92,21,8,100,4,29,123,125,116,12,125
+Turkey,7992,Public golf courses,4,3,1,0,3,1,2,4,4,4,3,4
+Turkey,7993,Coin-operated amusement devices,20,15,4,4,19,0,3,20,20,14,4,20
+Turkey,7996,Amusement parks,1362,351,54,53,399,28,114,1361,1362,1283,56,1361
+Turkey,7997,Membership sports and recreation clubs,554,221,47,36,255,16,73,550,554,491,10,552
+Turkey,7999,"Amusement and recreation, nec",1557,955,393,84,1026,106,308,1539,1555,1383,215,1554
+Turkey,8011,Offices and clinics of medical doctors,4072,2134,462,270,2358,148,599,4034,4071,3436,162,4066
+Turkey,8021,Offices and clinics of dentists,912,708,149,71,762,61,217,883,912,770,62,912
+Turkey,8031,Offices and clinics of osteopathic physicians,119,83,19,10,88,3,16,119,119,89,6,119
+Turkey,8041,Offices and clinics of chiropractors,4,4,3,0,4,1,2,2,4,2,3,4
+Turkey,8042,Offices and clinics of optometrists,365,333,63,20,351,8,46,362,365,317,50,365
+Turkey,8049,Offices of health practitioner,168,143,9,9,150,2,11,168,168,26,7,168
+Turkey,8051,Skilled nursing care facilities,1,1,0,0,1,0,0,1,1,1,0,1
+Turkey,8052,Intermediate care facilities,5,5,3,0,5,0,0,5,5,5,0,5
+Turkey,8059,"Nursing and personal care, nec",46,35,6,4,39,4,10,46,46,41,6,46
+Turkey,8062,General medical and surgical hospitals,5886,4901,2028,133,4981,353,1487,5418,5885,5027,365,5882
+Turkey,8063,Psychiatric hospitals,3436,2840,1034,35,2851,90,478,3431,3436,3233,42,3436
+Turkey,8069,"Specialty hospitals, except psychiatric",3478,2880,1067,37,2892,102,503,3468,3477,3273,51,3477
+Turkey,8071,Medical laboratories,137,107,68,9,114,12,46,128,136,128,22,136
+Turkey,8072,Dental laboratories,1612,467,27,114,566,95,381,1609,1612,1598,8,1612
+Turkey,8082,Home health care services,15,13,5,0,13,0,3,14,15,15,3,15
+Turkey,8092,Kidney dialysis centers,250,197,136,23,216,37,81,248,249,214,66,249
+Turkey,8093,"Specialty outpatient clinics, nec",27,16,8,6,22,4,9,27,26,26,5,26
+Turkey,8099,"Health and allied services, nec",1058,647,226,37,677,52,213,1005,1057,922,80,1055
+Turkey,8111,Legal services,661,550,225,33,576,38,123,567,661,592,28,660
+Turkey,8211,Elementary and secondary schools,2781,2286,1049,77,2335,140,678,2728,2781,2594,271,2778
+Turkey,8221,Colleges and universities,478,448,261,8,452,151,317,260,478,359,77,478
+Turkey,8222,Junior colleges,12,11,5,1,12,3,6,10,12,10,0,12
+Turkey,8231,Libraries,25,18,10,2,19,5,15,15,25,21,3,25
+Turkey,8243,Data processing schools,486,379,94,31,408,15,85,484,486,336,30,483
+Turkey,8244,Business and secretarial schools,1,1,1,0,1,0,1,0,1,0,0,1
+Turkey,8249,"Vocational schools, nec",240,177,43,17,191,14,57,235,240,206,24,239
+Turkey,8299,"Schools and educational services, nec",29561,9404,1408,1463,10693,822,3439,29354,29560,27926,742,29521
+Turkey,8322,Individual and family services,211,162,88,37,197,25,75,116,211,158,28,210
+Turkey,8331,Job training and related services,372,334,104,24,353,14,53,365,371,320,39,371
+Turkey,8351,Child day care services,40,27,4,2,28,0,2,40,40,30,4,39
+Turkey,8361,Residential care,28,17,6,4,19,2,5,27,28,27,1,28
+Turkey,8399,"Social services, nec",842,477,172,183,651,70,164,585,842,634,57,842
+Turkey,8412,Museums and art galleries,81,65,29,5,70,26,45,57,81,68,13,81
+Turkey,8422,Botanical and zoological gardens,36,29,6,2,30,6,9,35,36,27,4,36
+Turkey,8611,Business associations,24358,5897,1107,987,6864,219,643,24209,24355,18523,274,24200
+Turkey,8621,Professional organizations,194,172,107,18,186,28,79,138,194,159,19,194
+Turkey,8631,Labor organizations,27,26,20,1,27,9,20,17,27,23,5,27
+Turkey,8641,Civic and social associations,3359,996,294,217,1198,237,667,3097,3359,3164,147,3358
+Turkey,8651,Political organizations,8,7,3,1,8,4,5,3,8,8,1,8
+Turkey,8661,Religious organizations,11,10,5,1,11,4,5,7,11,11,3,11
+Turkey,8699,"Membership organizations, nec",304,216,98,26,235,37,102,271,304,251,14,304
+Turkey,8711,Engineering services,44892,16065,3792,2403,18127,1553,5636,44631,44885,42278,896,44814
+Turkey,8712,Architectural services,5236,3357,906,277,3580,227,810,5211,5234,4477,131,5223
+Turkey,8713,Surveying services,124,96,39,4,100,7,33,123,124,110,8,123
+Turkey,8721,"Accounting, auditing, and bookkeeping",4997,1978,352,266,2201,183,683,4935,4996,4788,70,4977
+Turkey,8731,Commercial physical research,466,311,185,32,338,46,108,348,465,443,42,465
+Turkey,8732,Commercial nonphysical research,146,130,89,12,139,23,55,103,143,145,21,142
+Turkey,8733,Noncommercial research organizations,200,166,102,20,180,33,74,127,200,188,23,200
+Turkey,8734,Testing laboratories,562,416,178,23,436,54,143,540,562,504,74,561
+Turkey,8741,Management services,305,242,149,27,264,44,117,290,305,286,66,304
+Turkey,8742,Management consulting services,33775,11635,3632,1370,12753,1126,4474,33608,33764,32915,889,33742
+Turkey,8743,Public relations services,406,232,95,14,244,26,91,397,405,381,21,405
+Turkey,8744,Facilities support services,159,122,35,10,126,8,38,159,159,158,5,159
+Turkey,8748,"Business consulting, nec",59479,16766,3484,3052,19299,2091,8114,58794,59474,57981,1075,59441
+Turkey,8811,Private household,3,3,1,0,3,0,0,2,3,3,0,3
+Turkey,8999,"Services, nec",19363,11446,3126,1047,12251,798,3031,18771,19358,15704,668,19345
+Turkey,9111,Executive offices,86,85,60,3,86,24,63,18,86,58,12,86
+Turkey,9121,Legislative bodies,34,33,26,0,33,17,28,18,34,21,9,34
+Turkey,9131,Executive and legislative combined,2,2,2,0,2,0,2,1,2,2,0,2
+Turkey,9199,"General government, nec",600,580,412,25,589,187,467,142,600,290,170,600
+Turkey,9211,Courts,4,4,2,0,4,0,3,1,4,1,0,4
+Turkey,9221,Police protection,82,78,33,3,80,7,66,10,81,17,3,81
+Turkey,9222,Legal counsel and prosecution,394,318,91,22,335,7,32,383,394,344,20,394
+Turkey,9223,Correctional institutions,9,9,6,0,9,0,3,1,9,6,0,9
+Turkey,9224,Fire protection,56,48,7,0,48,3,10,55,56,49,0,56
+Turkey,9229,"Public order and safety, nec",18,16,8,1,17,2,8,3,18,8,1,18
+Turkey,9311,"Finance, taxation, and monetary policy",45,45,29,0,45,6,28,6,45,25,6,45
+Turkey,9411,Administration of educational programs,24,24,15,0,24,3,17,5,23,10,0,24
+Turkey,9431,Administration of public health programs,75,75,43,0,75,5,51,5,75,29,2,75
+Turkey,9441,Administration of social and manpower programs,24,21,15,1,22,6,17,7,24,13,4,24
+Turkey,9511,"Air, water, and solid waste management",75,64,36,2,65,14,33,43,75,58,10,74
+Turkey,9512,"Land, mineral, and wildlife conservation",12,11,4,0,11,1,6,2,12,6,2,12
+Turkey,9531,Housing programs,4,4,2,0,4,2,4,0,4,2,0,4
+Turkey,9532,Urban and community development,12,10,7,2,12,1,6,6,12,9,1,12
+Turkey,9611,Administration of general economic programs,34,31,15,1,32,5,23,15,34,26,3,34
+Turkey,9621,"Regulation, administration of transportation",15,12,8,0,12,4,7,12,15,14,7,15
+Turkey,9631,"Regulation, administration of utilities",14,13,10,0,13,6,11,7,14,11,4,14
+Turkey,9641,Regulation of agricultural marketing,31,31,19,0,31,14,22,8,31,11,1,31
+Turkey,9651,"Regulation, miscellaneous commercial sectors",13,13,7,0,13,4,7,8,13,11,1,13
+Turkey,9661,Space research and technology,5,5,3,0,5,2,4,2,5,4,1,5
+Turkey,9711,National security,57,47,26,1,48,9,20,32,55,43,3,55
+Turkey,9721,International affairs,73,63,44,2,64,9,41,35,73,43,8,71
+Turkey,9999,Nonclassifiable establishments,2547,1535,277,340,1841,125,459,2318,2542,1611,203,2540
