@@ -205,7 +205,7 @@ Yanıtını YALNIZCA aşağıdaki JSON formatında ver, başka hiçbir şey ekle
 }}"""
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-2.5-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
@@ -294,7 +294,7 @@ if st.button("🚀 Filtrele", type="primary", disabled=not query):
         try:
             system_prompt = build_system_prompt(df_full)
             response = gemini_client.models.generate_content(
-                model="gemini-2.0-flash",
+                model="gemini-2.5-flash",
                 contents=f"{system_prompt}\n\nKullanıcı sorgusu: {query}",
                 config=types.GenerateContentConfig(
                     tools=[FILTER_DATAFRAME_TOOL],
