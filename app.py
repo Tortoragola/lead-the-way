@@ -1,9 +1,21 @@
+import sys
+import os
+
+# Force UTF-8 encoding before any other import
+os.environ["PYTHONUTF8"] = "1"
+os.environ["PYTHONIOENCODING"] = "utf-8"
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
+
 import streamlit as st
 import pandas as pd
 from google import genai
 import json
-import os
 import re
+import time
+import unicodedata
 
 # ── Page config ─────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -56,32 +68,35 @@ def build_gemini_prompt(query: str, df: pd.DataFrame) -> str:
         col_lines.append(f'  "{col}": örnek → {ex}')
     columns_block = "\n".join(col_lines)
 
-    return f"""Sen bir B2B iletişim veritabanı filtreleme asistanısın.
-Kullanıcının doğal dildeki arama sorgusunu, aşağıdaki CSV sütunlarını kullanarak JSON filtre kurallarına çevir.
+    # Encode to UTF-8 bytes and back to ensure clean Unicode string
+    def safe(s):
+        return s.encode("utf-8", errors="replace").decode("utf-8")
 
-## CSV Sütunları ve Örnek Değerleri
-{columns_block}
+    columns_block_safe = safe(columns_block)
+    query_safe = safe(query)
 
-## Kullanıcı Sorgusu
-"{query}"
-
-## Talimatlar
-- Yalnızca geçerli sütun adlarını kullan (yukarıdaki listeden).
-- Her kural bir "column", "operator" ve "value" içermelidir.
-- Desteklenen operatörler: contains, not_contains, equals, not_equals, starts_with, ends_with, greater_than, less_than, in_list
-- "in_list" için "value" bir liste olmalıdır.
-- Birden fazla kural için "logic" alanı "AND" ya da "OR" olabilir (varsayılan AND).
-- Türkçe ve İngilizce terimler eşdeğer kabul edilmelidir (örn. "pazarlama" → "marketing").
-- Sadece JSON döndür, başka açıklama ekleme.
-
-## Beklenen JSON formatı
-{{
-  "filters": [
-    {{"column": "<sütun_adı>", "operator": "<operatör>", "value": "<değer>"}}
-  ],
-  "logic": "AND"
-}}
-"""
+    return (
+        "You are a B2B contact database filtering assistant.\n"
+        "Convert the user's natural language search query into JSON filter rules "
+        "using the CSV columns below. The user may write in Turkish or English — treat them as equivalent.\n\n"
+        "## CSV Columns and Sample Values\n"
+        + columns_block_safe
+        + "\n\n## User Query\n\""
+        + query_safe
+        + "\"\n\n"
+        "## Instructions\n"
+        "- Use only valid column names from the list above.\n"
+        "- Each rule must have: column, operator, value.\n"
+        "- Supported operators: contains, not_contains, equals, not_equals, "
+        "starts_with, ends_with, greater_than, less_than, in_list\n"
+        "- For in_list, value must be a JSON array.\n"
+        "- Use AND or OR logic (default AND).\n"
+        "- Turkish terms should be translated to their English equivalents when matching column values "
+        "(e.g. 'pazarlama' -> 'marketing', 'Istanbul' -> 'Istanbul').\n"
+        "- Return ONLY valid JSON, no extra explanation.\n\n"
+        "## Expected JSON format\n"
+        '{\n  "filters": [\n    {"column": "<col>", "operator": "<op>", "value": "<val>"}\n  ],\n  "logic": "AND"\n}\n'
+    )
 
 
 def extract_json(text: str) -> dict:
@@ -141,13 +156,32 @@ def apply_filters(df: pd.DataFrame, filter_spec: dict) -> pd.DataFrame:
 st.title("🎯 Lead The Way — AI B2B Lead Filtresi")
 st.caption("Doğal dilde yazın, Gemini AI ilgili kişileri otomatik filtrelesin.")
 
+GEMINI_MODELS = [
+    "gemini-2.5-flash",
+    "gemini-2.5-pro",
+    "gemini-2.0-flash-lite",
+    "gemini-1.5-flash",
+    "gemini-1.5-flash-8b",
+]
+
+# ── Default API key (env var > hardcoded fallback) ───────────────────────────
+_DEFAULT_API_KEY = os.environ.get("GEMINI_API_KEY", "AIzaSyC4StQ3E5iqrIZZXv28_G4V6tDEZ98z63U")
+
 # Sidebar
 with st.sidebar:
     st.header("⚙️ Ayarlar")
     api_key = st.text_input(
         "Gemini API Anahtarı",
+        value=_DEFAULT_API_KEY,
         type="password",
         help="Google AI Studio → https://aistudio.google.com/app/apikey adresinden ücretsiz alabilirsiniz.",
+    )
+    st.markdown("---")
+    selected_model = st.selectbox(
+        "🤖 Gemini Modeli",
+        options=GEMINI_MODELS,
+        index=0,
+        help="Kota aşımı (429) alırsanız farklı bir model deneyin.",
     )
     st.markdown("---")
     uploaded_file = st.file_uploader(
@@ -210,14 +244,39 @@ display_cols = st.multiselect(
 )
 
 if st.button("🚀 Filtrele", type="primary", disabled=not query):
-    with st.spinner("Gemini AI filtreyi oluşturuyor…"):
+    with st.spinner(f"Gemini AI filtreyi oluşturuyor… (model: {selected_model})"):
         try:
             prompt = build_gemini_prompt(query, df_full)
-            response = gemini_client.models.generate_content(
-                model="gemini-2.0-flash",
-                contents=prompt,
-            )
-            raw_text = response.text
+            raw_text = None
+            max_retries = 3
+            for attempt in range(max_retries):
+                try:
+                    response = gemini_client.models.generate_content(
+                        model=selected_model,
+                        contents=prompt,
+                    )
+                    raw_text = response.text
+                    break
+                except Exception as e:
+                    err_str = str(e)
+                    if "429" in err_str or "RESOURCE_EXHAUSTED" in err_str:
+                        if attempt < max_retries - 1:
+                            wait_sec = 10 * (attempt + 1)
+                            st.warning(f"⏳ Kota aşımı (429) — {wait_sec} saniye bekleniyor, tekrar deneniyor… (Deneme {attempt+2}/{max_retries})")
+                            time.sleep(wait_sec)
+                        else:
+                            st.error(
+                                f"❌ Kota aşımı hatası ({selected_model}). "
+                                "Lütfen sol panelden **farklı bir model** seçin "
+                                "(örn. gemini-2.0-flash-lite veya gemini-1.5-flash-8b) ya da "
+                                "bir süre bekleyin."
+                            )
+                            st.stop()
+                    else:
+                        raise
+            if raw_text is None:
+                st.error("Yanıt alınamadı.")
+                st.stop()
         except Exception as e:
             st.error(f"Gemini API hatası: {e}")
             st.stop()
