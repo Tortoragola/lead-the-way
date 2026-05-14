@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: leadtheway
+      POSTGRES_USER: ltw_admin
+      POSTGRES_PASSWORD: ltw_admin_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+      - ./scripts/roles.sql:/docker-entrypoint-initdb.d/02_roles.sql
+
+volumes:
+  pgdata:
