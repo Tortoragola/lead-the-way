@@ -265,15 +265,70 @@ _SEMANTIC_DECLS = [
 ]
 
 
+_SUGGEST_ACTIONS_DECL = types.FunctionDeclaration(
+    name="suggest_actions",
+    description=(
+        "Present the user with a structured list of follow-up action choices. "
+        "Call this INSTEAD of asking 'would you like X or Y?' in plain text. "
+        "This is a TERMINAL call — do NOT combine with any other tool in the same turn. "
+        "Stop after calling it and wait for the user's response."
+    ),
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "context_summary": types.Schema(
+                type=types.Type.STRING,
+                description=(
+                    "One sentence shown above the action choices. "
+                    "Example: 'Tespit ettiğim 6 aday için şu işlemleri yapabilirim:'"
+                ),
+            ),
+            "actions": types.Schema(
+                type=types.Type.ARRAY,
+                description="List of 2-4 distinct actions the user can choose from.",
+                items=types.Schema(
+                    type=types.Type.OBJECT,
+                    properties={
+                        "id": types.Schema(
+                            type=types.Type.STRING,
+                            description="Short snake_case identifier, e.g. 'intent_analysis'.",
+                        ),
+                        "label": types.Schema(
+                            type=types.Type.STRING,
+                            description="Short Turkish action label shown on the checkbox, e.g. 'Niyet Analizi Yap'.",
+                        ),
+                        "description": types.Schema(
+                            type=types.Type.STRING,
+                            description="One-line description shown under the label.",
+                        ),
+                        "detail_placeholder": types.Schema(
+                            type=types.Type.STRING,
+                            description=(
+                                "Placeholder text for the optional detail text box, "
+                                "e.g. 'Hangi şirketler için? (boş bırakırsanız hepsine)'."
+                            ),
+                        ),
+                    },
+                    required=["id", "label", "description", "detail_placeholder"],
+                ),
+            ),
+        },
+        required=["context_summary", "actions"],
+    ),
+)
+
+
 def get_agent_tools(db_mode: bool) -> list[types.Tool]:
     """Return the tool set for the multi-step agent loop.
 
     DB mode:  semantic layer tools + common tools (no filter_dataframe).
     CSV mode: filter_dataframe + common tools (legacy path).
+    suggest_actions is always included — it is mode-agnostic.
     """
     common = [
         ENRICH_COMPANY_INTENT_TOOL.function_declarations[0],
         _GENERATE_OUTREACH_DRAFT_DECL,
+        _SUGGEST_ACTIONS_DECL,
     ]
     mode_decls = _SEMANTIC_DECLS if db_mode else [FILTER_DATAFRAME_TOOL.function_declarations[0]]
     return [types.Tool(function_declarations=common + mode_decls)]

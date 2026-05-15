@@ -25,6 +25,7 @@ class Settings(BaseSettings):
     supabase_url: str | None = None
     supabase_key: str | None = None  # anon/publishable key for app reads & writes
     supabase_service_key: str | None = None  # service_role key for migration script only
+    database_url: str | None = None  # SQLAlchemy URL for direct Postgres (semantic layer)
 
     model_config = SettingsConfigDict(
         env_file=".env",

@@ -35,6 +35,7 @@ BATCH_CONFIRM_THRESHOLD = 5
 
 # Tools whose results are pure data fetches — agent should use Lite model on the
 # NEXT turn to fill args / summarize before deciding the next reasoning step.
+# suggest_actions is intentionally excluded: it is a terminal call handled before dispatch.
 _DATA_FETCH_TOOLS: frozenset[str] = frozenset({
     "filter_dataframe",
     "search_people",
@@ -68,6 +69,9 @@ class AgentRunResult:
     error: str | None = None
     injection_flagged: bool = False
     pii_warnings: list[str] = field(default_factory=list)
+    # Populated when the agent calls suggest_actions instead of plain-text questions
+    suggested_actions: list[dict] = field(default_factory=list)  # list of action dicts
+    actions_context: str = ""  # sentence shown above the action checkboxes
 
 
 # ── Internal context ─────────────────────────────────────────────────────────
@@ -126,6 +130,15 @@ Step 3 DEDUPLICATE: Remove contacts with the same email before presenting result
 5. If user wants emails: call generate_outreach_draft — MAX 4 parallel calls (rate limit).
 6. If ≥5 outreach drafts needed, ask the user for confirmation first.
 7. On follow-up questions, use conversation context — do not re-search from scratch.
+
+## ACTION SUGGESTIONS
+When you naturally want to ask the user "would you like intent analysis or email drafts?" or
+similar follow-up questions, call suggest_actions instead of asking in plain text.
+Rules for suggest_actions:
+- It is a TERMINAL call: do NOT combine it with any other tool in the same response turn.
+- Provide 2-4 meaningful, distinct action options with Turkish labels.
+- After calling it, stop immediately. Do not produce any additional text.
+- Do NOT call it if the user has already given a clear instruction.
 
 ## HARD RULES
 - Never hallucinate. Only use data returned by tools. Never invent names, emails, or companies.
@@ -380,6 +393,22 @@ def run_agent(
         parts = response.candidates[0].content.parts
         fc_parts = [p for p in parts if getattr(p, "function_call", None) is not None]
         text_parts = [p for p in parts if getattr(p, "text", None) and p.text.strip()]
+
+        # suggest_actions is a terminal call — return early without sending FunctionResponse
+        suggest_part = next(
+            (p for p in fc_parts if p.function_call.name == "suggest_actions"), None
+        )
+        if suggest_part is not None:
+            sa_args = dict(suggest_part.function_call.args) if suggest_part.function_call.args else {}
+            # Any text parts produced alongside the call become the answer preamble
+            preamble = "\n".join(p.text for p in text_parts).strip()
+            return AgentRunResult(
+                answer=preamble,
+                tool_calls=tool_calls,
+                outreach_drafts=ctx.outreach_drafts,
+                suggested_actions=list(sa_args.get("actions", [])),
+                actions_context=str(sa_args.get("context_summary", "")),
+            )
 
         # No function calls → model returned final text
         if not fc_parts:

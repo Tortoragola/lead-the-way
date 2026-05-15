@@ -1,15 +1,16 @@
-"""Supabase client factory and audit-log helper.
+"""Supabase client factory, SQLAlchemy engine factory, and audit-log helper.
 
-All database I/O goes through the supabase-py client.
-Two access levels:
-  get_supabase_client()         → anon/publishable key  (reads + audit_log inserts)
-  get_supabase_client(svc=True) → service_role key      (migration script only)
+All database I/O goes through two access paths:
+  get_supabase_client()   → anon/publishable key  (reads + audit_log inserts)
+  get_engine_ro()         → SQLAlchemy read-only engine  (semantic-layer queries)
 """
 from __future__ import annotations
 
 import hashlib
 from functools import lru_cache
 
+from sqlalchemy import create_engine
+from sqlalchemy.engine import Engine
 from supabase import Client, create_client
 
 from .config import get_settings
@@ -45,6 +46,34 @@ def get_supabase_client(svc: bool = False) -> Client:
 def db_available() -> bool:
     """Return True when SUPABASE_URL is configured (Supabase mode active)."""
     return bool((get_settings().supabase_url or "").strip())
+
+
+@lru_cache(maxsize=1)
+def get_engine_ro() -> Engine:
+    """Return a cached read-only SQLAlchemy engine for the Supabase PostgreSQL database.
+
+    Requires DATABASE_URL in .env. Get it from:
+      Supabase Dashboard → Settings → Database → Connection string (Session mode)
+
+    Recommended format (psycopg3 / Session Pooler):
+      postgresql+psycopg://postgres.[project]:[password]@[pooler-host]:5432/postgres
+
+    Alternative (direct connection, psycopg3):
+      postgresql+psycopg://postgres:[password]@db.[project].supabase.co:5432/postgres
+    """
+    s = get_settings()
+    url = (s.database_url or "").strip()
+    if not url:
+        raise RuntimeError(
+            "DATABASE_URL is not configured. Add it to your .env file.\n"
+            "Get it from: Supabase Dashboard → Settings → Database → "
+            "Connection string (Session mode).\n"
+            "Format: postgresql+psycopg://postgres.[project]:[password]@[host]:5432/postgres"
+        )
+    # Normalise dialect: bare 'postgresql://' → 'postgresql+psycopg://' so psycopg3 is used
+    if url.startswith("postgresql://") or url.startswith("postgres://"):
+        url = "postgresql+psycopg" + url[url.index("://"):]
+    return create_engine(url, pool_pre_ping=True, pool_size=2, max_overflow=2)
 
 
 def _hash_email(email: str | None) -> str | None:

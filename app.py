@@ -54,6 +54,15 @@ if "intent_cache" not in st.session_state:
 if "pending_batch_result" not in st.session_state:
     st.session_state["pending_batch_result"] = None  # AgentRunResult awaiting confirmation
 
+if "pending_actions" not in st.session_state:
+    st.session_state["pending_actions"] = None  # list[dict] | None — action card options
+
+if "pending_actions_context" not in st.session_state:
+    st.session_state["pending_actions_context"] = ""  # sentence shown above checkboxes
+
+if "action_card_submitted" not in st.session_state:
+    st.session_state["action_card_submitted"] = False  # True after card submit, triggers agent run
+
 if "last_query" not in st.session_state:
     st.session_state["last_query"] = ""
 
@@ -75,6 +84,8 @@ with st.sidebar:
     if st.button("🗑️ Sohbeti Temizle"):
         st.session_state["messages"] = []
         st.session_state["pending_batch_result"] = None
+        st.session_state["pending_actions"] = None
+        st.session_state["pending_actions_context"] = ""
         st.session_state["last_query"] = ""
         st.rerun()
 
@@ -118,6 +129,73 @@ def _record_result(result: AgentRunResult) -> None:
     if grounding_warning:
         msg["grounding_warning"] = grounding_warning
     st.session_state["messages"].append(msg)
+
+    # If the agent offered action choices, surface them as the pending card
+    if result.suggested_actions:
+        st.session_state["pending_actions"] = result.suggested_actions
+        st.session_state["pending_actions_context"] = result.actions_context
+    else:
+        # A real answer clears any stale action card
+        st.session_state["pending_actions"] = None
+        st.session_state["pending_actions_context"] = ""
+
+
+def _render_action_card() -> None:
+    """Render the interactive action-choice card when the agent calls suggest_actions."""
+    actions: list[dict] | None = st.session_state.get("pending_actions")
+    if not actions:
+        return
+
+    context = st.session_state.get("pending_actions_context", "Şu işlemlerden birini seçin:")
+
+    st.markdown("---")
+    st.markdown(f"**{context}**")
+
+    checked: list[tuple[dict, str]] = []  # (action, detail_text)
+    for action in actions:
+        aid = action.get("id", "action")
+        label = action.get("label", "")
+        description = action.get("description", "")
+        placeholder = action.get("detail_placeholder", "Ek detay (isteğe bağlı)…")
+
+        col_check, col_info = st.columns([1, 12])
+        with col_check:
+            selected = st.checkbox("", key=f"action_cb_{aid}", label_visibility="collapsed")
+        with col_info:
+            st.markdown(f"**{label}**  \n<small>{description}</small>", unsafe_allow_html=True)
+            if selected:
+                detail = st.text_input(
+                    label=f"Detay — {label}",
+                    placeholder=placeholder,
+                    key=f"action_detail_{aid}",
+                    label_visibility="collapsed",
+                )
+                checked.append((action, detail.strip()))
+
+    st.markdown("")
+    if st.button("▶ Seçilen İşlemleri Başlat", type="primary", key="action_card_submit"):
+        if not checked:
+            st.warning("En az bir işlem seçin.")
+            return
+
+        # Assemble a Turkish follow-up query from checked actions + details
+        lines = ["Seçilen işlemler:"]
+        for action, detail in checked:
+            line = f"- {action['label']}"
+            if detail:
+                line += f" [Detay: {detail}]"
+            lines.append(line)
+        follow_up = "\n".join(lines)
+
+        # Clear the card and submit as a new user message
+        st.session_state["pending_actions"] = None
+        st.session_state["pending_actions_context"] = ""
+        st.session_state["messages"].append({"role": "user", "content": follow_up})
+        st.session_state["last_query"] = follow_up
+        st.session_state["action_card_submitted"] = True
+        st.rerun()
+
+    st.markdown("---")
 
 
 def _render_outreach_drafts(drafts: list) -> None:
@@ -170,7 +248,8 @@ for msg in st.session_state["messages"]:
         if msg.get("grounding_warning"):
             st.warning(msg["grounding_warning"])
 
-
+# ── Action card (suggest_actions result) ──────────────────────────────────────────
+_render_action_card()
 # ── Batch confirmation (if a previous result is waiting) ─────────────────────
 pending: AgentRunResult | None = st.session_state.get("pending_batch_result")
 if pending is not None:
@@ -204,6 +283,11 @@ if pending is not None:
 
 # ── Chat input ───────────────────────────────────────────────────────────────
 if prompt := st.chat_input("Mesajınızı yazın…"):
+    # A new typed message clears any pending action card
+    st.session_state["pending_actions"] = None
+    st.session_state["pending_actions_context"] = ""
+    st.session_state["action_card_submitted"] = False
+
     # Client-side injection guard
     guard = check_prompt_injection(prompt)
     if not guard.safe:
@@ -221,8 +305,26 @@ if prompt := st.chat_input("Mesajınızı yazın…"):
     # Append user message and show immediately
     st.session_state["messages"].append({"role": "user", "content": prompt})
     st.session_state["last_query"] = prompt
-    with st.chat_message("user"):
-        st.markdown(prompt)
+    active_prompt = prompt
+    _from_action_card = False
+
+elif st.session_state.get("action_card_submitted"):
+    # Action card was submitted on the previous render — run agent with last_query
+    st.session_state["action_card_submitted"] = False
+    active_prompt = st.session_state["last_query"]
+    _from_action_card = True
+
+else:
+    active_prompt = None
+    _from_action_card = False
+
+if active_prompt is not None:
+    prompt = active_prompt
+    # For normal chat input the message was just appended so we show it immediately.
+    # For action card submissions the history loop already rendered the user bubble.
+    if not _from_action_card:
+        with st.chat_message("user"):
+            st.markdown(prompt)
 
     # Run agent
     with st.chat_message("assistant"):
