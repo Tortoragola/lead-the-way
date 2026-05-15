@@ -297,131 +297,110 @@ with tab_filter:
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# TAB 2 — Multi-step Agent
+# TAB 2 — Multi-step Agent (Chat Interface)
 # ═══════════════════════════════════════════════════════════════════════════
 with tab_agent:
  st.markdown(
-     "**Tek sorguda karmaşık çok adımlı görevler çalıştır.** "
-     "Agent, ihtiyacına göre filtreleme · niyet analizi · mail taslağı araçlarını sıralı/paralel çağırır."
- )
- st.caption(
-     "Örnek: _'İstanbul'daki 3 fintech şirketini bul, niyet analizi yap ve CEO'larına mail taslağı oluştur'_"
+     "**Sohbetçi AI Asistan.** "
+     "Karmaşık görevleri tek sorguda çalıştır. Agent, ihtiyacına göre filtreleme · niyet analizi · mail taslağı araçlarını çağırır."
  )
 
- # ── Shared intent cache (shared with Tab 1 via session_state) ──────────
+ # ── Initialize chat history and intent cache ────────────────────────────
+ if "agent_chat_history" not in st.session_state:
+     st.session_state["agent_chat_history"] = []
  if "agent_intent_cache" not in st.session_state:
      st.session_state["agent_intent_cache"] = {}
 
- agent_query = st.text_area(
-     "🧠 Görevinizi yazın",
-     key="agent_query_input",
-     height=80,
-     placeholder="Örn: Türkiye'deki inşaat sektöründeki şirketleri bul, niyet analizi yap ve 3 kişiye mail taslağı oluştur.",
+ # ── Display chat history ────────────────────────────────────────────────
+ for msg in st.session_state["agent_chat_history"]:
+     with st.chat_message(msg["role"], avatar="🧠" if msg["role"] == "assistant" else "👤"):
+         st.markdown(msg["content"])
+
+         # Show tool calls if available (assistant messages)
+         if msg.get("tool_calls"):
+             with st.expander(f"🔧 Araç Çağrıları — {len(msg['tool_calls'])}"):
+                 for i, tc in enumerate(msg["tool_calls"], 1):
+                     st.markdown(f"**{i}. `{tc.name}`** _{tc.duration_ms} ms_")
+                     st.code(json.dumps(tc.args, ensure_ascii=False, indent=2), language="json")
+                     st.caption(f"Sonuç: {tc.result_summary}")
+
+         # Show outreach drafts if available
+         if msg.get("outreach_drafts"):
+             st.markdown(f"#### ✉️ Taslaklar ({len(msg['outreach_drafts'])})")
+             for i, draft in enumerate(msg["outreach_drafts"], 1):
+                 with st.expander(f"Taslak {i}", expanded=(i == 1)):
+                     st.markdown("**🎯 Niyet:**")
+                     st.info(draft.intent)
+                     st.markdown("**📧 Mail:**")
+                     email_text = draft.email_draft
+                     if email_text.startswith("Subject:"):
+                         lines = email_text.split("\n", 1)
+                         st.markdown(f"**{lines[0]}**")
+                         st.markdown("---")
+                         st.markdown(lines[1].strip() if len(lines) > 1 else "")
+                     else:
+                         st.markdown(email_text)
+                     st.download_button(
+                         label="⬇️ İndir",
+                         data=draft.email_draft.encode("utf-8"),
+                         file_name=f"agent_outreach_{i}.txt",
+                         mime="text/plain",
+                         key=f"dl_agent_{i}_{msg.get('timestamp', '')}",
+                     )
+
+ # ── Chat input at bottom ────────────────────────────────────────────────
+ user_input = st.chat_input(
+     "Görevinizi yazın (Örn: İstanbul'daki 3 fintech şirketini bul, niyet analizi yap ve CEO'larına mail taslağı oluştur)",
+     key="agent_chat_input",
  )
 
- run_col, conf_col = st.columns([1, 3])
- with run_col:
-     run_clicked = st.button("🚀 Çalıştır", type="primary", disabled=not agent_query, key="agent_run_btn")
-
- if run_clicked and agent_query:
-     # ── Injection guard (client-side fast check) ────────────────────────
-     guard = check_prompt_injection(agent_query)
+ if user_input:
+     # ── Injection guard ────────────────────────────────────────────────
+     guard = check_prompt_injection(user_input)
      if not guard.safe:
          st.error(f"⛔ Güvenlik kontrolü başarısız: {guard.reason}")
      else:
-         st.session_state["agent_last_query"] = agent_query
-         st.session_state.pop("agent_result", None)
-         with st.spinner("AI asistan çalışıyor… (birden fazla Gemini çağrısı yapılabilir)"):
+         # Add user message to history
+         st.session_state["agent_chat_history"].append({
+             "role": "user",
+             "content": user_input,
+             "timestamp": datetime.utcnow().isoformat(),
+         })
+
+         # Show user message
+         with st.chat_message("user", avatar="👤"):
+             st.markdown(user_input)
+
+         # Run agent
+         with st.spinner("🧠 AI asistan çalışıyor… (çok adımlı Gemini çağrıları yapılabilir)"):
              agent_result = run_agent(
                  client=gemini_client,
-                 query=agent_query,
+                 query=user_input,
                  df=df_full,
                  intent_cache=st.session_state["agent_intent_cache"],
                  confirmed_batch=False,
              )
-         st.session_state["agent_result"] = agent_result
 
- # ── Batch confirmation re-run ───────────────────────────────────────────
- agent_result: AgentRunResult | None = st.session_state.get("agent_result")
+         # Build assistant response
+         response_content = ""
+         if agent_result.injection_flagged:
+             response_content = "⛔ Prompt injection tespit edildi — sorgu engellendi."
+         elif agent_result.error:
+             response_content = f"❌ Hata: {agent_result.error}"
+         else:
+             response_content = agent_result.answer
 
- if agent_result and agent_result.needs_batch_confirm:
-     st.warning(
-         f"⚠️ Agent **{agent_result.pending_outreach_count}** outreach taslağı oluşturmak istiyor. "
-         "Devam etmek istiyor musunuz?"
-     )
-     bc1, bc2 = st.columns(2)
-     with bc1:
-         if st.button("✅ Evet, devam et", key="batch_confirm_yes"):
-             with st.spinner("Onaylandı, devam ediliyor…"):
-                 agent_result = run_agent(
-                     client=gemini_client,
-                     query=st.session_state.get("agent_last_query", ""),
-                     df=df_full,
-                     intent_cache=st.session_state["agent_intent_cache"],
-                     confirmed_batch=True,
-                 )
-             st.session_state["agent_result"] = agent_result
-             st.rerun()
-     with bc2:
-         if st.button("❌ İptal", key="batch_confirm_no"):
-             st.session_state.pop("agent_result", None)
-             st.rerun()
+         # Add assistant message to history
+         st.session_state["agent_chat_history"].append({
+             "role": "assistant",
+             "content": response_content,
+             "tool_calls": agent_result.tool_calls,
+             "outreach_drafts": agent_result.outreach_drafts,
+             "pii_warnings": agent_result.pii_warnings,
+             "timestamp": datetime.utcnow().isoformat(),
+         })
 
- if agent_result and not agent_result.needs_batch_confirm:
-     # Injection flag badge
-     if agent_result.injection_flagged:
-         st.error("⛔ Prompt injection tespit edildi — sorgu engellendi.")
-
-     # PII warnings
-     for warn in (agent_result.pii_warnings or []):
-         st.warning(warn)
-
-     # Error
-     if agent_result.error:
-         st.error(agent_result.error)
-
-     # Tool call graph
-     if agent_result.tool_calls:
-         with st.expander(
-             f"🔧 Araç Çağrı Grafiği — {len(agent_result.tool_calls)} çağrı",
-             expanded=False,
-         ):
-             for i, tc in enumerate(agent_result.tool_calls, 1):
-                 st.markdown(f"**{i}. `{tc.name}`** _{tc.duration_ms} ms_")
-                 st.code(json.dumps(tc.args, ensure_ascii=False, indent=2), language="json")
-                 st.caption(f"Sonuç önizleme: {tc.result_summary}")
-                 st.divider()
-
-     # Final answer
-     if agent_result.answer:
-         st.markdown("---")
-         st.markdown("#### 💬 Agent Yanıtı")
-         st.markdown(agent_result.answer)
-
-     # Outreach drafts
-     if agent_result.outreach_drafts:
-         st.markdown("---")
-         st.markdown(f"#### ✉️ Oluşturulan Mail Taslakları ({len(agent_result.outreach_drafts)})")
-         for i, draft in enumerate(agent_result.outreach_drafts, 1):
-             with st.expander(f"Taslak {i}", expanded=(i == 1)):
-                 st.markdown("**🎯 Niyet:**")
-                 st.info(draft.intent)
-                 st.markdown("**📧 Mail:**")
-                 email_text = draft.email_draft
-                 if email_text.startswith("Subject:"):
-                     lines = email_text.split("\n", 1)
-                     st.markdown(f"**{lines[0]}**")
-                     st.markdown("---")
-                     st.markdown(lines[1].strip() if len(lines) > 1 else "")
-                 else:
-                     st.markdown(email_text)
-                 st.download_button(
-                     label="⬇️ İndir",
-                     data=draft.email_draft.encode("utf-8"),
-                     file_name=f"agent_outreach_{i}.txt",
-                     mime="text/plain",
-                     key=f"dl_agent_{i}",
-                 )
+         st.rerun()
 
 
 # ═══════════════════════════════════════════════════════════════════════════
