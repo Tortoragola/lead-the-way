@@ -15,7 +15,7 @@ from google.genai import types
 
 from ..config import PRODUCT_DESCRIPTION
 from ..models import CompanyIntentProfile, IntentLevel
-from .client import MODEL_REASONING
+from .client import MODEL_GROUNDING
 
 
 def _build_intent_prompt(company_name: str, website: str, country: str) -> str:
@@ -100,7 +100,7 @@ def enrich_intent(
     prompt = _build_intent_prompt(company_name, website, country)
 
     response = client.models.generate_content(
-        model=MODEL_REASONING,
+        model=MODEL_GROUNDING,
         contents=prompt,
         config=types.GenerateContentConfig(
             tools=[types.Tool(google_search=types.GoogleSearch())],

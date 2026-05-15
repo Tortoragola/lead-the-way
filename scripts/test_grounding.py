@@ -18,7 +18,7 @@ import sys
 from google.genai import types
 
 from ltw.config import get_settings
-from ltw.llm.client import MODEL_REASONING, get_client
+from ltw.llm.client import MODEL_GROUNDING, get_client
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
 logger = logging.getLogger(__name__)
@@ -34,10 +34,10 @@ def main() -> int:
     settings = get_settings()
     client = get_client(settings.gemini_api_key)
 
-    logger.info("Calling %s with Google Search Grounding on '%s'…", MODEL_REASONING, TEST_COMPANY)
+    logger.info("Calling %s with Google Search Grounding on '%s'\u2026", MODEL_GROUNDING, TEST_COMPANY)
     try:
         response = client.models.generate_content(
-            model=MODEL_REASONING,
+            model=MODEL_GROUNDING,
             contents=TEST_PROMPT,
             config=types.GenerateContentConfig(
                 tools=[types.Tool(google_search=types.GoogleSearch())],
