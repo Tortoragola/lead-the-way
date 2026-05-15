@@ -297,18 +297,8 @@ def run_agent(
                 pii_warnings=[],
             )
 
-        # Batch confirmation check BEFORE executing outreach calls
-        outreach_in_turn = sum(
-            1 for p in fc_parts if p.function_call.name == "generate_outreach_draft"
-        )
-        if not confirmed_batch and (len(ctx.outreach_drafts) + outreach_in_turn) >= BATCH_CONFIRM_THRESHOLD:
-            return AgentRunResult(
-                answer="",
-                tool_calls=tool_calls,
-                outreach_drafts=ctx.outreach_drafts,
-                needs_batch_confirm=True,
-                pending_outreach_count=len(ctx.outreach_drafts) + outreach_in_turn,
-            )
+        # NOTE: Batch confirmation gate removed — campaigns auto-generate all drafts
+        # without human intervention (Phase 1: Campaign Automation)
 
         # Append model's response to conversation history
         contents.append(types.Content(role="model", parts=parts))

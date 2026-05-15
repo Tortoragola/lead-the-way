@@ -90,3 +90,23 @@ CREATE TABLE IF NOT EXISTS audit_log (
 
 CREATE INDEX IF NOT EXISTS idx_audit_event_time  ON audit_log (event_time DESC);
 CREATE INDEX IF NOT EXISTS idx_audit_event_type  ON audit_log (event_type);
+
+-- ── Campaign Automation (Phase 1) ───────────────────────────────────────────
+-- Stores campaign metadata and generated email drafts.
+-- Status: draft (created), ready (drafts generated), executing (running), completed (sent).
+CREATE TABLE IF NOT EXISTS campaigns (
+    id                  UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
+    name                VARCHAR(255)    NOT NULL,
+    query               TEXT            NOT NULL,
+    min_intent_score    INTEGER         NOT NULL DEFAULT 5,
+    status              VARCHAR(50)     NOT NULL DEFAULT 'draft',
+    scheduled_at        VARCHAR(50),    -- "daily 09:00", "weekly Monday", "manual", or NULL
+    draft_count         INTEGER         NOT NULL DEFAULT 0,
+    results_json        JSONB,          -- Array of OutreachDraft objects
+    created_at          TIMESTAMP       NOT NULL DEFAULT NOW(),
+    updated_at          TIMESTAMP       NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_camp_status       ON campaigns (status);
+CREATE INDEX IF NOT EXISTS idx_camp_created_at   ON campaigns (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_camp_scheduled_at ON campaigns (scheduled_at);

@@ -78,3 +78,86 @@ def write_audit_log(
     except Exception:
         pass  # Audit log is non-blocking; never crash the main flow
 
+
+# ── Campaign management (Phase 1: Campaign Automation) ──────────────────────
+
+def create_campaign(campaign_dict: dict) -> dict | None:
+    """Create a new campaign in Supabase.
+
+    Args:
+        campaign_dict: Campaign data from Campaign.to_dict()
+
+    Returns:
+        Created campaign record or None if failed.
+    """
+    if not db_available():
+        return None
+    try:
+        client = get_supabase_client()
+        result = client.table("campaigns").insert(campaign_dict).execute()
+        return result.data[0] if result.data else None
+    except Exception as e:
+        print(f"❌ Failed to create campaign: {e}")
+        return None
+
+
+def get_campaign(campaign_id: str) -> dict | None:
+    """Retrieve a campaign by ID from Supabase.
+
+    Args:
+        campaign_id: Campaign UUID.
+
+    Returns:
+        Campaign record or None if not found/failed.
+    """
+    if not db_available():
+        return None
+    try:
+        client = get_supabase_client()
+        result = client.table("campaigns").select("*").eq("id", campaign_id).execute()
+        return result.data[0] if result.data else None
+    except Exception as e:
+        print(f"❌ Failed to retrieve campaign {campaign_id}: {e}")
+        return None
+
+
+def update_campaign_status(campaign_id: str, updates: dict) -> bool:
+    """Update campaign status and metadata.
+
+    Args:
+        campaign_id: Campaign UUID.
+        updates: Dict with keys like "status", "draft_count", "results_json", "updated_at".
+
+    Returns:
+        True if successful, False otherwise.
+    """
+    if not db_available():
+        return False
+    try:
+        client = get_supabase_client()
+        client.table("campaigns").update(updates).eq("id", campaign_id).execute()
+        return True
+    except Exception as e:
+        print(f"❌ Failed to update campaign {campaign_id}: {e}")
+        return False
+
+
+def list_campaigns(limit: int = 50) -> list[dict]:
+    """Get all campaigns, ordered by created_at DESC.
+
+    Args:
+        limit: Max number of campaigns to return.
+
+    Returns:
+        List of campaign records.
+    """
+    if not db_available():
+        return []
+    try:
+        client = get_supabase_client()
+        result = client.table("campaigns").select("*").order("created_at", desc=True).limit(limit).execute()
+        return result.data or []
+    except Exception as e:
+        print(f"❌ Failed to list campaigns: {e}")
+        return []
+

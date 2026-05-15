@@ -13,7 +13,8 @@ import streamlit as st
 
 from ltw.config import get_settings
 from ltw.data import load_default_csv, load_from_supabase
-from ltw.db import db_available
+from ltw.db import db_available, get_supabase_client, create_campaign, list_campaigns, update_campaign_status
+from ltw.campaign import Campaign, OutreachDraft
 from ltw.filters import filter_dataframe
 from ltw.llm.agent_loop import AgentRunResult, run_agent
 from ltw.llm.client import get_client
@@ -23,6 +24,7 @@ from ltw.llm.outreach import generate_outreach
 from ltw.models import CompanyIntentProfile, IntentLevel
 from ltw.security import check_prompt_injection
 from ltw import state as S
+from ltw.jobs import get_scheduler, schedule_campaign, execute_campaign
 
 
 INTENT_CACHE_TTL = timedelta(hours=24)
@@ -108,7 +110,7 @@ col_c.metric("Ülke Sayısı", df_full["Country"].nunique() if "Country" in df_f
 
 st.markdown("---")
 
-tab_filter, tab_agent = st.tabs(["📊 Filtrele & Outreach", "🤖 AI Asistan (Çok Adımlı)"])
+tab_filter, tab_agent, tab_campaign = st.tabs(["📊 Filtrele & Outreach", "🤖 AI Asistan (Çok Adımlı)", "📅 Kampanya Yöneticisi"])
 
 # ═══════════════════════════════════════════════════════════════════════════
 # TAB 1 — Filter + Outreach (existing UI)
@@ -420,3 +422,189 @@ with tab_agent:
                      mime="text/plain",
                      key=f"dl_agent_{i}",
                  )
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# TAB 3 — Campaign Manager (Phase 1: Autonomous Campaign Automation)
+# ═══════════════════════════════════════════════════════════════════════════
+with tab_campaign:
+ if not db_available():
+     st.error("❌ Supabase bağlantısı yok. Kampanya yöneticisi kullanabilmek için Supabase ayarlanmalıdır.")
+     st.stop()
+
+ st.markdown(
+     "**24/7 Otonom Kampanya Yönetimi.** "
+     "Doğal dilde filtre yapın, otomatik niyet analizi ve mail taslağı oluşturun, "
+     "zamanlanmış çalıştırma ile ilgili kişileri keşfedin."
+ )
+
+ # ── Campaign creation form ──────────────────────────────────────────────
+ st.subheader("📝 Yeni Kampanya Oluştur")
+
+ campaign_cols = st.columns([2, 1])
+ with campaign_cols[0]:
+     campaign_name = st.text_input(
+         "Kampanya Adı",
+         placeholder="Örn: Eylül Fintech Kampanyası",
+         help="Bu kampanyanın adı (raporlamada görüntülenecek)."
+     )
+
+ with campaign_cols[1]:
+     min_score = st.number_input(
+         "Min. Niyet Skoru",
+         min_value=1,
+         max_value=10,
+         value=5,
+         help="Bu skor altındaki şirketler taslak oluşturulmayacak."
+     )
+
+ campaign_query = st.text_area(
+     "Filtre Sorgusu (Doğal Dil)",
+     placeholder="Örn: İstanbul'da fintech sektöründe 100-1000 çalışan VP'ler",
+     height=60,
+     help="Doğal dilde yazın; Gemini Function Calling otomatik filtre oluşturacak."
+ )
+
+ schedule_options = {
+     "Manuel": "manual",
+     "Her Gün 09:00": "daily 09:00",
+     "Her Pazartesi 09:00": "weekly Monday",
+     "Her Çarşamba 09:00": "weekly Wednesday",
+     "Her Cuma 09:00": "weekly Friday",
+ }
+ schedule_display = st.selectbox(
+     "Çalıştırma Zamanı",
+     options=list(schedule_options.keys()),
+     help="Manuel: Anında; Diğerleri: Belirtilen saatte otomatik çalışacak (APScheduler)."
+ )
+ schedule_cron = schedule_options[schedule_display]
+
+ # ── Create campaign button ──────────────────────────────────────────────
+ if st.button("🚀 Kampanya Oluştur & Zamanla", type="primary", disabled=not campaign_name or not campaign_query):
+     with st.spinner("Kampanya oluşturuluyor…"):
+         campaign = Campaign(
+             name=campaign_name,
+             query=campaign_query,
+             min_intent_score=min_score,
+             scheduled_at=schedule_cron if schedule_cron != "manual" else None,
+             status="draft"
+         )
+         campaign_dict = campaign.to_dict()
+         created = create_campaign(campaign_dict)
+
+         if created:
+             campaign_id = created["id"]
+             scheduler = get_scheduler()
+
+             # Schedule the campaign if not manual
+             if schedule_cron != "manual":
+                 schedule_campaign(scheduler, campaign_id, schedule_cron)
+                 st.success(f"✅ Kampanya oluşturuldu ve **{schedule_display}** için zamanlandı.")
+             else:
+                 st.success(f"✅ Kampanya oluşturuldu (manuel mod).")
+
+             # Save campaign ID for quick access
+             st.session_state["last_campaign_id"] = campaign_id
+         else:
+             st.error("❌ Kampanya oluşturulamadı. Lütfen daha sonra tekrar deneyin.")
+
+ st.markdown("---")
+
+ # ── Active campaigns list ───────────────────────────────────────────────
+ st.subheader("📊 Aktif Kampanyalar")
+
+ campaigns = list_campaigns(limit=20)
+ if not campaigns:
+     st.info("Henüz kampanya oluşturulmadı.")
+ else:
+     for camp in campaigns:
+         camp_id = camp.get("id", "")
+         camp_name = camp.get("name", "—")
+         camp_status = camp.get("status", "draft")
+         camp_draft_count = camp.get("draft_count", 0)
+         camp_scheduled = camp.get("scheduled_at", "—")
+         camp_created = camp.get("created_at", "—")
+
+         col1, col2, col3, col4 = st.columns([2, 1, 1, 1])
+
+         with col1:
+             # Status badge
+             status_color = {"draft": "🔵", "ready": "🟢", "executing": "🟡", "completed": "✅"}
+             status_badge = status_color.get(camp_status, "⚪")
+             st.markdown(f"**{status_badge} {camp_name}**")
+             st.caption(f"ID: {camp_id[:8]}...")
+
+         with col2:
+             st.metric("Taslaklar", camp_draft_count)
+
+         with col3:
+             st.metric("Durum", camp_status)
+
+         with col4:
+             st.metric("Zamanla", camp_scheduled if camp_scheduled else "Manuel")
+
+         # Action buttons
+         action_col1, action_col2, action_col3 = st.columns(3)
+
+         with action_col1:
+             if st.button("▶️ Test Çalıştır", key=f"test_run_{camp_id}", help="Kampanyayı hemen çalıştır"):
+                 with st.spinner(f"'{camp_name}' çalıştırılıyor…"):
+                     try:
+                         execute_campaign(camp_id, gemini_client, df_full)
+                         st.rerun()
+                     except Exception as e:
+                         st.error(f"Kampanya çalıştırma hatası: {e}")
+
+         with action_col2:
+             if camp_status == "ready" and camp_draft_count > 0:
+                 # Generate CSV download
+                 db_client = get_supabase_client()
+                 result = db_client.table("campaigns").select("results_json").eq("id", camp_id).execute()
+                 if result.data and result.data[0].get("results_json"):
+                     drafts_data = result.data[0]["results_json"].get("drafts", [])
+                     if drafts_data:
+                         import io
+                         import csv
+
+                         output = io.StringIO()
+                         fieldnames = ["first_name", "last_name", "email", "company_name", "subject", "body", "intent_score", "industry"]
+                         writer = csv.DictWriter(output, fieldnames=fieldnames)
+                         writer.writeheader()
+
+                         for draft in drafts_data:
+                             writer.writerow({k: draft.get(k, "") for k in fieldnames})
+
+                         csv_bytes = output.getvalue().encode("utf-8-sig")
+                         st.download_button(
+                             label="⬇️ CSV İndir",
+                             data=csv_bytes,
+                             file_name=f"{camp_name.replace(' ', '_')}_drafts.csv",
+                             mime="text/csv",
+                             key=f"csv_{camp_id}"
+                         )
+
+         with action_col3:
+             if st.button("❌ Sil", key=f"delete_{camp_id}", help="Kampanyayı ve taslakları sil"):
+                 try:
+                     get_supabase_client().table("campaigns").delete().eq("id", camp_id).execute()
+                     st.success(f"✅ Kampanya silindi.")
+                     st.rerun()
+                 except Exception as e:
+                     st.error(f"Silme hatası: {e}")
+
+         st.divider()
+
+ st.markdown("---")
+
+ # ── APScheduler info ───────────────────────────────────────────────────
+ with st.expander("ℹ️ APScheduler Durumu", expanded=False):
+     try:
+         scheduler = get_scheduler()
+         st.markdown(f"**Scheduler çalışıyor:** {scheduler.running}")
+         jobs = scheduler.get_jobs()
+         st.markdown(f"**Zamanlanmış İşler:** {len(jobs)}")
+         if jobs:
+             for job in jobs:
+                 st.markdown(f"- `{job.id}` → Sonraki çalışma: {job.next_run_time}")
+     except Exception as e:
+         st.warning(f"⚠️ Scheduler bilgisi alınamadı: {e}")
