@@ -30,8 +30,22 @@ from .intent import enrich_intent
 from .outreach import generate_outreach
 from .tools import get_agent_tools
 
-MAX_TURNS = 6
+MAX_TURNS = 12
 BATCH_CONFIRM_THRESHOLD = 5
+
+# Tools whose results are pure data fetches — agent should use Lite model on the
+# NEXT turn to fill args / summarize before deciding the next reasoning step.
+_DATA_FETCH_TOOLS: frozenset[str] = frozenset({
+    "filter_dataframe",
+    "search_people",
+    "get_companies_by_sector",
+    "get_high_intent_leads",
+    "get_contacts_for_company",
+    "search_companies",
+    "count_leads",
+    "get_distinct_values",
+    "get_company_details",
+})
 
 
 # ── Result types ─────────────────────────────────────────────────────────────
@@ -68,33 +82,56 @@ class _AgentContext:
 
 # ── System prompt ─────────────────────────────────────────────────────────────
 
-def _build_system_prompt(db_mode: bool) -> str:
+def _build_system_prompt(db_mode: bool) -> str:  # noqa: C901
     if db_mode:
-        data_tools = (
-            "- get_companies_by_sector: Sektör + ülke + niyet seviyesine göre şirket filtrele\n"
-            "- get_high_intent_leads: Yüksek niyet skorlu şirketleri getir\n"
-            "- get_contacts_for_company: Bir şirketteki kişileri getir (unique_id ile)\n"
-            "- search_companies: Şirket adında arama yap\n"
-        )
+        data_section = """## AVAILABLE DATA TOOLS (DB mode)
+- search_people: Search contacts by title, seniority, department, country, industry.
+  USE THIS FIRST for people searches. Filterable columns:
+    title (ILIKE), seniority (exact: C-Level/VP/Director/Manager/Senior/Entry),
+    department (ILIKE), country (exact), industry (ILIKE).
+- count_leads: Count matching contacts without fetching. Use before a broad search.
+- get_distinct_values: Discover valid values in a column (country/industry/seniority/department/city).
+- get_companies_by_sector: Filter companies by sector keyword + optional country + intent level.
+- get_high_intent_leads: Companies with intent_score >= min_score.
+- get_contacts_for_company: People at a company (requires unique_id from a prior company search).
+- search_companies: ILIKE search on company name.
+- get_company_details: Full profile of one company by unique_id."""
     else:
-        data_tools = (
-            "- filter_dataframe: CSV veritabanını doğal dil kriterlerine göre filtrele\n"
-        )
+        data_section = """## AVAILABLE DATA TOOLS (CSV mode)
+- filter_dataframe: Filter the B2B contact CSV by natural-language criteria."""
 
-    return (
-        "Sen Lead The Way AI SDR asistanısın. Kullanıcının B2B satış hedeflerini "
-        "gerçekleştirmek için elindeki araçları sıralı veya paralel olarak çağırırsın.\n\n"
-        "Kullanabileceğin araçlar:\n"
-        + data_tools
-        + "- enrich_company_intent: Şirket için Google Search ile gerçek niyet sinyali bul (24h cache uygula)\n"
-        "- generate_outreach_draft: Kişiye özel soğuk satış maili taslağı oluştur\n\n"
-        "Kurallar:\n"
-        "- Birden fazla şirket/kişi için araçları paralel çağır (aynı anda birden fazla function_call).\n"
-        "- 5 veya daha fazla outreach draft oluşturmadan önce kullanıcıdan onay bekle.\n"
-        "- Yanıtlarını Türkçe ver.\n"
-        "- Hallucination yapma; yalnızca araç sonuçlarındaki verileri kullan.\n"
-        "- Araç sonuçlarını özetle; ham JSON döndürme."
-    )
+    return f"""You are Lead The Way, an AI B2B Sales Development Representative assistant.
+Your job: find relevant contacts in the database and generate personalized cold outreach emails.
+
+{data_section}
+
+## ENRICHMENT & OUTREACH TOOLS
+- enrich_company_intent: Fetch real purchase-intent signals via Google Search (24-hour cache).
+- generate_outreach_draft: Generate a personalized cold email for one contact.
+
+## SEARCH STRATEGY — MANDATORY BEFORE EVERY PEOPLE SEARCH
+Step 1 EXPAND: Before searching, reason about ALL synonyms for the user's request:
+  - Titles: "sales manager" → head of sales, VP sales, sales director, commercial manager
+  - Departments: "marketing" → growth, demand generation, brand
+  - Seniority: map user terms → C-Level, VP, Director, Manager, Senior, Entry
+  - Industries: "fintech" → financial technology, financial services, banking technology
+Step 2 COVER: Call search_people multiple times (one per major synonym variant). Be broad.
+Step 3 DEDUPLICATE: Remove contacts with the same email before presenting results.
+
+## STANDARD WORKFLOW
+1. Use count_leads first if unsure how many results to expect.
+2. Search for contacts (with synonym expansion). If zero results, widen the search and retry.
+3. Present a clear summary: name, title, company, country, email.
+4. If user wants intent analysis: call enrich_company_intent — MAX 4 parallel calls (rate limit).
+5. If user wants emails: call generate_outreach_draft — MAX 4 parallel calls (rate limit).
+6. If ≥5 outreach drafts needed, ask the user for confirmation first.
+7. On follow-up questions, use conversation context — do not re-search from scratch.
+
+## HARD RULES
+- Never hallucinate. Only use data returned by tools. Never invent names, emails, or companies.
+- Never fire more than 4 enrich_company_intent or generate_outreach_draft calls in one batch.
+- unique_id for get_contacts_for_company comes from company rows — never guess it.
+- Always respond to the user in Turkish."""
 
 
 # ── Tool dispatcher ───────────────────────────────────────────────────────────
@@ -204,8 +241,46 @@ def _dispatch_tool(name: str, args: dict, ctx: _AgentContext) -> str:
             return json.dumps({"total": res.total, "rows": [r.__dict__ for r in res.rows]},
                               ensure_ascii=False, default=str)
 
+        elif name == "search_people":
+            from ..llm.semantic import search_people
+            res = search_people(
+                title=args.get("title"),
+                seniority=args.get("seniority"),
+                department=args.get("department"),
+                country=args.get("country"),
+                industry=args.get("industry"),
+                limit=int(args.get("limit", 50)),
+            )
+            return json.dumps({"total": res.total, "rows": [r.__dict__ for r in res.rows]},
+                              ensure_ascii=False, default=str)
+
+        elif name == "count_leads":
+            from ..llm.semantic import count_leads
+            res = count_leads(
+                title=args.get("title"),
+                seniority=args.get("seniority"),
+                department=args.get("department"),
+                country=args.get("country"),
+                industry=args.get("industry"),
+            )
+            return json.dumps({"count": res.rows[0]["count"] if res.rows else 0},
+                              ensure_ascii=False)
+
+        elif name == "get_company_details":
+            from ..llm.semantic import get_company_details
+            res = get_company_details(unique_id=args.get("unique_id", ""))
+            return json.dumps({"total": res.total, "rows": [r.__dict__ for r in res.rows]},
+                              ensure_ascii=False, default=str)
+
+        elif name == "get_distinct_values":
+            from ..llm.semantic import get_distinct_values
+            res = get_distinct_values(column=args.get("column", ""))
+            values = res.rows[0]["values"] if res.rows else []
+            return json.dumps({"column": args.get("column"), "values": values},
+                              ensure_ascii=False)
+
         else:
-            return json.dumps({"error": f"Bilinmeyen araç: {name}"})
+            return json.dumps({"error": f"Unknown tool: {name}"})
 
     except Exception as exc:
         return json.dumps({"error": str(exc)})
@@ -219,16 +294,19 @@ def run_agent(
     df: pd.DataFrame | None = None,
     intent_cache: dict | None = None,
     confirmed_batch: bool = False,
+    conversation_history: list[dict] | None = None,
 ) -> AgentRunResult:
     """Run the multi-step agent loop for a single user query.
 
     Args:
-        client:           Gemini client.
-        query:            Natural-language query from the user.
-        df:               DataFrame for CSV mode; None for DB mode.
-        intent_cache:     Mutable dict (company_name.lower() → CompanyIntentProfile).
-                          Updated in-place so the UI can persist it in session_state.
-        confirmed_batch:  If True, batch confirmation already given — proceed even if ≥5 drafts.
+        client:               Gemini client.
+        query:                Natural-language query from the user.
+        df:                   DataFrame for CSV mode; None for DB mode.
+        intent_cache:         Mutable dict (company_name.lower() → CompanyIntentProfile).
+                              Updated in-place so the UI can persist it in session_state.
+        confirmed_batch:      If True, batch confirmation already given — proceed even if ≥5 drafts.
+        conversation_history: Past messages as list of {"role": "user"|"assistant", "content": str}.
+                              Injected into the contents list before the current query.
     """
     if intent_cache is None:
         intent_cache = {}
@@ -251,24 +329,45 @@ def run_agent(
     tool_set = get_agent_tools(db_mode)
     system_prompt = _build_system_prompt(db_mode)
 
-    contents: list[types.Content] = [
-        types.Content(
-            role="user",
-            parts=[types.Part(text=f"{system_prompt}\n\nKullanıcı: {query}")],
+    # Build conversation contents: inject history then current query
+    contents: list[types.Content] = []
+    for msg in (conversation_history or []):
+        role = "user" if msg.get("role") == "user" else "model"
+        contents.append(
+            types.Content(role=role, parts=[types.Part(text=msg.get("content", ""))])
         )
-    ]
+    contents.append(
+        types.Content(role="user", parts=[types.Part(text=query)])
+    )
 
     tool_calls: list[ToolCallRecord] = []
-    last_was_function_response = False
+    # Track which tools were called in the previous turn to decide model for next turn.
+    # Use Lite only after a pure data-fetch turn; use Flash for initial and reasoning turns.
+    _last_turn_tool_names: set[str] = set()
 
     for _turn in range(MAX_TURNS):
-        model = MODEL_EXTRACTION if last_was_function_response else MODEL_REASONING
+        # Use Lite only if the previous turn was entirely data-fetch tools.
+        use_lite = bool(_last_turn_tool_names) and _last_turn_tool_names.issubset(_DATA_FETCH_TOOLS)
+        model = MODEL_EXTRACTION if use_lite else MODEL_REASONING
+
+        # On the final allowed turn, switch to AUTO so the model can produce a text answer
+        # instead of being forced into another function call with nowhere to go.
+        # On all other turns, use ANY to prevent the model from dropping into chit-chat
+        # mid-chain when it should still be calling tools.
+        is_last_turn = (_turn == MAX_TURNS - 1)
+        fc_mode = "AUTO" if is_last_turn else "ANY"
 
         try:
             response = client.models.generate_content(
                 model=model,
                 contents=contents,
-                config=types.GenerateContentConfig(tools=tool_set),
+                config=types.GenerateContentConfig(
+                    system_instruction=system_prompt,
+                    tools=tool_set,
+                    tool_config=types.ToolConfig(
+                        function_calling_config=types.FunctionCallingConfig(mode=fc_mode),
+                    ),
+                ),
             )
         except Exception as exc:
             return AgentRunResult(
@@ -356,10 +455,13 @@ def run_agent(
 
         # Send all FunctionResponses back in one turn
         contents.append(types.Content(role="user", parts=function_response_parts))
-        last_was_function_response = True
+        _last_turn_tool_names = {p.function_call.name for p in fc_parts}
 
     return AgentRunResult(
-        answer="Maksimum tur sayısına (6) ulaşıldı. Sorgunuzu daha spesifik hale getirin.",
+        answer=(
+            f"Maksimum tur sayısına ({MAX_TURNS}) ulaşıldı. "
+            "Lütfen görevinizi daha küçük adımlara bölün."
+        ),
         tool_calls=tool_calls,
         outreach_drafts=ctx.outreach_drafts,
     )

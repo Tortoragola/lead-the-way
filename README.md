@@ -182,6 +182,53 @@ PRODUCT_DESCRIPTION = (
 
 ---
 
+## Security & Compliance
+
+### Guardrails (OWASP LLM01 — Prompt Injection)
+
+All user input passes through a three-layer pipeline before reaching Gemini:
+
+| Layer | File | Speed | Description |
+|---|---|---|---|
+| 1. Ban-substrings | `ltw/security/guardrails.py` | < 0.1 ms | Blocks known harmful phrases (data-exfiltration attempts, jailbreak triggers) |
+| 2. Regex injection scanner | `ltw/security/__init__.py` | < 1 ms | Heuristic patterns: instruction-override, SQL injection, system-prompt tags |
+| 3. LLM Guard (optional) | `ltw/security/guardrails.py` | ~50-200 ms | ML-based `PromptInjectionV2` scanner from Protect AI — active if `pip install llm-guard` |
+
+Any blocked query returns an error to the user and is recorded in `audit_log` with `injection_flagged=true`.
+
+### Data Access
+
+- The app only connects to Supabase using the **anon key** (row-level read access, no writes to sensitive tables).
+- Every semantic-layer SQL query is **fully parameterized** — the LLM never composes SQL strings.
+- `get_distinct_values` uses a hardcoded column **allowlist** before f-stringing the column name into the query.
+- Every `people` table query includes `WHERE opt_out = FALSE` — opted-out contacts are never surfaced to the LLM or the user.
+
+### Audit Log
+
+Every agent run writes a row to the `audit_log` table in Supabase:
+
+| Column | Description |
+|---|---|
+| `event_type` | `filter`, `outreach_draft` |
+| `company_name` | Company queried (truncated at 255 chars) |
+| `person_email` | **SHA-256 hash** of the email — never the raw address |
+| `query_summary` | First 200 chars of the user query |
+| `model_used` | `gemini-3-flash-preview` or `gemini-3.1-flash-lite` |
+| `injection_flagged` | Boolean — true if the query was blocked by guardrails |
+
+### KVKK / ETK (Turkish Data Protection)
+
+- Contact data is used only for the purpose for which it was collected (B2B sales outreach).
+- Raw email addresses are **never stored** in the audit log (hashed only).
+- Opted-out contacts are filtered at the SQL level — they cannot be retrieved via any agent tool.
+- Outreach emails are **drafts only** — no emails are sent by the platform.
+
+### PII Masking — intentionally not implemented
+
+Lead The Way's core value is surfacing contact information (names, emails, titles) to the sales user. Masking PII before sending to the LLM would break the product. The security boundary is the **access control layer** (anon key + row-level security) and the **opt_out filter**, not in-transit masking.
+
+---
+
 ## Lisans
 
 MIT

@@ -5,6 +5,9 @@ The check is a fast regex/heuristic — adds < 1 ms latency, no model downloads.
 
 Note: PII masking is intentionally omitted. Lead The Way's core value is
 providing contact data; masking it would break the product.
+
+Extended guardrails (ban-substrings + optional LLM Guard) are in
+``ltw.security.guardrails.run_guardrails``.
 """
 from __future__ import annotations
 
@@ -12,8 +15,8 @@ import re
 from dataclasses import dataclass
 
 
-# ── Prompt-injection patterns (OWASP LLM01 mitigations) ──────────────────────
-_INJECTION_PATTERNS = [
+# ── Prompt-injection patterns (OWASP LLM01 mitigations) ──────────────────────────
+INJECTION_PATTERNS = [
     # Classic jailbreak triggers
     re.compile(r"\bignore\s+(all\s+)?previous\s+instructions?\b", re.I),
     re.compile(r"\bforget\s+(all\s+)?previous\s+instructions?\b", re.I),
@@ -30,6 +33,9 @@ _INJECTION_PATTERNS = [
     re.compile(r"'\s*OR\s+'?\d+'?\s*=\s*'?\d+", re.I),
 ]
 
+# Keep private alias for backwards compat with existing callers
+_INJECTION_PATTERNS = INJECTION_PATTERNS
+
 
 @dataclass(frozen=True)
 class GuardResult:
@@ -42,11 +48,14 @@ def check_prompt_injection(text: str) -> GuardResult:
 
     Returns GuardResult(safe=True) if clean, GuardResult(safe=False, reason=…) if suspicious.
     """
-    for pattern in _INJECTION_PATTERNS:
+    for pattern in INJECTION_PATTERNS:
         m = pattern.search(text)
         if m:
             return GuardResult(safe=False, reason=f"Şüpheli girdi tespit edildi: '{m.group()[:60]}'")
     return GuardResult(safe=True)
 
 
+# Re-export extended guardrails for convenience
+from .guardrails import GuardrailsResult, run_guardrails  # noqa: E402
 
+__all__ = ["GuardResult", "GuardrailsResult", "check_prompt_injection", "run_guardrails"]

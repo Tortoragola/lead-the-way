@@ -60,6 +60,10 @@ class CompanyIntentProfile(BaseModel):
         default_factory=list,
         description="Sinyallerin dayandığı kaynak URL'leri.",
     )
+    grounding_available: bool = Field(
+        default=True,
+        description="False if Google Search Grounding returned no chunks (e.g. free-tier limitation).",
+    )
     last_intent_update: datetime = Field(default_factory=datetime.utcnow)
 
     @staticmethod
