@@ -9,22 +9,22 @@ FILTER_DATAFRAME_TOOL = types.Tool(
         types.FunctionDeclaration(
             name="filter_dataframe",
             description=(
-                "B2B iletişim veritabanını verilen kriterlere göre filtreler. "
-                "Kullanıcının doğal dildeki isteğini sütun bazlı filtre kurallarına dönüştür."
+                "Filter the B2B contact database by the given criteria. "
+                "Convert the user's natural-language request into column-based filter rules."
             ),
             parameters=types.Schema(
                 type=types.Type.OBJECT,
                 properties={
                     "filters": types.Schema(
                         type=types.Type.ARRAY,
-                        description="Uygulanacak filtre kuralları listesi",
+                        description="List of filter rules to apply.",
                         items=types.Schema(
                             type=types.Type.OBJECT,
                             properties={
                                 "column": types.Schema(
                                     type=types.Type.STRING,
                                     description=(
-                                        "Filtrelenecek sütun adı. Geçerli değerler: "
+                                        "Column name to filter on. Valid values: "
                                         "First Name, Last Name, Title, Company Name, Email, "
                                         "Seniority, Departments, Sub Departments, Industry, "
                                         "City, State, Country, Company City, Company Country, "
@@ -34,11 +34,11 @@ FILTER_DATAFRAME_TOOL = types.Tool(
                                 "operator": types.Schema(
                                     type=types.Type.STRING,
                                     description=(
-                                        "Filtre operatörü. "
-                                        "KURAL: Title, Departments, Industry, Technologies, Keywords için "
-                                        "DAIMA `contains` kullan — asla `equals` değil (değerler birleşik olabilir). "
-                                        "Country, Seniority için `equals` veya `in_list` kullanabilirsin. "
-                                        "Sayısal karşılaştırmalar için `greater_than` / `less_than`."
+                                        "Filter operator. "
+                                        "RULE: For Title, Departments, Industry, Technologies, Keywords "
+                                        "ALWAYS use `contains` — never `equals` (values may be combined). "
+                                        "For Country and Seniority use `equals` or `in_list`. "
+                                        "For numeric comparisons use `greater_than` / `less_than`."
                                     ),
                                     enum=[
                                         "contains", "not_contains", "equals", "not_equals",
@@ -49,11 +49,11 @@ FILTER_DATAFRAME_TOOL = types.Tool(
                                 "value": types.Schema(
                                     type=types.Type.STRING,
                                     description=(
-                                        "Filtre değeri. in_list için virgülle ayrılmış değerler. "
-                                        "Türkçe terimler İngilizce karşılıklarıyla eşleştirilir "
-                                        "(örn. 'pazarlama' → 'marketing', 'müdür' → 'manager'). "
-                                        "Unvan+departman kombinasyonunda tam ifade kullan: "
-                                        "örn. 'Marketing Manager' ('Manager' + ayrı 'Marketing' değil)."
+                                        "Filter value. For in_list use comma-separated values. "
+                                        "Always use English terms "
+                                        "(e.g. 'pazarlama' → 'marketing', 'müdür' → 'manager'). "
+                                        "For title+department combos use the full expression: "
+                                        "e.g. 'Marketing Manager' (not 'Manager' + separate 'Marketing')."
                                     ),
                                 ),
                             },
@@ -63,9 +63,9 @@ FILTER_DATAFRAME_TOOL = types.Tool(
                     "logic": types.Schema(
                         type=types.Type.STRING,
                         description=(
-                            "Filtreler arası mantık operatörü. "
-                            "Hem Title hem Departments filtreliyorsan OR kullan; "
-                            "bağımsız kriterler için (Country + Seniority gibi) AND kullan."
+                            "Logical operator between filters. "
+                            "Use OR when filtering both Title and Departments; "
+                            "use AND for independent criteria (e.g. Country + Seniority)."
                         ),
                         enum=["AND", "OR"],
                     ),
@@ -82,24 +82,24 @@ ENRICH_COMPANY_INTENT_TOOL = types.Tool(
         types.FunctionDeclaration(
             name="enrich_company_intent",
             description=(
-                "Bir şirket için Google Search Grounding ile gerçek satın alma niyeti "
-                "sinyallerini topla ve 1-10 arası skor üret. Aynı şirket için 24 saat "
-                "içinde tekrar çağrılmamalıdır."
+                "Collect real purchase-intent signals for a company via Google Search Grounding "
+                "and produce a score from 1 to 10. Should not be called again for the same company "
+                "within 24 hours."
             ),
             parameters=types.Schema(
                 type=types.Type.OBJECT,
                 properties={
                     "unique_id": types.Schema(
                         type=types.Type.STRING,
-                        description="Şirketin benzersiz kimliği (veya normalize edilmiş adı).",
+                        description="Unique company identifier (or normalized name).",
                     ),
                     "company_name": types.Schema(
                         type=types.Type.STRING,
-                        description="Şirketin tam adı.",
+                        description="Full company name.",
                     ),
                     "website": types.Schema(
                         type=types.Type.STRING,
-                        description="Şirketin web sitesi veya ülkesi (opsiyonel).",
+                        description="Company website or country (optional).",
                     ),
                 },
                 required=["unique_id", "company_name"],
@@ -114,21 +114,21 @@ ENRICH_COMPANY_INTENT_TOOL = types.Tool(
 _GENERATE_OUTREACH_DRAFT_DECL = types.FunctionDeclaration(
     name="generate_outreach_draft",
     description=(
-        "Bir kişi için kişiselleştirilmiş soğuk satış maili taslağı oluştur. "
-        "Aynı şirket için daha önce enrich_company_intent çağrıldıysa, "
-        "niyet sinyalleri otomatik olarak maile eklenir."
+        "Generate a personalized cold sales email draft for a contact. "
+        "If enrich_company_intent was previously called for the same company, "
+        "intent signals are automatically included in the email."
     ),
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
-            "first_name":   types.Schema(type=types.Type.STRING, description="Kişinin adı."),
-            "last_name":    types.Schema(type=types.Type.STRING, description="Kişinin soyadı."),
-            "title":        types.Schema(type=types.Type.STRING, description="Unvanı."),
-            "company_name": types.Schema(type=types.Type.STRING, description="Şirket adı."),
-            "industry":     types.Schema(type=types.Type.STRING, description="Sektör."),
-            "city":         types.Schema(type=types.Type.STRING, description="Şehir / Ülke."),
-            "email":        types.Schema(type=types.Type.STRING, description="E-posta adresi."),
-            "employees":    types.Schema(type=types.Type.STRING, description="Çalışan sayısı (metin)."),
+            "first_name":   types.Schema(type=types.Type.STRING, description="Contact's first name."),
+            "last_name":    types.Schema(type=types.Type.STRING, description="Contact's last name."),
+            "title":        types.Schema(type=types.Type.STRING, description="Job title."),
+            "company_name": types.Schema(type=types.Type.STRING, description="Company name."),
+            "industry":     types.Schema(type=types.Type.STRING, description="Industry sector."),
+            "city":         types.Schema(type=types.Type.STRING, description="City / Country."),
+            "email":        types.Schema(type=types.Type.STRING, description="Email address."),
+            "employees":    types.Schema(type=types.Type.STRING, description="Employee count (text)."),
         },
         required=["company_name"],
     ),
@@ -207,7 +207,7 @@ _SEMANTIC_DECLS = [
                 "intent_level": types.Schema(
                     type=types.Type.STRING,
                     description="Intent level filter (optional).",
-                    enum=["DÜŞÜK", "ORTA", "YÜKSEK"],
+                    enum=["LOW", "MEDIUM", "HIGH"],
                 ),
                 "limit": types.Schema(type=types.Type.INTEGER, description="Max results (default: 50)."),
             },
@@ -280,7 +280,7 @@ _SUGGEST_ACTIONS_DECL = types.FunctionDeclaration(
                 type=types.Type.STRING,
                 description=(
                     "One sentence shown above the action choices. "
-                    "Example: 'Tespit ettiğim 6 aday için şu işlemleri yapabilirim:'"
+                    "Example: 'I found 6 candidates. Here is what I can do next:'"
                 ),
             ),
             "actions": types.Schema(
@@ -295,7 +295,7 @@ _SUGGEST_ACTIONS_DECL = types.FunctionDeclaration(
                         ),
                         "label": types.Schema(
                             type=types.Type.STRING,
-                            description="Short Turkish action label shown on the checkbox, e.g. 'Niyet Analizi Yap'.",
+                            description="Short action label shown on the button, e.g. 'Run Intent Analysis'.",
                         ),
                         "description": types.Schema(
                             type=types.Type.STRING,
@@ -305,7 +305,7 @@ _SUGGEST_ACTIONS_DECL = types.FunctionDeclaration(
                             type=types.Type.STRING,
                             description=(
                                 "Placeholder text for the optional detail text box, "
-                                "e.g. 'Hangi şirketler için? (boş bırakırsanız hepsine)'."
+                                "e.g. 'Which companies? (leave blank for all).'."
                             ),
                         ),
                     },

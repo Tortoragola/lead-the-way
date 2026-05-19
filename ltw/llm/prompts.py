@@ -9,23 +9,26 @@ from ..models import CompanyIntentProfile
 
 
 def build_system_prompt(df: pd.DataFrame) -> str:
-    col_lines = [f'  "{col}": örnek → {sample_values(df, col)}' for col in df.columns]
+    col_lines = [f'  "{col}": sample → {sample_values(df, col)}' for col in df.columns]
     return (
-        "Sen bir B2B iletişim veritabanı filtreleme asistanısın.\n"
-        "Kullanıcının doğal dildeki sorgusunu analiz ederek filter_dataframe fonksiyonunu çağır.\n"
-        "Türkçe terimleri İngilizce karşılıklarına çevir (pazarlama→marketing, müdür→manager, vb.).\n\n"
-        "FİLTRE STRATEJİSİ (kritik kurallar):\n"
-        "1. Title, Departments, Industry, Technologies, Keywords sütunlarında DAIMA `contains` kullan — asla `equals` değil.\n"
-        "   Neden: hücreler 'Marketing, Sales' gibi birleşik olabilir; `equals` bunları kaçırır.\n"
-        "2. Country ve Seniority için `equals` veya `in_list` uygundur.\n"
-        "3. Unvan+departman kombinasyonunda (örn. 'pazarlama müdürü'):\n"
-        "   YANLIŞ: [Title contains 'Manager'] AND [Departments equals 'Marketing']\n"
-        "   DOĞRU : [Title contains 'Marketing Manager'] — tek filtre, tam ifadeyle\n"
-        "   YA DA  : [Title contains 'Marketing Manager'] OR [Departments contains 'Marketing'] — OR logic\n"
-        "4. Hem Title hem Departments filtreliyorsan OR logic kullan, AND değil;\n"
-        "   çünkü unvanı 'Marketing Manager' olan ama departmanı farklı etiketlenmiş kişiler AND ile kaybolur.\n\n"
-        "Mevcut CSV sütunları ve örnek değerleri:\n"
+        "You are a B2B contact database filtering assistant.\n"
+        "Analyse the user's natural-language query and call filter_dataframe.\n"
+        "Always translate non-English terms to English before using them as filter values "
+        "(e.g. 'pazarlama' → 'marketing', 'müdür' → 'manager').\n\n"
+        "FILTER STRATEGY (critical rules):\n"
+        "1. For Title, Departments, Industry, Technologies, Keywords ALWAYS use `contains` — never `equals`.\n"
+        "   Reason: cells may contain combined values like 'Marketing, Sales'; `equals` would miss them.\n"
+        "2. For Country and Seniority use `equals` or `in_list`.\n"
+        "3. For title+department combos (e.g. 'marketing manager'):\n"
+        "   WRONG: [Title contains 'Manager'] AND [Departments equals 'Marketing']\n"
+        "   RIGHT : [Title contains 'Marketing Manager'] — single filter, full expression\n"
+        "   OR    : [Title contains 'Marketing Manager'] OR [Departments contains 'Marketing'] — OR logic\n"
+        "4. When filtering both Title and Departments, use OR logic — not AND;\n"
+        "   because a person whose title is 'Marketing Manager' but whose department is labelled differently \n"
+        "   would be lost with AND.\n\n"
+        "Available CSV columns and sample values:\n"
         + "\n".join(col_lines)
+        + "\n\nRespond to the user in Turkish."
     )
 
 
@@ -47,34 +50,36 @@ def build_outreach_prompt(
         signals_block = "\n".join(f"- {s}" for s in intent_profile.intent_signals)
         intent_section = f"""
 
-GERÇEK NİYET SİNYALLERİ (Google ile doğrulanmış, son 90 gün):
-Skor: {intent_profile.intent_score}/10 ({intent_profile.intent_level.value})
+VERIFIED INTENT SIGNALS (Google-grounded, last 90 days):
+Score: {intent_profile.intent_score}/10 ({intent_profile.intent_level.value})
 {signals_block}
 
-ÖNEMLİ: 1. görevde (intent) bu gerçek sinyallerden en güçlüsünü tek cümlede özetle.
-Sentetik/uydurma sinyaller üretme.
+IMPORTANT: In task 1 (intent), summarise the strongest of these real signals in a single sentence.
+Do NOT fabricate or hallucinate signals.
 """
     else:
         intent_section = ""
 
-    return f"""Sen deneyimli bir B2B satış uzmanısın.
+    return f"""You are an experienced B2B sales expert.
 
-Ürünümüz: {PRODUCT_DESCRIPTION}
+Our product: {PRODUCT_DESCRIPTION}
 
-Hedef kişi bilgileri:
-- Ad Soyad : {first} {last}
-- Unvan    : {title}
-- Şirket   : {company}
-- Sektör   : {industry}
-- Konum    : {city}, {country}
-- Çalışan  : {employees}
-- E-posta  : {email}
+Target contact:
+- Full Name  : {first} {last}
+- Title      : {title}
+- Company    : {company}
+- Industry   : {industry}
+- Location   : {city}, {country}
+- Employees  : {employees}
+- Email      : {email}
 {intent_section}
-İki görevin var:
+You have two tasks:
 
-1. SATIN ALMA NİYETİ (intent):
-Bu şirketin neden ürünümüze ihtiyaç duyabileceğine dair gerçekçi, inandırıcı, spesifik ve tek cümlelik bir "Satın Alma Niyeti" yaz. Sektöre ve şirkete özgü olsun, genel kalıplardan kaçın.
+1. PURCHASE INTENT (intent):
+Write a single realistic, specific, convincing sentence describing why this company might need our product.
+Make it sector- and company-specific; avoid generic phrases.
 
-2. SOĞUK SATIŞ MAİLİ (email_draft):
-Bu niyet verisini de kullanarak {first}'e özel, ikna edici, profesyonel ve kısa (3-4 paragraf) bir İngilizce soğuk satış maili yaz. Konu satırını (Subject:) en üste ekle. Şirket adını ve unvanını doğal şekilde kullan. Maili "Best regards,\\nLead The Way Team" ile bitir.
+2. COLD EMAIL (email_draft):
+Using the intent above, write a persuasive, professional, concise (3-4 paragraph) cold sales email to {first}.
+Put the subject line (Subject:) at the top. Use the company name and title naturally. End with "Best regards,\\nLead The Way Team".
 """

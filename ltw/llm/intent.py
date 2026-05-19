@@ -19,35 +19,35 @@ from .client import MODEL_GROUNDING
 
 
 def _build_intent_prompt(company_name: str, website: str, country: str) -> str:
-    return f"""Sen bir B2B satış istihbarat analistisin.
+    return f"""You are a B2B sales intelligence analyst.
 
-Ürünümüz: {PRODUCT_DESCRIPTION}
+Our product: {PRODUCT_DESCRIPTION}
 
-Görev: Aşağıdaki şirket için **son 90 gün** içindeki, ürünümüze yönelik **satın alma niyetine** işaret eden gerçek sinyalleri Google ile araştır.
+Task: Using Google Search, find real signals from the **last 90 days** that indicate **purchase intent**
+toward our product for the company below.
 
-Şirket bilgileri:
-- Ad: {company_name}
-- Web sitesi: {website or '—'}
-- Ülke: {country or '—'}
+Company details:
+- Name   : {company_name}
+- Website: {website or '—'}
+- Country: {country or '—'}
 
-Skor matrisi (zorunlu):
-- 1-4 → genel haberler, özgün bir sinyal yok
-- 5-7 → işe alım, ekip büyütme, yeni ofis/pazar genişlemesi
-- 8-10 → yatırım turu, büyük teknoloji geçişi, satın alma, üst düzey atama
+Score matrix (mandatory):
+- 1-4  → general news, no specific signal found
+- 5-7  → hiring activity, team growth, new office / market expansion
+- 8-10 → funding round, major technology migration, acquisition, C-level hire
 
-Yanıtını **YALNIZCA** aşağıdaki JSON formatında ver, başka hiçbir şey ekleme,
-markdown kod bloğu kullanma:
+Respond with **ONLY** the JSON below — no extra text, no markdown code fences:
 
 {{
-  "intent_score": <1-10 arası tam sayı>,
+  "intent_score": <integer 1-10>,
   "intent_signals": [
-    "Sinyal 1 - tek cümle",
-    "Sinyal 2 - tek cümle"
+    "Signal 1 — one sentence",
+    "Signal 2 — one sentence"
   ]
 }}
 
-Sinyal bulamazsan boş liste döndür ve 1-2 skor ver. Asla uydurma; sadece
-gerçekten bulduğun haber/duyurulara dayan.
+If no signals are found, return an empty list and score 1-2. Never fabricate — base everything
+only on real news or announcements you actually find.
 """
 
 

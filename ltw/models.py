@@ -22,43 +22,43 @@ class FilterRequest(BaseModel):
 class OutreachResult(BaseModel):
     """Structured output for the outreach generator."""
 
-    intent: str = Field(description="Tek cümlelik sentetik satın alma niyeti.")
+    intent: str = Field(description="One-sentence purchase intent statement.")
     email_draft: str = Field(
-        description="Subject: ile başlayan, 3-4 paragraflık İngilizce soğuk satış maili."
+        description="Cold sales email starting with 'Subject:', 3-4 paragraphs in English."
     )
 
 
 # ── Intent layer ─────────────────────────────────────────────────────────────
 
 class IntentLevel(str, Enum):
-    HIGH = "YÜKSEK"
-    MEDIUM = "ORTA"
-    LOW = "DÜŞÜK"
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
 
 
 SignalCategory = Literal["news", "hiring", "funding", "tech", "expansion"]
 
 
 class IntentSignal(BaseModel):
-    text: str = Field(description="Sinyalin kısa açıklaması (tek cümle).")
+    text: str = Field(description="Short description of the signal (one sentence).")
     category: SignalCategory
-    weight: int = Field(ge=1, le=10, description="Sinyalin niyet skoruna katkı ağırlığı (1-10).")
+    weight: int = Field(ge=1, le=10, description="Signal weight contribution to the intent score (1-10).")
 
 
 class CompanyIntentProfile(BaseModel):
     """Real, grounded intent profile for a company."""
 
-    unique_id: str = Field(description="Şirketin benzersiz kimliği veya normalize edilmiş adı.")
+    unique_id: str = Field(description="Unique company identifier or normalized name.")
     company_name: str
-    intent_score: int = Field(ge=1, le=10, description="1-10 arası satın alma niyeti skoru.")
+    intent_score: int = Field(ge=1, le=10, description="Purchase intent score from 1 to 10.")
     intent_level: IntentLevel
     intent_signals: list[str] = Field(
         default_factory=list,
-        description="Kısa cümleler halinde tespit edilen niyet sinyalleri.",
+        description="Detected intent signals as short one-sentence strings.",
     )
     grounding_urls: list[str] = Field(
         default_factory=list,
-        description="Sinyallerin dayandığı kaynak URL'leri.",
+        description="Source URLs backing the intent signals.",
     )
     grounding_available: bool = Field(
         default=True,

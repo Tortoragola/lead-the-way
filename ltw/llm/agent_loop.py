@@ -57,6 +57,7 @@ class ToolCallRecord:
     args: dict
     result_summary: str
     duration_ms: int
+    result_full: str = ""  # full JSON response, not truncated
 
 
 @dataclass
@@ -69,9 +70,12 @@ class AgentRunResult:
     error: str | None = None
     injection_flagged: bool = False
     pii_warnings: list[str] = field(default_factory=list)
+    retriable: bool = False  # True when a rate-limit/overload error was not resolved by retries
     # Populated when the agent calls suggest_actions instead of plain-text questions
     suggested_actions: list[dict] = field(default_factory=list)  # list of action dicts
     actions_context: str = ""  # sentence shown above the action checkboxes
+    # People rows found in this run (populated when suggest_actions is called)
+    last_people_rows: list[dict] = field(default_factory=list)
 
 
 # ── Internal context ─────────────────────────────────────────────────────────
@@ -122,13 +126,24 @@ Step 1 EXPAND: Before searching, reason about ALL synonyms for the user's reques
 Step 2 COVER: Call search_people multiple times (one per major synonym variant). Be broad.
 Step 3 DEDUPLICATE: Remove contacts with the same email before presenting results.
 
+## PRIORITY RULE — EXECUTING SELECTED ACTIONS
+If the user message starts with "Bağlam" followed by "Aşağıdaki işlemleri doğrudan uygula",
+or starts with "Seçilen işlemler:", the user has ALREADY confirmed what they want:
+- Do NOT call suggest_actions again under any circumstances.
+- If you need person data to execute the action: search first, then IMMEDIATELY call the
+  appropriate tool (generate_outreach_draft / enrich_company_intent).
+- If ≥5 outreach drafts are needed, just call generate_outreach_draft — the system
+  intercepts and asks for batch confirmation automatically. Do NOT use suggest_actions
+  as a confirmation proxy.
+
 ## STANDARD WORKFLOW
 1. Use count_leads first if unsure how many results to expect.
 2. Search for contacts (with synonym expansion). If zero results, widen the search and retry.
 3. Present a clear summary: name, title, company, country, email.
 4. If user wants intent analysis: call enrich_company_intent — MAX 4 parallel calls (rate limit).
 5. If user wants emails: call generate_outreach_draft — MAX 4 parallel calls (rate limit).
-6. If ≥5 outreach drafts needed, ask the user for confirmation first.
+6. If ≥5 outreach drafts needed, simply call generate_outreach_draft — the system will
+   pause and ask the user for batch confirmation automatically. Do NOT use suggest_actions.
 7. On follow-up questions, use conversation context — do not re-search from scratch.
 
 ## ACTION SUGGESTIONS
@@ -139,6 +154,7 @@ Rules for suggest_actions:
 - Provide 2-4 meaningful, distinct action options with Turkish labels.
 - After calling it, stop immediately. Do not produce any additional text.
 - Do NOT call it if the user has already given a clear instruction.
+- Do NOT call it more than once per conversation topic.
 
 ## HARD RULES
 - Never hallucinate. Only use data returned by tools. Never invent names, emails, or companies.
@@ -147,7 +163,40 @@ Rules for suggest_actions:
 - Always respond to the user in Turkish."""
 
 
-# ── Tool dispatcher ───────────────────────────────────────────────────────────
+_RETRY_DELAYS = (5, 15, 30)  # seconds between successive retries on retriable errors
+
+
+def _is_retriable_error(exc: Exception) -> bool:
+    """Return True for Gemini rate-limit / server-overload errors that are worth retrying."""
+    msg = str(exc).lower()
+    return any(k in msg for k in (
+        "429", "503", "resource_exhausted", "overloaded",
+        "high demand", "rate limit", "quota", "unavailable",
+    ))
+
+
+# ── Helper: collect deduplicated search_people rows from tool_calls ──────────
+
+def _collect_people_rows(tool_calls: list["ToolCallRecord"]) -> list[dict]:
+    """Return deduplicated person rows from all search_people calls in a run."""
+    rows: list[dict] = []
+    seen: set[str] = set()
+    for _tc in tool_calls:
+        if _tc.name == "search_people" and _tc.result_full:
+            try:
+                _parsed = json.loads(_tc.result_full)
+                for _row in _parsed.get("rows", []):
+                    _email = str(_row.get("email", "") or "")
+                    _key = _email or str(_row.get("person_id", id(_row)))
+                    if _key not in seen:
+                        seen.add(_key)
+                        rows.append(_row)
+            except Exception:
+                pass
+    return rows
+
+
+# ── Tool dispatcher ──────────────────────────────────────────────────────────────────────────
 
 def _dispatch_tool(name: str, args: dict, ctx: _AgentContext) -> str:
     """Execute one tool call. Returns JSON string (error-safe)."""
@@ -346,8 +395,20 @@ def run_agent(
     contents: list[types.Content] = []
     for msg in (conversation_history or []):
         role = "user" if msg.get("role") == "user" else "model"
+        msg_text = msg.get("content", "")
+        # Append hidden people-rows context so the agent can re-use them without re-searching
+        hidden_rows: list[dict] = msg.get("hidden_context", [])
+        if hidden_rows:
+            row_lines = ["[Önceki aramada bulunan kişiler — yeniden arama yapmana gerek yok:]"]
+            for r in hidden_rows[:20]:
+                row_lines.append(
+                    f"  • {r.get('first_name','')} {r.get('last_name','')} | "
+                    f"{r.get('title','')} | {r.get('company_name','')} | "
+                    f"{r.get('email','')} | unique_id={r.get('unique_id','')}"
+                )
+            msg_text = msg_text + "\n\n" + "\n".join(row_lines)
         contents.append(
-            types.Content(role=role, parts=[types.Part(text=msg.get("content", ""))])
+            types.Content(role=role, parts=[types.Part(text=msg_text)])
         )
     contents.append(
         types.Content(role="user", parts=[types.Part(text=query)])
@@ -383,12 +444,48 @@ def run_agent(
                 ),
             )
         except Exception as exc:
-            return AgentRunResult(
-                answer="",
-                tool_calls=tool_calls,
-                outreach_drafts=ctx.outreach_drafts,
-                error=f"Gemini API hatası ({model}): {exc}",
-            )
+            if _is_retriable_error(exc):
+                # Exponential back-off — try up to len(_RETRY_DELAYS) more times
+                last_exc = exc
+                for _delay in _RETRY_DELAYS:
+                    time.sleep(_delay)
+                    try:
+                        response = client.models.generate_content(
+                            model=model,
+                            contents=contents,
+                            config=types.GenerateContentConfig(
+                                system_instruction=system_prompt,
+                                tools=tool_set,
+                                tool_config=types.ToolConfig(
+                                    function_calling_config=types.FunctionCallingConfig(mode=fc_mode),
+                                ),
+                            ),
+                        )
+                        last_exc = None
+                        break  # success
+                    except Exception as retry_exc:
+                        last_exc = retry_exc
+                        if not _is_retriable_error(retry_exc):
+                            break  # non-retriable on retry — give up immediately
+                if last_exc is not None:
+                    return AgentRunResult(
+                        answer=(
+                            "⚠️ Gemini API şu an yoğun talep altında. "
+                            "Birkaç saniye bekleyip **Tekrar Dene** tuşuna basabilirsiniz."
+                        ),
+                        tool_calls=tool_calls,
+                        outreach_drafts=ctx.outreach_drafts,
+                        last_people_rows=_collect_people_rows(tool_calls),
+                        error=f"{last_exc}",
+                        retriable=True,
+                    )
+            else:
+                return AgentRunResult(
+                    answer="",
+                    tool_calls=tool_calls,
+                    outreach_drafts=ctx.outreach_drafts,
+                    error=f"Gemini API hatası ({model}): {exc}",
+                )
 
         parts = response.candidates[0].content.parts
         fc_parts = [p for p in parts if getattr(p, "function_call", None) is not None]
@@ -408,6 +505,7 @@ def run_agent(
                 outreach_drafts=ctx.outreach_drafts,
                 suggested_actions=list(sa_args.get("actions", [])),
                 actions_context=str(sa_args.get("context_summary", "")),
+                last_people_rows=_collect_people_rows(tool_calls),
             )
 
         # No function calls → model returned final text
@@ -423,6 +521,7 @@ def run_agent(
                 tool_calls=tool_calls,
                 outreach_drafts=ctx.outreach_drafts,
                 pii_warnings=[],
+                last_people_rows=_collect_people_rows(tool_calls),
             )
 
         # Batch confirmation check BEFORE executing outreach calls
@@ -463,7 +562,12 @@ def run_agent(
                 )
 
             summary = result_json[:200] + ("…" if len(result_json) > 200 else "")
-            tool_calls.append(ToolCallRecord(name=name, args=args, result_summary=summary, duration_ms=elapsed_ms))
+            tool_calls.append(ToolCallRecord(
+                name=name, args=args,
+                result_summary=summary,
+                result_full=result_json,
+                duration_ms=elapsed_ms,
+            ))
 
             fr = types.FunctionResponse(
                 name=name,

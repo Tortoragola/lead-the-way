@@ -10,9 +10,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 PRODUCT_DESCRIPTION = (
-    "Lead The Way: Şirketlerin doğal dil komutlarıyla B2B iletişim "
-    "veritabanlarını anlık filtreleyip, yapay zeka destekli kişiselleştirilmiş "
-    "soğuk satış mesajları oluşturmasını sağlayan AI-native satış zekası platformu."
+    "Lead The Way: An AI-native sales intelligence platform that lets companies "
+    "instantly filter B2B contact databases with natural-language commands and "
+    "generate AI-powered personalized cold outreach messages."
 )
 
 DEFAULT_CSV_PATH = PROJECT_ROOT / "Bones - People Inside Businesses Data Sample.csv"

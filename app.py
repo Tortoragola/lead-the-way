@@ -6,8 +6,10 @@ rendering and routing user input to the package functions.
 from __future__ import annotations
 
 import json
+import io
 from datetime import datetime, timedelta
 
+import pandas as pd
 import streamlit as st
 
 from ltw.config import get_settings
@@ -22,7 +24,7 @@ INTENT_CACHE_TTL = timedelta(hours=24)
 
 
 def _level_badge(level: IntentLevel, score: int) -> str:
-    color = {"YÜKSEK": "#16a34a", "ORTA": "#ca8a04", "DÜŞÜK": "#6b7280"}[level.value]
+    color = {"HIGH": "#16a34a", "MEDIUM": "#ca8a04", "LOW": "#6b7280"}[level.value]
     return (
         f"<span style='background:{color};color:white;padding:4px 12px;"
         f"border-radius:12px;font-weight:600;'>"
@@ -63,6 +65,9 @@ if "pending_actions_context" not in st.session_state:
 if "action_card_submitted" not in st.session_state:
     st.session_state["action_card_submitted"] = False  # True after card submit, triggers agent run
 
+if "pending_retry" not in st.session_state:
+    st.session_state["pending_retry"] = None  # {"query": str, "history": list} when retriable
+
 if "last_query" not in st.session_state:
     st.session_state["last_query"] = ""
 
@@ -86,6 +91,7 @@ with st.sidebar:
         st.session_state["pending_batch_result"] = None
         st.session_state["pending_actions"] = None
         st.session_state["pending_actions_context"] = ""
+        st.session_state["pending_retry"] = None
         st.session_state["last_query"] = ""
         st.rerun()
 
@@ -99,6 +105,42 @@ st.caption(
     "niyet analizi yapar ve kişiselleştirilmiş mail taslakları oluşturur."
 )
 st.divider()
+
+
+def _render_people_table(rows: list[dict], key_suffix: str = "") -> None:
+    """Render a contact list as an interactive table with a CSV download button."""
+    if not rows:
+        return
+
+    _COL_MAP = [
+        ("first_name",   "Ad"),
+        ("last_name",    "Soyad"),
+        ("title",        "Unvan"),
+        ("company_name", "Ŝirket"),
+        ("email",        "E-posta"),
+        ("seniority",    "Seviye"),
+        ("department",   "Departman"),
+        ("country",      "Ülke"),
+        ("city",         "Şehir"),
+        ("industry",     "Sektör"),
+    ]
+    display_rows = [
+        {tr: (row.get(src) or "") for src, tr in _COL_MAP}
+        for row in rows
+    ]
+    df = pd.DataFrame(display_rows)
+
+    st.markdown(f"**👥 Bulunan Kişiler ({len(rows)})**")
+    st.dataframe(df, use_container_width=True, hide_index=True)
+
+    csv_bytes = df.to_csv(index=False).encode("utf-8")
+    st.download_button(
+        label=f"⬇️ CSV İndir ({len(rows)} kişi)",
+        data=csv_bytes,
+        file_name="contacts.csv",
+        mime="text/csv",
+        key=f"dl_people_{key_suffix}",
+    )
 
 
 # ── Render chat history ──────────────────────────────────────────────────────
@@ -126,8 +168,14 @@ def _record_result(result: AgentRunResult) -> None:
         "tool_calls": result.tool_calls or [],
         "outreach_drafts": result.outreach_drafts or [],
     }
+    if result.retriable:
+        msg["_retry_err"] = True  # sentinel — dropped when user retries
     if grounding_warning:
         msg["grounding_warning"] = grounding_warning
+    # Store found people rows as hidden context (not shown in UI, but injected into history)
+    if result.last_people_rows:
+        msg["hidden_context"] = result.last_people_rows
+        msg["people_rows"] = result.last_people_rows
     st.session_state["messages"].append(msg)
 
     # If the agent offered action choices, surface them as the pending card
@@ -138,6 +186,46 @@ def _record_result(result: AgentRunResult) -> None:
         # A real answer clears any stale action card
         st.session_state["pending_actions"] = None
         st.session_state["pending_actions_context"] = ""
+
+    # Retry checkpoint: save query+history so the user can resume after rate-limit errors
+    if result.retriable:
+        st.session_state["pending_retry"] = {
+            "query": st.session_state["last_query"],
+            "history": [m for m in st.session_state["messages"] if not m.get("_retry_err")],
+        }
+    else:
+        st.session_state["pending_retry"] = None
+
+
+def _render_retry_button() -> None:
+    """Show a retry card when the last agent run hit an unresolved rate-limit error."""
+    retry_state = st.session_state.get("pending_retry")
+    if not retry_state:
+        return
+
+    st.warning(
+        "⚠️ Gemini API şu an yoğun talep altında ve otomatik denemeler başarısız oldu. "
+        "Birkaç saniye bekleyip aşağıdaki butona basabilirsiniz."
+    )
+    if st.button("🔄 Tekrar Dene", type="primary", key="retry_btn"):
+        retry_query = retry_state["query"]
+        retry_history = retry_state["history"]
+        st.session_state["pending_retry"] = None
+        # Remove the previous error assistant message before retrying
+        st.session_state["messages"] = [
+            m for m in st.session_state["messages"] if not m.get("_retry_err")
+        ]
+        with st.chat_message("assistant"):
+            with st.spinner("Tekrar deneniyor…"):
+                result = run_agent(
+                    client=gemini_client,
+                    query=retry_query,
+                    intent_cache=st.session_state["intent_cache"],
+                    confirmed_batch=False,
+                    conversation_history=retry_history,
+                )
+        _record_result(result)
+        st.rerun()
 
 
 def _render_action_card() -> None:
@@ -179,11 +267,16 @@ def _render_action_card() -> None:
             return
 
         # Assemble a Turkish follow-up query from checked actions + details
-        lines = ["Seçilen işlemler:"]
+        context_summary = st.session_state.get("pending_actions_context", "")
+        lines: list[str] = []
+        if context_summary:
+            lines.append(f"Bağlam (önceki arama özeti): {context_summary}")
+            lines.append("")
+        lines.append("Aşağıdaki işlemleri doğrudan uygula (suggest_actions kullanma):")
         for action, detail in checked:
-            line = f"- {action['label']}"
+            line = f"- {action['label']}: {action.get('description', '')}"
             if detail:
-                line += f" [Detay: {detail}]"
+                line += f" (Ek bilgi: {detail})"
             lines.append(line)
         follow_up = "\n".join(lines)
 
@@ -237,10 +330,12 @@ def _render_tool_calls(tool_calls: list) -> None:
             st.divider()
 
 
-for msg in st.session_state["messages"]:
+for i, msg in enumerate(st.session_state["messages"]):
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
         # Rerender attached extras if stored
+        if msg.get("people_rows"):
+            _render_people_table(msg["people_rows"], key_suffix=f"hist_{i}")
         if msg.get("tool_calls"):
             _render_tool_calls(msg["tool_calls"])
         if msg.get("outreach_drafts"):
@@ -250,6 +345,8 @@ for msg in st.session_state["messages"]:
 
 # ── Action card (suggest_actions result) ──────────────────────────────────────────
 _render_action_card()
+# ── Retry card (rate-limit recovery) ─────────────────────────────────────────
+_render_retry_button()
 # ── Batch confirmation (if a previous result is waiting) ─────────────────────
 pending: AgentRunResult | None = st.session_state.get("pending_batch_result")
 if pending is not None:
@@ -352,6 +449,9 @@ if active_prompt is not None:
         if result.error:
             answer_text = f"❌ Hata: {result.error}\n\n{answer_text}".strip()
         st.markdown(answer_text)
+
+        # People table (always shown when contacts were found)
+        _render_people_table(result.last_people_rows, key_suffix="live")
 
         # Tool call graph
         _render_tool_calls(result.tool_calls)

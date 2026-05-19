@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS target_companies (
 
     -- Intent layer (populated by Gemini grounding)
     intent_score            INTEGER         CHECK (intent_score BETWEEN 1 AND 10),
-    intent_level            VARCHAR(20)     CHECK (intent_level IN ('DÜŞÜK', 'ORTA', 'YÜKSEK')),
+    intent_level            VARCHAR(20)     CHECK (intent_level IN ('LOW', 'MEDIUM', 'HIGH')),
     intent_signals          JSONB,
     grounding_urls          JSONB,
     last_intent_update      TIMESTAMP
